@@ -18,27 +18,27 @@ The collection is organized by language and development environment.
 
 | Language | Description | View Cheat Sheet |
 | :--- | :--- | :---: |
-| **Rust** | A three-part guide from foundation to mastery, covering ownership, concurrency, and CLI development. | [**Go to Rust Sheet**](./Rust.md) |
+| **Rust** | A three-part guide from foundation to mastery, covering ownership, concurrency, and CLI development. | [**Go to Rust Sheet**](./cheatsheet/Rust.md) |
 
 ### 🌐 Web Development (Full Stack)
 
 | Language | Description | View Cheat Sheet |
 | :--- | :--- | :---: |
-| **HTML, CSS, JS** | A complete guide covering the full stack: Frontend (HTML/CSS/JS), Advanced JS, and a Node.js backend. | [**Go to Web Dev Sheet**](./WebDev.md) |
+| **HTML, CSS, JS** | A complete guide covering the full stack: Frontend (HTML/CSS/JS), Advanced JS, and a Node.js backend. | [**Go to Web Dev Sheet**](./cheatsheet/WebDev.md) |
 
 ### 🐍 General Purpose & Data Science
 
 | Language | Description | View Cheat Sheet |
 | :--- | :--- | :---: |
-| **Python** | A comprehensive guide to Pythonic syntax, from basic types to advanced OOP and comprehensions. | [**Go to Python Sheet**](./Python.md) |
-| **Lua** | A direct path to the lightweight and powerful Lua scripting language, focusing on tables and coroutines. | [**Go to Lua Sheet**](./Lua.md) |
+| **Python** | A comprehensive guide to Pythonic syntax, from basic types to advanced OOP and comprehensions. | [**Go to Python Sheet**](./cheatsheet/Python.md) |
+| **Lua** | A direct path to the lightweight and powerful Lua scripting language, focusing on tables and coroutines. | [**Go to Lua Sheet**](./cheatsheet/Lua.md) |
 
 ### 🐧 Command-Line & Scripting
 
 | Language | Description | View Cheat Sheet |
 | :--- | :--- | :---: |
-| **Bash** | The essential guide to shell scripting for automation and system administration. | [**Go to Bash Sheet**](./Bash.md) |
-| **Ruby** | An elegant and direct path to Ruby syntax, focusing on its "developer happiness" philosophy. | [**Go to Ruby Sheet**](./Ruby.md) |
+| **Bash** | The essential guide to shell scripting for automation and system administration. | [**Go to Bash Sheet**](./cheatsheet/Bash.md) |
+| **Ruby** | An elegant and direct path to Ruby syntax, focusing on its "developer happiness" philosophy. | [**Go to Ruby Sheet**](./cheatsheet/Ruby.md) |
 
 ---
 
