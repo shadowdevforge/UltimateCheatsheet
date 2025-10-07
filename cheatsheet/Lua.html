@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Comprehensive Lua Cheatsheet</title>
+    <style>
+        /* General Body & Font Styling */
+        body {
+            background-color: #1a101f;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Main Container for the Cheatsheet */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px 40px 40px 40px;
+            border: 1px solid #2c2138;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Headings */
+        h1, h2, h3 {
+            font-weight: 400;
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.6em;
+            font-weight: 300;
+            border-bottom: 2px solid #4d405c;
+            padding-bottom: 0.5em;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+
+        h2 {
+            font-size: 1.9em;
+            border-bottom: 1px solid #2c2138;
+            padding-bottom: 0.4em;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: #dcd0ff; /* A slightly lighter purple for subheadings */
+            margin-top: 2em;
+        }
+        
+        /* Version and Documentation Links Styling */
+        .version-info, .docs-link {
+            text-align: center;
+            color: #887999;
+            margin: 0.5em 0 2.5em 0;
+            font-size: 0.9em;
+        }
+
+        .docs-link {
+             margin-bottom: 0;
+        }
+
+        /* Links */
+        a {
+            color: #b39ddb; /* Brighter purple for better visibility */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #2c2138;
+            margin: 3em 0;
+        }
+
+        /* Paragraphs and Lists */
+        p, ul, ol {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* Inline and Block Code Styling */
+        code {
+            font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background-color: #2c2138;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #2c2138;
+            border: 1px solid #4d405c;
+            border-radius: 8px;
+            padding: 1.2em;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.95em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 1em; /* Inherit font size from pre */
+        }
+        
+        .comment {
+            color: #887999;
+            font-style: italic;
+        }
+        
+        /* Table of Contents Specific Styling */
+        #toc {
+            background-color: #22182c;
+            border: 1px solid #2c2138;
+            padding: 1.5em 2em;
+            border-radius: 8px;
+        }
+        #toc ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        #toc li {
+            margin-bottom: 0.6em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>The Comprehensive Lua Cheatsheet</h1>
+    <p class="version-info">version 1.1.0</p>
+
+    <div id="toc">
+        <h3><strong>Table of Contents</strong></h3>
+        <ol>
+            <li><a href="#basics"><strong>Basic Types & Variables</strong></a></li>
+            <li><a href="#operators"><strong>Operators & Expressions</strong></a></li>
+            <li><a href="#tables"><strong>Tables (The All-in-One Data Structure)</strong></a></li>
+            <li><a href="#control-flow"><strong>Control Flow</strong></a></li>
+            <li><a href="#functions"><strong>Functions</strong></a></li>
+            <li><a href="#error-handling"><strong>Error Handling</strong></a></li>
+            <li><a href="#std-library"><strong>Standard Library Essentials</strong></a></li>
+            <li><a href="#metatables"><strong>Metatables & Metamethods</strong></a></li>
+            <li><a href="#oop-sugar"><strong>OOP Syntax Sugar (The Colon <code>:</code>)</strong></a></li>
+            <li><a href="#modules"><strong>Modules & <code>require</code></strong></a></li>
+            <li><a href="#coroutines"><strong>Coroutines (Cooperative Multitasking)</strong></a></li>
+            <li><a href="#advanced"><strong>Advanced Concepts</strong></a></li>
+        </ol>
+    </div>
+    
+    <p class="docs-link" style="margin-top: 2em;"><strong>Official Documentation:</strong> <a href="https://www.lua.org/manual/5.4/" target="_blank" rel="noopener noreferrer">https://www.lua.org/manual/5.4/</a></p>
+
+    <hr>
+
+    <h2 id="basics">1. Basic Types & Variables</h2>
+    <h3><strong>Data Types</strong></h3>
+    <p>Lua has 8 basic types: <code>nil</code>, <code>boolean</code>, <code>number</code>, <code>string</code>, <code>function</code>, <code>userdata</code>, <code>thread</code>, and <code>table</code>.</p>
+<pre><code><span class="comment">-- nil represents the absence of a value.</span>
+local no_value = nil
+
+<span class="comment">-- booleans (only `false` and `nil` are falsy. 0, "", and {} are all truthy)</span>
+local is_active = true
+
+<span class="comment">-- numbers (double-precision float by default; has integer subtype)</span>
+local count = 10
+local pi = 3.14
+
+<span class="comment">-- strings (immutable; concatenation creates new strings)</span>
+local name = "Alice"
+local long_string = [[A multi-line string.]]
+</code></pre>
+
+    <h3><strong>Variable Scope & Attributes</strong></h3>
+    <p>Variables are global by default. <strong>Always use <code>local</code></strong> to limit scope.</p>
+<pre><code><span class="comment">-- Global variable (avoid)</span>
+x = 10
+
+<span class="comment">-- Local variable (best practice)</span>
+local y = 20
+
+<span class="comment">-- Constant variable (Lua 5.4+)</span>
+local GRAVITY &lt;const&gt; = 9.8
+
+<span class="comment">-- To-be-closed variable (Lua 5.4+). Calls __close metamethod on scope exit.</span>
+<span class="comment">-- Useful for files, database connections, etc. (RAII pattern)</span>
+local file &lt;close&gt; = io.open("my_file.txt")
+</code></pre>
+
+    <hr>
+
+    <h2 id="operators">2. Operators & Expressions</h2>
+<pre><code><span class="comment">-- Arithmetic: +, -, *, /, % (modulo), ^ (exponent), // (floor division)</span>
+print(10 // 3) <span class="comment">--&gt; 3</span>
+
+<span class="comment">-- String Concatenation</span>
+local greeting = "Hello" .. " " .. "World"
+
+<span class="comment">-- Relational: ==, ~= (not equal), &lt;, &gt;, &lt;=, &gt;=</span>
+
+<span class="comment">-- Logical: and, or, not (short-circuiting)</span>
+<span class="comment">-- Used for default values:</span>
+local user = supplied_name or "guest"
+<span class="comment">-- Idiomatic ternary operator:</span>
+local max_val = (a &gt; b) and a or b
+
+<span class="comment">-- Bitwise (Lua 5.3+): & (and), | (or), ~ (xor), ~ (not), &lt;&lt;, &gt;&gt;</span>
+print(5 & 3) <span class="comment">--&gt; 1  -- 0101 & 0011 = 0001</span>
+
+<span class="comment">-- Length Operator: # (for strings and array-like tables)</span>
+print(#"hello") <span class="comment">--&gt; 5</span>
+</code></pre>
+
+    <hr>
+
+    <h2 id="tables">3. Tables (The All-in-One Data Structure)</h2>
+    <p>The only built-in data structure. Keys can be any value except <code>nil</code>.</p>
+<pre><code><span class="comment">-- Dictionary-like (hash map)</span>
+local person = { name = "Bob", age = 42, ["is-admin"] = true }
+person.job = "Engineer"
+print(person["name"]) <span class="comment">--&gt; "Bob"</span>
+
+<span class="comment">-- Array-like (list), 1-based indexing</span>
+local numbers = {10, 20, 30}
+print(numbers[1]) <span class="comment">--&gt; 10</span>
+print(#numbers)   <span class="comment">--&gt; 3</span>
+</code></pre>
+
+    <hr>
+
+    <h2 id="control-flow">4. Control Flow</h2>
+    <h3><strong>Conditionals</strong></h3>
+<pre><code>if score &gt;= 90 then
+    print("A")
+elseif score &gt;= 80 then
+    print("B")
+else
+    print("C")
+end
+</code></pre>
+
+    <h3><strong>Loops</strong></h3>
+    <p>Lua has <code>while</code>, <code>repeat</code>, and two kinds of <code>for</code> loops.
+    <ul><li><code>break</code> exits a loop. Lua does not have <code>continue</code>.</li></ul>
+    </p>
+<pre><code><span class="comment">-- while loop</span>
+local i = 1
+while i &lt;= 5 do
+  print(i)
+  i = i + 1
+end
+
+<span class="comment">-- repeat...until loop (body always executes at least once)</span>
+repeat
+  <span class="comment">-- ...</span>
+until condition
+
+<span class="comment">-- Numeric for loop (variable `i` is local to the loop)</span>
+for i = 1, 10, 2 do <span class="comment">-- start, end, optional step</span>
+  print(i) <span class="comment">-- 1, 3, 5, 7, 9</span>
+end
+
+<span class="comment">-- Generic for loop with pairs (unordered) and ipairs (ordered array part)</span>
+for key, value in pairs(person) do print(key, value) end
+for index, value in ipairs(numbers) do print(index, value) end
+</code></pre>
+    <ul><li><strong><code>goto</code></strong>: Jumps to a label. Use with extreme caution as it can create unreadable code. <code>goto my_label</code> ... <code>::my_label::</code></li></ul>
+
+    <hr>
+
+    <h2 id="functions">5. Functions</h2>
+    <p>First-class values. Can be stored in variables, passed as arguments, and returned.</p>
+<pre><code><span class="comment">-- Standard definition</span>
+function add(a, b)
+    return a + b
+end
+
+<span class="comment">-- Multiple return values</span>
+function get_pos() return 10, 20 end
+local x, y = get_pos()
+
+<span class="comment">-- Variadic functions (...)</span>
+function sum(...)
+    local total = 0
+    for _, v in ipairs{...} do total = total + v end
+    return total
+end
+</code></pre>
+
+    <hr>
+
+    <h2 id="error-handling">6. Error Handling</h2>
+<pre><code><span class="comment">-- error(message, [level]) raises an error.</span>
+<span class="comment">-- assert(condition, [message]) errors if condition is false or nil.</span>
+function divide(a, b)
+  assert(b ~= 0, "Cannot divide by zero")
+  return a / b
+end
+
+<span class="comment">-- pcall (protected call) catches errors without crashing.</span>
+local status, result_or_err = pcall(divide, 10, 0)
+if not status then
+  print("Error:", result_or_err)
+end
+</code></pre>
+
+    <hr>
+
+    <h2 id="std-library">7. Standard Library Essentials</h2>
+    <h3><strong>String Library (<code>string</code>)</strong></h3>
+<pre><code>string.len(s)            <span class="comment">-- Length of string s</span>
+string.sub(s, i, j)      <span class="comment">-- Substring from i to j</span>
+string.upper(s)          <span class="comment">-- Uppercase</span>
+string.find(s, pattern)  <span class="comment">-- Find first match of a pattern</span>
+string.gsub(s, pat, repl)<span class="comment">-- Global substitution</span>
+
+<span class="comment">-- string.format (like C's printf)</span>
+local msg = string.format("User %s has ID %d", "Zoe", 123)
+
+<span class="comment">-- string.match (powerful captures with patterns)</span>
+local year, month, day = string.match("2023-10-27", "(%d+)-(%d+)-(%d+)")
+</code></pre>
+
+    <h3><strong>Table Library (<code>table</code>)</strong></h3>
+<pre><code>table.insert(t, val)     <span class="comment">-- Insert at end of array part</span>
+table.insert(t, pos, val)<span class="comment">-- Insert at position</span>
+table.remove(t, pos)     <span class="comment">-- Remove from position</span>
+table.sort(t)            <span class="comment">-- Sorts in-place</span>
+table.concat(t, sep)     <span class="comment">-- Joins array elements into a string</span>
+table.pack(...)          <span class="comment">-- Packs arguments into a table, including nils</span>
+table.unpack(t)          <span class="comment">-- Returns all elements of a table as values</span>
+</code></pre>
+
+    <h3><strong>Math Library (<code>math</code>)</strong></h3>
+<pre><code>math.random(m, n)        <span class="comment">-- Random integer between m and n</span>
+math.randomseed(os.time()) <span class="comment">-- Seed the random generator</span>
+math.floor(x), math.ceil(x)
+math.max(x, y, ...), math.min(x, y, ...)
+math.pi, math.huge
+</code></pre>
+
+    <h3><strong>OS Library (<code>os</code>)</strong></h3>
+<pre><code>os.time()                <span class="comment">-- Current time in seconds since epoch</span>
+os.date(format_str)      <span class="comment">-- Formatted date/time string</span>
+os.execute(command)      <span class="comment">-- Run a system shell command</span>
+os.remove(filename)      <span class="comment">-- Delete a file</span>
+os.rename(old, new)      <span class="comment">-- Rename a file</span>
+os.exit(code)            <span class="comment">-- Exit the script</span>
+</code></pre>
+
+    <h3><strong>IO Library (<code>io</code>) & File Handling</strong></h3>
+<pre><code><span class="comment">-- Console IO</span>
+io.write("Enter name: ")
+local name = io.read()
+print("Hello, " .. name)
+
+<span class="comment">-- File IO</span>
+local file = io.open("data.txt", "w") <span class="comment">-- modes: "r", "w", "a", "rb", etc.</span>
+if file then
+  file:write("Some data\n")
+  file:close()
+end
+
+local file = io.open("data.txt", "r")
+if file then
+  local content = file:read("*a") <span class="comment">-- read all</span>
+  <span class="comment">-- local line = file:read("*l") -- read line</span>
+  print(content)
+  file:close()
+end
+</code></pre>
+
+    <hr>
+
+    <h2 id="metatables">8. Metatables & Metamethods</h2>
+    <p>Metatables define custom behavior for tables.</p>
+<pre><code>local Vector = {}
+Vector.mt = {}
+
+function Vector.new(x, y)
+  return setmetatable({x=x, y=y}, Vector.mt)
+end
+
+<span class="comment">-- Common Metamethods</span>
+Vector.mt.__add = function(v1, v2) return Vector.new(v1.x+v2.x, v1.y+v2.y) end
+Vector.mt.__tostring = function(v) return "Vector("..v.x..", "..v.y..")" end
+Vector.mt.__len = function(v) return math.sqrt(v.x^2 + v.y^2) end
+Vector.mt.__index = Vector <span class="comment">-- For OOP: look up missing keys (methods) in the Vector table.</span>
+<span class="comment">-- Other metamethods: __newindex, __sub, __mul, __div, __eq, __lt, __call</span>
+</code></pre>
+<pre><code>local v1 = Vector.new(3, 4)
+print(v1 + v1) <span class="comment">--&gt; Vector(6, 8)</span>
+print(#v1)     <span class="comment">--&gt; 5.0</span>
+</code></pre>
+
+    <hr>
+
+    <h2 id="oop-sugar">9. OOP Syntax Sugar (The Colon <code>:</code>)</h2>
+    <p>The colon implicitly passes the table itself as the first argument (<code>self</code>).</p>
+<pre><code>local Account = {}
+function Account:withdraw(amount) <span class="comment">-- Same as Account.withdraw(self, amount)</span>
+  self.balance = self.balance - amount
+end
+
+local my_acct = { balance = 500 }
+setmetatable(my_acct, { __index = Account })
+
+my_acct:withdraw(50) <span class="comment">-- Same as my_acct.withdraw(my_acct, 50)</span>
+print(my_acct.balance) <span class="comment">--&gt; 450</span>
+</code></pre>
+
+    <hr>
+
+    <h2 id="modules">10. Modules & <code>require</code></h2>
+    <p>Organize code into files. <code>require</code> loads a module once and caches the result.</p>
+<pre><code><span class="comment">-- In 'mymath.lua'</span>
+local M = {}
+function M.add(a, b) return a + b end
+return M
+
+<span class="comment">-- In 'main.lua'</span>
+local mymath = require("mymath")
+print(mymath.add(5, 3)) <span class="comment">--&gt; 8</span>
+</code></pre>
+
+    <hr>
+
+    <h2 id="coroutines">11. Coroutines (Cooperative Multitasking)</h2>
+    <p>Lightweight threads that can be paused (<code>yield</code>) and resumed manually.</p>
+<pre><code>local co = coroutine.create(function()
+  for i=1, 3 do
+    print("co yielding", i)
+    coroutine.yield(i)
+  end
+  return "done"
+end)
+
+coroutine.resume(co) <span class="comment">--&gt; co yielding 1</span>
+coroutine.resume(co) <span class="comment">--&gt; co yielding 2</span>
+local status, result = coroutine.resume(co) <span class="comment">--&gt; co yielding 3</span>
+local final_status, final_result = coroutine.resume(co) <span class="comment">-- resumes after last yield</span>
+print(final_status, final_result) <span class="comment">--&gt; true, "done"</span>
+</code></pre>
+
+    <hr>
+
+    <h2 id="advanced">12. Advanced Concepts</h2>
+    <h3><strong>Environments (<code>_ENV</code>)</strong></h3>
+    <p>Each function has an environment table where it looks up global variables. Modifying <code>_ENV</code> allows for sandboxing.</p>
+<pre><code><span class="comment">-- Run untrusted code with a restricted environment</span>
+local untrusted_code = 'print("hello from sandbox")'
+local sandbox = { print = print } <span class="comment">-- Only allow the print function</span>
+local func = load(untrusted_code, "sandboxed", "t", sandbox)
+func()
+</code></pre>
+
+    <h3><strong>Weak Tables</strong></h3>
+    <p>A table with weak references, allowing its keys or values to be garbage collected. Useful for caches. Set with the <code>__mode</code> metamethod: <code>"k"</code> for keys, <code>"v"</code> for values, or <code>"kv"</code> for both.</p>
+<pre><code>local cache = {}
+setmetatable(cache, {__mode = "v"})
+</code></pre>
+
+    <h3><strong>Debug Library</strong></h3>
+    <p>A powerful but unsafe library for introspection (examining program state). Primarily used for building debuggers. The most common safe use is getting a stack traceback.</p>
+<pre><code>print(debug.traceback())
+</code></pre>
+
+</div>
+
+</body>
+</html>
