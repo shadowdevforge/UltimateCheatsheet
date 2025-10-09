@@ -1,495 +1,471 @@
-# Ultimate Python Cheatsheet 
-### **CHEAT SHEET**
-version 1.0.0
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Python Cheatsheet</title>
+    <style>
+        /* General Body & Font Styling */
+        body {
+            background-color: #1a101f;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
 
-### **Table of Contents**
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px 40px 40px 40px;
+            border: 1px solid #2c2138;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
 
-1.  **Basic Types & Variables**
-2.  **Data Structures (Collections)**
-3.  **Control Flow**
-4.  **Functions & Lambdas**
-5.  **Error Handling**
-6.  **Classes & Objects (OOP)**
-7.  **Comprehensions & Generators**
-8.  **Context Managers**
-9.  **Modules, Packages & Imports**
+        /* Headings */
+        h1, h2, h3, h4 {
+            font-weight: 400;
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+        }
 
-**Official Documentation:** [https://docs.python.org/3/](https://docs.python.org/3/)
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 300;
+            border-bottom: 2px solid #4d405c;
+            padding-bottom: 0.5em;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+        
+        h3 {
+            font-size: 1.9em;
+            border-bottom: 1px solid #2c2138;
+            padding-bottom: 0.4em;
+        }
+        
+        h4 {
+            font-size: 1.5em;
+            color: #dcd0ff;
+            margin-top: 2em;
+        }
 
----
+        /* Version & Docs Info */
+        .meta-info {
+            text-align: center;
+            color: #887999;
+            margin: 0.5em 0 2.5em 0;
+            font-size: 0.9em;
+        }
 
-## 1. Basic Types & Variables
+        /* Links */
+        a {
+            color: #b39ddb;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
 
-### **Numeric Types**
-`int`, `float`, `complex`
-```python
-# Integers
+        a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #2c2138;
+            margin: 4em 0;
+        }
+
+        /* Paragraphs and Lists */
+        p, ul, ol {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* Inline and Block Code Styling */
+        code {
+            font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background-color: #2c2138;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #2c2138;
+            border: 1px solid #4d405c;
+            border-radius: 8px;
+            padding: 1.2em;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.95em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 1em; /* Inherit font size from pre */
+        }
+        
+        .comment {
+            color: #887999;
+            font-style: italic;
+        }
+        
+        /* Table of Contents Specific Styling */
+        .toc {
+            background-color: #22182c;
+            border: 1px solid #2c2138;
+            padding: 1.5em 2em;
+            border-radius: 8px;
+        }
+        .toc ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin-bottom: 0.6em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ultimate Python Cheatsheet</h1>
+    <p class="meta-info">version 1.0.0</p>
+
+    <div class="toc">
+        <h3><strong>Table of Contents</strong></h3>
+        <ol>
+            <li><a href="#basics"><strong>Basic Types & Variables</strong></a></li>
+            <li><a href="#data-structures"><strong>Data Structures (Collections)</strong></a></li>
+            <li><a href="#control-flow"><strong>Control Flow</strong></a></li>
+            <li><a href="#functions"><strong>Functions & Lambdas</strong></a></li>
+            <li><a href="#error-handling"><strong>Error Handling</strong></a></li>
+            <li><a href="#oop"><strong>Classes & Objects (OOP)</strong></a></li>
+            <li><a href="#comprehensions"><strong>Comprehensions & Generators</strong></a></li>
+            <li><a href="#context-managers"><strong>Context Managers</strong></a></li>
+            <li><a href="#modules"><strong>Modules, Packages & Imports</strong></a></li>
+            <li><a href="#decorators"><strong>Decorators</strong></a></li>
+        </ol>
+    </div>
+    <p class="meta-info" style="margin-top: 1.5em;"><strong>Official Documentation:</strong> <a href="https://docs.python.org/3/" target="_blank" rel="noopener noreferrer">https://docs.python.org/3/</a></p>
+
+    <hr>
+
+    <h3 id="basics">1. Basic Types & Variables</h3>
+    <h4>Numeric Types</h4>
+    <p><code>int</code>, <code>float</code>, <code>complex</code></p>
+<pre><code><span class="comment"># Integers</span>
 count = 10
 large_number = 100_000_000
 
-# Floats
+<span class="comment"># Floats</span>
 pi = 3.14159
+</code></pre>
 
-# Complex numbers
-c = 2 + 3j
-```
-
-### **Boolean**
-`True` or `False` (case-sensitive)
-```python
-is_active = True
-is_admin = False
-```
-
-### **Strings**
-Immutable sequence of Unicode characters.
-```python
-# String creation
+    <h4>Strings</h4>
+    <p>Immutable sequence of Unicode characters.</p>
+<pre><code><span class="comment"># f-strings (formatted string literals) are the modern standard</span>
 name = "Alice"
-greeting = 'Hello, World!'
-multi_line = """This is a
-multi-line string."""
-
-# f-strings (formatted string literals)
 age = 30
 message = f"{name} is {age} years old."
-# -> "Alice is 30 years old."
+<span class="comment"># -> "Alice is 30 years old."</span>
 
-# String methods
-print(name.upper()) # "ALICE"
-print(greeting.split(',')) # ['Hello', ' World!']
-```
+<span class="comment"># String methods</span>
+print(name.upper()) <span class="comment"># "ALICE"</span>
+print(message.split()) <span class="comment"># ['Alice', 'is', '30', 'years', 'old.']</span>
+</code></pre>
 
-### **None Type**
-Represents the absence of a value.
-```python
-result = None
-```
+    <h4>Boolean & None Type</h4>
+<pre><code>is_active = True
+is_admin = False
+result = None <span class="comment"># Represents the absence of a value</span>
+</code></pre>
 
-### **Variable Assignment & Type Hinting**
-Python is dynamically typed, but supports optional static type hints.
-```python
-# Standard assignment
-x = 5
-y = "Python"
-
-# Multiple assignment
-a, b = 10, 20
-
-# Type hinting (for readability and static analysis)
-user_id: int = 123
+    <h4>Type Hinting</h4>
+    <p>Python is dynamically typed, but supports optional static type hints.</p>
+<pre><code>user_id: int = 123
 username: str = "bogdan"
-```
+</code></pre>
 
-### **Mutability & Immutability**
-- **Immutable:** Cannot be changed after creation (int, float, str, tuple).
-- **Mutable:** Can be changed after creation (list, dict, set).
+    <hr>
 
-```python
-# Strings are immutable
-my_str = "hello"
-# my_str[0] = 'H' # This will raise a TypeError
-
-# Lists are mutable
-my_list = [1, 2, 3]
-my_list[0] = 100 # This is valid
-```
-
----
-
-## 2. Data Structures (Collections)
-
-### **List**
-Ordered, mutable sequence.
-```python
-# Creation
+    <h3 id="data-structures">2. Data Structures (Collections)</h3>
+    <h4>List</h4>
+    <p>Ordered, mutable sequence.</p>
+<pre><code><span class="comment"># Creation</span>
 numbers = [1, 2, 3, 4, 5]
-empty_list = []
 
-# Access (indexing and slicing)
-first = numbers[0]     # 1
-last = numbers[-1]     # 5
-subset = numbers[1:4]  # [2, 3, 4]
+<span class="comment"># Access (indexing and slicing)</span>
+first = numbers[0]     <span class="comment"># 1</span>
+last = numbers[-1]     <span class="comment"># 5</span>
+subset = numbers[1:4]  <span class="comment"># [2, 3, 4]</span>
 
-# Modification
-numbers.append(6)      # [1, 2, 3, 4, 5, 6]
-numbers.pop()          # Removes and returns 6
-```
+<span class="comment"># Modification</span>
+numbers.append(6)      <span class="comment"># [1, 2, 3, 4, 5, 6]</span>
+numbers.pop()          <span class="comment"># Removes and returns 6</span>
+</code></pre>
 
-### **Tuple**
-Ordered, immutable sequence.
-```python
-# Creation
-coordinates = (10.0, 20.0)
-person = ("Alice", 30)
+    <h4>Tuple</h4>
+    <p>Ordered, immutable sequence.</p>
+<pre><code>coordinates = (10.0, 20.0)
+name, age = ("Alice", 30) <span class="comment"># Unpacking</span>
+</code></pre>
 
-# Access is the same as lists
-x = coordinates[0]
+    <h4>Dictionary</h4>
+    <p>Key-value pairs. Mutable.</p>
+<pre><code>user = {"username": "bogdan", "active": True}
 
-# Unpacking
-name, age = person
-```
+<span class="comment"># Access</span>
+print(user["username"]) <span class="comment"># "bogdan"</span>
+print(user.get("email", "not found")) <span class="comment"># "not found"</span>
 
-### **Dictionary**
-Unordered (in older Python versions) key-value pairs. Mutable.
-```python
-# Creation
-user = {
-    "username": "bogdan",
-    "active": True
-}
-
-# Access
-print(user["username"]) # "bogdan"
-
-# Safe access with .get()
-print(user.get("email")) # None
-print(user.get("email", "not found")) # "not found"
-
-# Modification
-user["active"] = False
+<span class="comment"># Modification</span>
 user["email"] = "bogdan@example.com"
-```
 
-### **Set**
-Unordered collection of unique elements. Mutable.
-```python
-# Creation
-tags = {"python", "rust", "dev"}
-unique_numbers = set([1, 2, 2, 3, 1]) # {1, 2, 3}
+<span class="comment"># Iterating</span>
+for key, value in user.items():
+    print(f"{key}: {value}")
+</code></pre>
 
-# Operations
-tags.add("go")
-tags.remove("rust")
+    <h4>Set</h4>
+    <p>Unordered collection of unique elements. Mutable.</p>
+<pre><code>tags = {"python", "rust", "dev"}
+unique_numbers = set([1, 2, 2, 3, 1]) <span class="comment"># {1, 2, 3}</span>
 
-# Set math
+<span class="comment"># Set math</span>
 set_a = {1, 2, 3}
 set_b = {3, 4, 5}
-print(set_a | set_b) # Union: {1, 2, 3, 4, 5}
-print(set_a & set_b) # Intersection: {3}
-```
----
-## 3. Control Flow
+print(set_a | set_b) <span class="comment"># Union: {1, 2, 3, 4, 5}</span>
+print(set_a & set_b) <span class="comment"># Intersection: {3}</span>
+</code></pre>
 
-### **if, elif, else**
-```python
-score = 85
+    <hr>
 
+    <h3 id="control-flow">3. Control Flow</h3>
+    <h4>if, elif, else</h4>
+<pre><code>score = 85
 if score >= 90:
     print("Grade: A")
 elif score >= 80:
     print("Grade: B")
 else:
     print("Grade: C or lower")
-```
 
-### **Ternary Operator**
-A one-line conditional expression.
-```python
+<span class="comment"># Ternary Operator</span>
 result = "Pass" if score >= 60 else "Fail"
-```
+</code></pre>
 
-### **for loop**
-Iterates over a sequence.
-```python
-# Looping through a list
-names = ["Alice", "Bob", "Charlie"]
-for name in names:
-    print(f"Hello, {name}")
-
-# Using range()
-for i in range(5): # 0, 1, 2, 3, 4
-    print(i)
-
-# Using enumerate() for index and value
+    <h4>for loop</h4>
+<pre><code>names = ["Alice", "Bob", "Charlie"]
 for index, name in enumerate(names):
     print(f"{index}: {name}")
-```
+</code></pre>
 
-### **while loop**
-Executes as long as a condition is true.
-```python
-count = 0
-while count < 5:
+    <h4>while loop</h4>
+<pre><code>count = 0
+while count < 3:
     print(count)
     count += 1
-```
+</code></pre>
 
-### **Loop Control Statements**
-`break`, `continue`, and `else` on loops.
-```python
-for num in range(10):
+    <h4>Loop Control Statements</h4>
+    <p><code>break</code>, <code>continue</code>, and <code>else</code> on loops.</p>
+<pre><code>for num in range(10):
     if num == 3:
-        continue # Skip this iteration
+        continue <span class="comment"># Skip this iteration</span>
     if num == 7:
-        break    # Exit the loop entirely
+        break    <span class="comment"># Exit the loop entirely</span>
     print(num)
 else:
-    # This block runs ONLY if the loop
-    # completes without hitting 'break'
+    <span class="comment"># This block runs ONLY if the loop completes without 'break'</span>
     print("Loop finished normally")
-```
----
-## 4. Functions & Lambdas
+</code></pre>
 
-### **Function Definition**
-```python
-def greet(name: str) -> str:
-    """A simple function with type hints."""
+    <hr>
+
+    <h3 id="functions">4. Functions & Lambdas</h3>
+    <h4>Function Definition</h4>
+<pre><code>def greet(name: str, active: bool = True) -> str:
+    """A function with type hints and a default argument."""
     return f"Hello, {name}!"
-```
-
-### **Arguments**
-- **Positional:** Order matters.
-- **Keyword:** Order doesn't matter.
-- **Default:** Provides a fallback value.
-```python
-def create_user(username, active=True, admin=False):
-    # ... function logic ...
-    print(f"User: {username}, Active: {active}, Admin: {admin}")
-
-# Using positional and keyword arguments
-create_user("Alice", admin=True)
-```
-
-### ***args and **kwargs**
-For accepting an arbitrary number of arguments.
-```python
-def process_data(*args, **kwargs):
+</code></pre>
+    <h4>*args and **kwargs</h4>
+<pre><code>def process_data(*args, **kwargs):
     print(f"Positional args (tuple): {args}")
     print(f"Keyword args (dict): {kwargs}")
 
 process_data(1, 2, "a", user="Bob", status="online")
-# Positional args (tuple): (1, 2, 'a')
-# Keyword args (dict): {'user': 'Bob', 'status': 'online'}
-```
+</code></pre>
+    <h4>Lambda (Anonymous) Functions</h4>
+<pre><code>add = lambda x, y: x + y
+print(add(5, 3)) <span class="comment"># 8</span>
 
-### **Lambda (Anonymous) Functions**
-Small, one-line functions.
-```python
-# A lambda that adds two numbers
-add = lambda x, y: x + y
-print(add(5, 3)) # 8
-
-# Often used for sorting or mapping
+<span class="comment"># Often used for sorting</span>
 points = [(1, 2), (4, 1), (3, 5)]
-points.sort(key=lambda p: p[1]) # Sort by the second element
-# -> [(4, 1), (1, 2), (3, 5)]
-```
----
-## 5. Error Handling
+points.sort(key=lambda p: p[1]) <span class="comment"># Sort by the second element</span>
+</code></pre>
 
-### **try / except / else / finally**
-Gracefully handle exceptions (errors).
-```python
-try:
-    # Code that might raise an error
+    <hr>
+
+    <h3 id="error-handling">5. Error Handling</h3>
+    <h4>try / except / else / finally</h4>
+<pre><code>try:
     value = 10 / 0
 except ZeroDivisionError as e:
-    # Handle a specific error
     print(f"Error: Cannot divide by zero. ({e})")
-except (TypeError, ValueError):
-    # Handle multiple error types
-    print("A type or value error occurred.")
 except Exception as e:
-    # A general catch-all for other exceptions
+    <span class="comment"># A general catch-all for other exceptions</span>
     print(f"An unexpected error occurred: {e}")
 else:
-    # Runs only if NO exception was raised in 'try'
+    <span class="comment"># Runs only if NO exception was raised in 'try'</span>
     print("Division successful.")
 finally:
-    # Always runs, regardless of exceptions
+    <span class="comment"># Always runs, regardless of exceptions</span>
     print("Execution complete.")
-```
+</code></pre>
 
-### **Raising Exceptions**
-Manually trigger an error.
-```python
-def set_age(age):
-    if age < 0:
-        raise ValueError("Age cannot be negative.")
-    # ...
-```
----
-## 6. Classes & Objects (OOP)
+    <hr>
 
-### **Class Definition**
-The blueprint for creating objects.
-```python
-class User:
-    # Class attribute (shared by all instances)
-    species = "Homo sapiens"
-
-    # Constructor method (__init__)
+    <h3 id="oop">6. Classes & Objects (OOP)</h3>
+    <h4>Class Definition</h4>
+<pre><code>class User:
+    <span class="comment"># Constructor method (__init__)</span>
     def __init__(self, username: str, email: str):
-        # Instance attributes
         self.username = username
         self.email = email
-        self.is_active = True
 
-    # Instance method
+    <span class="comment"># Instance method</span>
     def greet(self):
-        return f"Hello, my name is {self.username}."
+        return f"Hello, I am {self.username}."
 
-    # Class method
-    @classmethod
-    def from_string(cls, user_string):
-        """Alternative constructor."""
-        username, email = user_string.split(',')
-        return cls(username, email) # Calls __init__
+    <span class="comment"># "Dunder" method for string representation (user-facing)</span>
+    def __str__(self):
+        return f"User({self.username})"
 
-    # Static method (no access to cls or self)
-    @staticmethod
-    def is_valid_email(email):
-        return "@" in email
+    <span class="comment"># "Dunder" method for developer representation (unambiguous)</span>
+    def __repr__(self):
+        return f"&lt;User username='{self.username}' email='{self.email}'&gt;"
 
-# Instantiation
+<span class="comment"># Instantiation</span>
 user1 = User("Alice", "alice@example.com")
-print(user1.greet())
-
-# Using a class method
-user2 = User.from_string("Bob,bob@example.com")
-```
-
-### **Inheritance**
-Create a new class from an existing one.
-```python
-class AdminUser(User): # AdminUser inherits from User
+print(user1.greet()) <span class="comment"># Calls the method</span>
+print(str(user1))    <span class="comment"># Calls __str__ -> "User(Alice)"</span>
+print(user1)         <span class="comment"># Also calls __str__ in a print context</span>
+print(repr(user1))   <span class="comment"># Calls __repr__</span>
+</code></pre>
+    <h4>Inheritance</h4>
+<pre><code>class AdminUser(User): <span class="comment"># AdminUser inherits from User</span>
     def __init__(self, username, email, permissions_level):
-        # Call the parent class's constructor
-        super().__init__(username, email)
+        super().__init__(username, email) <span class="comment"># Call parent constructor</span>
         self.permissions_level = permissions_level
 
-    # Overriding a method
+    <span class="comment"># Overriding a method</span>
     def greet(self):
-        base_greeting = super().greet()
-        return f"{base_greeting} I am an admin."
+        return f"Hello, I am Admin {self.username}."
+</code></pre>
 
-admin = AdminUser("Charlie", "charlie@dev.com", 5)
-print(admin.greet())
-```
----
-## 7. Comprehensions & Generators
+    <hr>
 
-### **List Comprehension**
-Concise way to create lists.
-`[expression for item in iterable if condition]`
-```python
-# Create a list of squares
-squares = [x**2 for x in range(10)]
-# [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-
-# Create a list of even squares
+    <h3 id="comprehensions">7. Comprehensions & Generators</h3>
+    <h4>List Comprehension</h4>
+    <p><code>[expression for item in iterable if condition]</code></p>
+<pre><code><span class="comment"># Create a list of even squares</span>
 even_squares = [x**2 for x in range(10) if x % 2 == 0]
-# [0, 4, 16, 36, 64]
-```
-
-### **Dict and Set Comprehensions**
-Similar syntax for dictionaries and sets.
-```python
-# Dictionary comprehension
-square_dict = {x: x**2 for x in range(5)}
-# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
-
-# Set comprehension
+<span class="comment"># [0, 4, 16, 36, 64]</span>
+</code></pre>
+    <h4>Dict and Set Comprehensions</h4>
+<pre><code>square_dict = {x: x**2 for x in range(5)}
 unique_squares = {x**2 for x in [1, -1, 2, -2]}
-# {1, 4}
-```
-
-### **Generator Expressions**
-Create iterators that yield items one by one (memory efficient).
-```python
-# Note the parentheses instead of square brackets
+</code></pre>
+    <h4>Generator Expressions</h4>
+    <p>Create iterators that yield items one by one (memory efficient).</p>
+<pre><code><span class="comment"># Note the parentheses instead of square brackets</span>
 lazy_squares = (x**2 for x in range(1_000_000))
 
-# The values are computed on-demand
-print(next(lazy_squares)) # 0
-print(next(lazy_squares)) # 1
-```
+<span class="comment"># The values are computed on-demand</span>
+print(next(lazy_squares)) <span class="comment"># 0</span>
+print(next(lazy_squares)) <span class="comment"># 1</span>
+</code></pre>
 
-### **Generator Functions**
-Functions that `yield` values, creating an iterator.
-```python
-def count_up_to(max_val):
-    count = 1
-    while count <= max_val:
-        yield count
-        count += 1
+    <hr>
 
-counter = count_up_to(3)
-for num in counter:
-    print(num) # Prints 1, then 2, then 3
-```
----
-## 8. Context Managers (`with` statement)
-
-Ensures resources are properly managed (e.g., files are closed).
-
-```python
-# The 'with' statement handles opening and closing the file
-try:
+    <h3 id="context-managers">8. Context Managers (<code>with</code> statement)</h3>
+    <p>Ensures resources are properly managed (e.g., files are closed).</p>
+<pre><code>try:
     with open("my_file.txt", "w") as f:
         f.write("Hello, context manager!")
-    # The file is automatically closed here, even if errors occur
+    <span class="comment"># The file is automatically closed here, even if errors occur</span>
 except IOError as e:
     print(f"File error: {e}")
+</code></pre>
 
-# This is equivalent to a try...finally block:
-# f = open(...)
-# try:
-#     f.write(...)
-# finally:
-#     f.close()
-```
+    <hr>
 
----
+    <h3 id="modules">9. Modules, Packages & Imports</h3>
+    <h4>Importing</h4>
+<pre><code><span class="comment"># Import an entire module and alias it</span>
+import math as m
+print(m.pi)
 
-## 9. Modules, Packages & Imports
-
-### **Basic Import**
-Import an entire module.
-```python
-import math
-
-print(math.pi)
-print(math.sqrt(16))
-```
-
-### **Importing Specific Items**
-Import specific functions or variables from a module.
-```python
-from math import pi, sqrt
-
-print(pi)
-print(sqrt(16))
-```
-
-### **Aliasing Imports**
-Give an imported module or item a shorter name.
-```python
-import numpy as np
-from collections import Counter as Cnt
-
-arr = np.array([1, 2, 3])
-counts = Cnt(['a', 'b', 'a', 'c', 'a'])
-```
-
-### **The `if __name__ == "__main__"` Block**
-Code inside this block only runs when the script is executed directly (not when imported).
-```python
-# my_module.py
-
-def main_function():
+<span class="comment"># Import specific items from a module</span>
+from collections import Counter
+counts = Counter(['a', 'b', 'a'])
+</code></pre>
+    <h4>The <code>if __name__ == "__main__"</code> Block</h4>
+    <p>Code inside this block only runs when the script is executed directly (not when imported).</p>
+<pre><code>def main_function():
     print("This is the main function.")
 
-def helper_function():
-    print("This is a helper.")
-
 if __name__ == "__main__":
-    # This code is for direct execution
+    <span class="comment"># This code is for direct execution</span>
     print("Script is being run directly.")
     main_function()
+</code></pre>
 
-# If another script does `import my_module`,
-# the code in the 'if' block will NOT run.
-```
+    <hr>
+    
+    <h3 id="decorators">10. Decorators</h3>
+    <p>A decorator is a function that takes another function as an argument, adds some functionality, and then returns the original function or a new wrapper function.</p>
+<pre><code>import time
+
+def timing_decorator(func):
+    """A simple decorator to measure the execution time of a function."""
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs) <span class="comment"># Call the original function</span>
+        end_time = time.time()
+        print(f"'{func.__name__}' took {end_time - start_time:.4f} seconds to run.")
+        return result
+    return wrapper
+
+@timing_decorator
+def slow_function(delay):
+    """A function that simulates a delay."""
+    time.sleep(delay)
+    return "Done!"
+
+slow_function(2)
+<span class="comment"># Output: 'slow_function' took 2.00xx seconds to run.</span>
+</code></pre>
+
+</div>
+
+</body>
+</html>
