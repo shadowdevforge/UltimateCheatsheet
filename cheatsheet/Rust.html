@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Rust Cheatsheet 🦀</title>
+    <style>
+        /* General Body & Font Styling */
+        body {
+            background-color: #1a101f;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px 40px 40px 40px;
+            border: 1px solid #2c2138;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Headings */
+        h1, h2, h3, h4 {
+            font-weight: 400;
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 300;
+            border-bottom: 2px solid #4d405c;
+            padding-bottom: 0.5em;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            font-weight: 500;
+            text-align: center;
+            color: #dcd0ff;
+            background-color: #22182c;
+            padding: 0.5em;
+            border-radius: 8px;
+            margin-top: 3em;
+            margin-bottom: 1.5em;
+        }
+
+        h3 {
+            font-size: 1.9em;
+            border-bottom: 1px solid #2c2138;
+            padding-bottom: 0.4em;
+        }
+        
+        h4 {
+            font-size: 1.5em;
+            color: #dcd0ff;
+            margin-top: 2em;
+        }
+
+        /* Version Info */
+        .version-info {
+            text-align: center;
+            color: #887999;
+            margin: 0.5em 0 2.5em 0;
+            font-size: 0.9em;
+        }
+
+        /* Links */
+        a {
+            color: #b39ddb;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #2c2138;
+            margin: 4em 0;
+        }
+
+        /* Paragraphs and Lists */
+        p, ul, ol {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* Inline and Block Code Styling */
+        code {
+            font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background-color: #2c2138;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #2c2138;
+            border: 1px solid #4d405c;
+            border-radius: 8px;
+            padding: 1.2em;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.95em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 1em; /* Inherit font size from pre */
+        }
+        
+        .comment {
+            color: #887999;
+            font-style: italic;
+        }
+        
+        /* Table of Contents Specific Styling */
+        .toc {
+            background-color: #22182c;
+            border: 1px solid #2c2138;
+            padding: 1.5em 2em;
+            border-radius: 8px;
+            margin-top: 2em;
+        }
+        .toc > ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc > ol > li {
+            margin-bottom: 1em;
+            font-size: 1.1em;
+        }
+        .toc > ol > li > ol {
+            list-style-type: none;
+            padding-left: 20px;
+            margin-top: 0.7em;
+        }
+        .toc > ol > li > ol > li {
+            margin-bottom: 0.6em;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ultimate Rust Cheatsheet 🦀</h1>
+    <p class="version-info">version 1.0.0</p>
+    
+    <div class="toc">
+        <h3><strong>Table of Contents</strong></h3>
+        <ol>
+            <li>
+                <strong>Part 1: The Foundation</strong>
+                <ol>
+                    <li><a href="#part1-sec1">Setup & Tooling with Cargo</a></li>
+                    <li><a href="#part1-sec2">Variables & Mutability</a></li>
+                    <li><a href="#part1-sec3">Common Data Types</a></li>
+                    <li><a href="#part1-sec4">Functions</a></li>
+                    <li><a href="#part1-sec5">Control Flow</a></li>
+                    <li><a href="#part1-sec6">The Ownership System</a></li>
+                </ol>
+            </li>
+            <li>
+                <strong>Part 2: Advanced Concepts</strong>
+                <ol>
+                    <li><a href="#part2-sec1">Compound Data Structures: <code>struct</code> and <code>enum</code></a></li>
+                    <li><a href="#part2-sec2">Methods and Associated Functions</a></li>
+                    <li><a href="#part2-sec3">Error Handling</a></li>
+                    <li><a href="#part2-sec4">Generics, Traits, and Lifetimes</a></li>
+                    <li><a href="#part2-sec5">Collections</a></li>
+                </ol>
+            </li>
+            <li>
+                <strong>Part 3: The Masterstroke</strong>
+                 <ol>
+                    <li><a href="#part3-sec1">Project Structure & Modules</a></li>
+                    <li><a href="#part3-sec2">Concurrency: Fearless Parallelism</a></li>
+                    <li><a href="#part3-sec3">Advanced Error Handling with Custom Types</a></li>
+                    <li><a href="#part3-sec4">Closures and Iterators</a></li>
+                    <li><a href="#part3-sec5">Putting It All Together: A CLI To-Do App</a></li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- PART 1: THE FOUNDATION                                            -->
+    <!-- ================================================================= -->
+    
+    <h2>Part 1: The Foundation</h2>
+
+    <h3 id="part1-sec1">1. Setup & Tooling with Cargo</h3>
+    <p>Rust's build system and package manager, <strong>Cargo</strong>, is one of its best features.</p>
+    <ul>
+        <li><strong>Installation:</strong> Install Rust and Cargo via <code>rustup</code> from <a href="https://rustup.rs/" target="_blank" rel="noopener noreferrer">rustup.rs</a>.</li>
+        <li><strong>Create a new project:</strong>
+<pre><code><span class="comment"># Creates a new binary (executable) project called "my_project"</span>
+cargo new my_project
+cd my_project
+</code></pre>
+        </li>
+        <li><strong>Build the project:</strong>
+<pre><code>cargo build
+</code></pre>
+        </li>
+        <li><strong>Run the project:</strong>
+<pre><code>cargo run
+</code></pre>
+        </li>
+        <li><strong>Check the project for errors without compiling:</strong>
+<pre><code>cargo check
+</code></pre>
+        </li>
+    </ul>
+
+    <h3 id="part1-sec2">2. Variables & Mutability</h3>
+    <p>By default, variables in Rust are <strong>immutable</strong>.</p>
+<pre><code><span class="comment">// In src/main.rs</span>
+fn main() {
+    <span class="comment">// Immutable variable</span>
+    let x = 5;
+    <span class="comment">// x = 6; // This would cause a compile-time error!</span>
+
+    <span class="comment">// Mutable variable using the `mut` keyword</span>
+    let mut y = 10;
+    y = 11; <span class="comment">// This is allowed</span>
+
+    <span class="comment">// Constants are always immutable and must have a type annotation</span>
+    const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+
+    <span class="comment">// Shadowing: You can declare a new variable with the same name.</span>
+    let z = 5;
+    let z = z + 1; <span class="comment">// z is now a new variable with the value 6</span>
+    {
+        let z = z * 2; <span class="comment">// Inner scope shadowing; z is 12 here</span>
+        println!("The value of z in the inner scope is: {}", z);
+    }
+    println!("The value of z is: {}", z); <span class="comment">// Back to the outer scope; z is 6</span>
+}
+</code></pre>
+
+    <h3 id="part1-sec3">3. Common Data Types</h3>
+    <p>Rust is a <strong>statically typed</strong> language, meaning it must know the types of all variables at compile time.</p>
+    <h4>Scalar Types</h4>
+    <p>Represent a single value.</p>
+    <ul>
+        <li><strong>Integers:</strong> <code>i8</code>, <code>u8</code>, <code>i32</code>, <code>u32</code>, <code>i64</code>, <code>u64</code>, <code>isize</code>, <code>usize</code>.</li>
+        <li><strong>Floating-Point:</strong> <code>f32</code>, <code>f64</code>.</li>
+        <li><strong>Boolean:</strong> <code>bool</code> (<code>true</code> or <code>false</code>).</li>
+        <li><strong>Character:</strong> <code>char</code>.</li>
+    </ul>
+<pre><code>let integer: i32 = -10;
+let float: f64 = 3.14;
+let is_active: bool = true;
+let initial: char = 'A';
+</code></pre>
+    <h4>Compound Types</h4>
+    <p>Group multiple values into one type.</p>
+    <ul>
+        <li><strong>Tuple:</strong> A fixed-size collection of values of different types.</li>
+        <li><strong>Array:</strong> A fixed-size collection of values of the <strong>same</strong> type.</li>
+    </ul>
+<pre><code><span class="comment">// Tuple</span>
+let person: (&str, i32) = ("Alice", 30);
+let name = person.0;
+let age = person.1;
+
+<span class="comment">// Destructuring a tuple</span>
+let (name_destructured, age_destructured) = person;
+
+<span class="comment">// Array</span>
+let numbers: [i32; 5] = [1, 2, 3, 4, 5];
+let first = numbers[0];
+let zeroes = [0; 3]; <span class="comment">// [0, 0, 0]</span>
+</code></pre>
+    <h4>Strings</h4>
+    <ul>
+        <li><code>&str</code> (string slice): An immutable reference to a sequence of UTF-8 encoded bytes.</li>
+        <li><code>String</code>: A heap-allocated, growable, owned string.</li>
+    </ul>
+<pre><code>let s1: &str = "Hello";
+let mut s2: String = String::from("Hello, ");
+s2.push_str("world!");
+println!("{}", s2); <span class="comment">// "Hello, world!"</span>
+</code></pre>
+
+    <h3 id="part1-sec4">4. Functions</h3>
+<pre><code>fn main() {
+    another_function(5, 'h');
+    let sum = add_five(10);
+    println!("10 plus 5 is {}", sum);
+}
+
+<span class="comment">// A function with parameters</span>
+fn another_function(x: i32, unit_label: char) {
+    println!("The measurement is: {}{}", x, unit_label);
+}
+
+<span class="comment">// A function with a return value (no semicolon on the last expression)</span>
+fn add_five(x: i32) -> i32 {
+    x + 5
+}
+</code></pre>
+    
+    <h3 id="part1-sec5">5. Control Flow</h3>
+    <h4><code>if/else</code> Expressions</h4>
+<pre><code>let number = 6;
+if number % 4 == 0 {
+    println!("number is divisible by 4");
+} else if number % 3 == 0 {
+    println!("number is divisible by 3");
+} else {
+    println!("number is not divisible by 4 or 3");
+}
+
+<span class="comment">// 'if' is an expression</span>
+let condition = true;
+let value = if condition { 5 } else { 6 };
+</code></pre>
+    <h4>Loops</h4>
+<pre><code><span class="comment">// `loop`: Infinite loop, broken with `break`. Can return a value.</span>
+let mut counter = 0;
+let result = loop {
+    counter += 1;
+    if counter == 10 {
+        break counter * 2;
+    }
+}; <span class="comment">// result is 20</span>
+
+<span class="comment">// `while` loop</span>
+let mut number = 3;
+while number != 0 {
+    println!("{}!", number);
+    number -= 1;
+}
+
+<span class="comment">// `for` loop: The safest and most common loop.</span>
+let a = [10, 20, 30, 40, 50];
+for element in a {
+    println!("the value is: {}", element);
+}
+</code></pre>
+
+    <h3 id="part1-sec6">6. The Ownership System</h3>
+    <p>This is the central feature of Rust, enabling memory safety without a garbage collector.</p>
+    <h4>Rules of Ownership</h4>
+    <ol>
+        <li>Each value in Rust has a variable that’s called its <em>owner</em>.</li>
+        <li>There can only be <strong>one owner at a time</strong>.</li>
+        <li>When the owner goes out of scope, the value will be <em>dropped</em>.</li>
+    </ol>
+    <h4>Move, Clone, and Copy</h4>
+<pre><code><span class="comment">// Move: Ownership is transferred. s1 becomes invalid.</span>
+let s1 = String::from("hello");
+let s2 = s1;
+
+<span class="comment">// Clone: A deep copy is made. s3 remains valid.</span>
+let s3 = String::from("hello");
+let s4 = s3.clone();
+println!("s3 = {}, s4 = {}", s3, s4);
+
+<span class="comment">// Copy: Stack-only data is copied. x remains valid.</span>
+let x = 5;
+let y = x;
+</code></pre>
+    <h4>References & Borrowing</h4>
+    <p>Creating a <em>reference</em> to a value is called <strong>borrowing</strong>.</p>
+    <p><strong>The Borrowing Rules:</strong></p>
+    <ol>
+        <li>You can have either <strong>one mutable reference</strong> (<code>&mut T</code>) OR <strong>any number of immutable references</strong> (<code>&T</code>).</li>
+        <li>References must always be valid.</li>
+    </ol>
+<pre><code>fn main() {
+    let mut s = String::from("hello");
+    let r1 = &s; <span class="comment">// ok</span>
+    let r2 = &s; <span class="comment">// ok</span>
+    println!("{} and {}", r1, r2);
+
+    let r3 = &mut s; <span class="comment">// ok</span>
+    change(r3);
+    println!("{}", r3);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+</code></pre>
+    <h4>Slices</h4>
+    <p>A slice is a reference to a contiguous sequence of elements in a collection.</p>
+<pre><code>fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    &s[..]
+}
+</code></pre>
+
+    <hr>
+    
+    <!-- ================================================================= -->
+    <!-- PART 2: ADVANCED CONCEPTS                                         -->
+    <!-- ================================================================= -->
+    
+    <h2>Part 2: Advanced Concepts</h2>
+
+    <h3 id="part2-sec1">1. Compound Data Structures: <code>struct</code> and <code>enum</code></h3>
+    <h4>Structs</h4>
+<pre><code>struct User {
+    active: bool,
+    username: String,
+}
+struct Color(i32, i32, i32); <span class="comment">// Tuple Struct</span>
+struct AlwaysEqual; <span class="comment">// Unit-like Struct</span>
+
+fn main() {
+    let mut user1 = User {
+        username: String::from("someusername123"),
+        active: true,
+    };
+    user1.username = String::from("another_username");
+    let black = Color(0, 0, 0);
+    println!("First value of black is {}", black.0);
+}
+</code></pre>
+
+    <h4>Enums and Pattern Matching</h4>
+<pre><code>enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+
+fn process_message(msg: Message) {
+    match msg {
+        Message::Quit => println!("Quit"),
+        Message::Move { x, y } => println!("Move to x:{}, y:{}", x, y),
+        Message::Write(text) => println!("Text: {}", text),
+        Message::ChangeColor(r, g, b) => println!("Color: {},{},{}", r, g, b),
+    }
+}
+</code></pre>
+
+    <h4>The <code>Option</code> Enum</h4>
+    <p>Rust's answer to nullability.</p>
+<pre><code><span class="comment">// enum Option&lt;T&gt; { None, Some(T) }</span>
+fn find_user(id: u32) -> Option&lt;String&gt; {
+    if id == 1 { Some(String::from("Alice")) } else { None }
+}
+
+fn main() {
+    match find_user(1) {
+        Some(name) => println!("Found: {}", name),
+        None => println!("Not found."),
+    }
+
+    <span class="comment">// `if let` is concise syntax for one case</span>
+    if let Some(name) = find_user(2) {
+        println!("Found: {}", name);
+    }
+}
+</code></pre>
+
+    <h3 id="part2-sec2">2. Methods and Associated Functions</h3>
+    <h4><code>impl</code> Blocks</h4>
+<pre><code>struct Rectangle { width: u32, height: u32 }
+
+impl Rectangle {
+    <span class="comment">// Method (takes &self)</span>
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    <span class="comment">// Associated Function (no self) - often used as a constructor</span>
+    fn square(size: u32) -> Self {
+        Self { width: size, height: size }
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle { width: 30, height: 50 };
+    println!("Area: {}", rect1.area()); <span class="comment">// Method call</span>
+    let sq = Rectangle::square(25); <span class="comment">// Associated function call</span>
+}
+</code></pre>
+
+    <h3 id="part2-sec3">3. Error Handling</h3>
+    <h4>Panics vs. Results</h4>
+    <ul>
+        <li><strong><code>panic!</code></strong>: For unrecoverable errors (e.g., programming mistakes).</li>
+        <li><strong><code>Result&lt;T, E&gt;</code></strong>: For recoverable errors (e.g., file not found).</li>
+    </ul>
+    <h4>The <code>?</code> Operator for Error Propagation</h4>
+<pre><code>use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username() -> Result&lt;String, io::Error&gt; {
+    let mut f = File::open("hello.txt")?;
+    let mut s = String::new();
+    f.read_to_string(&mut s)?;
+    Ok(s)
+}
+</code></pre>
+
+    <h3 id="part2-sec4">4. Generics, Traits, and Lifetimes</h3>
+    <h4>Generics</h4>
+<pre><code>fn largest&lt;T: PartialOrd + Copy&gt;(list: &[T]) -> T {
+    let mut largest = list[0];
+    for &item in list {
+        if item > largest { largest = item; }
+    }
+    largest
+}
+</code></pre>
+
+    <h4>Traits: Defining Shared Behavior</h4>
+<pre><code>pub trait Summary {
+    fn summarize(&self) -> String;
+}
+pub struct Tweet { pub username: String, pub content: String }
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+</code></pre>
+
+    <h4>Lifetimes: Ensuring References Remain Valid</h4>
+<pre><code><span class="comment">// `'a` ensures the returned reference lives as long as the shortest input reference.</span>
+fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() { x } else { y }
+}
+</code></pre>
+
+    <h3 id="part2-sec5">5. Collections</h3>
+    <h4><code>Vec&lt;T&gt;</code> (Vector)</h4>
+<pre><code>let mut v = vec![1, 2, 3];
+v.push(4);
+match v.get(2) {
+    Some(third) => println!("The third element is {}", third),
+    None => println!("No third element."),
+}
+for i in &v { println!("{}", i); }
+</code></pre>
+
+    <h4><code>HashMap&lt;K, V&gt;</code> (Hash Map)</h4>
+<pre><code>use std::collections::HashMap;
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+scores.entry(String::from("Yellow")).or_insert(50);
+for (key, value) in &scores { println!("{}: {}", key, value); }
+</code></pre>
+
+    <hr>
+    
+    <!-- ================================================================= -->
+    <!-- PART 3: THE MASTERSTROKE                                          -->
+    <!-- ================================================================= -->
+
+    <h2>Part 3: The Masterstroke</h2>
+    
+    <h3 id="part3-sec1">1. Project Structure & Modules</h3>
+    <p>Organize code by creating a library crate (<code>src/lib.rs</code>) and modules (e.g., <code>src/task.rs</code>).</p>
+<pre><code><span class="comment">// src/lib.rs</span>
+pub mod task; <span class="comment">// Declares module from src/task.rs</span>
+pub use task::Task;
+
+<span class="comment">// src/task.rs</span>
+#[derive(Debug)]
+pub struct Task { pub id: u32, pub description: String }
+impl Task { pub fn new(id: u32, description: String) -> Self { Self { id, description } } }
+
+<span class="comment">// src/main.rs</span>
+use my_project::Task; <span class="comment">// Use item from the library crate</span>
+fn main() {
+    let task1 = Task::new(1, "Learn modules".to_string());
+    println!("{:?}", task1);
+}
+</code></pre>
+
+    <h3 id="part3-sec2">2. Concurrency: Fearless Parallelism</h3>
+    <ul>
+        <li><code>thread::spawn</code>: Creates a new thread.</li>
+        <li><code>Arc&lt;T&gt;</code> (Atomically Reference Counted): Safe shared ownership across threads.</li>
+        <li><code>Mutex&lt;T&gt;</code> (Mutual Exclusion): Ensures only one thread can access data at a time.</li>
+    </ul>
+<pre><code>use std::sync::{Arc, Mutex};
+use std::thread;
+
+let counter = Arc::new(Mutex::new(0));
+let mut handles = vec![];
+for _ in 0..5 {
+    let counter_clone = Arc::clone(&counter);
+    let handle = thread::spawn(move || {
+        let mut num = counter_clone.lock().unwrap();
+        *num += 1;
+    });
+    handles.push(handle);
+}
+for handle in handles { handle.join().unwrap(); }
+println!("Result: {}", *counter.lock().unwrap());
+</code></pre>
+
+    <h3 id="part3-sec3">3. Advanced Error Handling with Custom Types</h3>
+    <p>Create custom error enums for robust error handling.</p>
+<pre><code>use std::fmt;
+use std::io;
+
+#[derive(Debug)]
+pub enum AppError { Io(io::Error), TaskNotFound(u32) }
+
+impl fmt::Display for AppError { <span class="comment">/* ... */</span> }
+impl From&lt;io::Error&gt; for AppError { fn from(e: io::Error) -> Self { AppError::Io(e) } }
+
+fn do_something() -> Result&lt;(), AppError&gt; {
+    std::fs::read_to_string("a.txt")?; <span class="comment">// `?` works due to `From` trait</span>
+    Ok(())
+}
+</code></pre>
+
+    <h3 id="part3-sec4">4. Closures and Iterators</h3>
+    <ul>
+        <li><strong>Closures:</strong> Anonymous functions that capture their environment.</li>
+        <li><strong>Iterators:</strong> Lazy sequences of values that can be chained.</li>
+    </ul>
+<pre><code>let numbers = vec![1, 2, 3, 4, 5];
+let processed: Vec&lt;_&gt; = numbers
+    .iter()
+    .map(|&n| n * 2)      <span class="comment">// Closure that doubles each number</span>
+    .filter(|&n| n > 5)   <span class="comment">// Closure that filters</span>
+    .collect();          <span class="comment">// Consumes the iterator into a collection</span>
+
+println!("{:?}", processed); <span class="comment">// [6, 8, 10]</span>
+</code></pre>
+
+    <h3 id="part3-sec5">5. Putting It All Together: A CLI To-Do App</h3>
+    <p>Combine concepts using external crates like <code>clap</code> for argument parsing and <code>serde</code> for serialization.</p>
+    <p><strong>Add dependencies to <code>Cargo.toml</code>:</strong></p>
+<pre><code>[dependencies]
+clap = { version = "4.0", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+</code></pre>
+    <p><strong>Main application logic (<code>src/main.rs</code>):</strong></p>
+<pre><code>use clap::{Parser, Subcommand};
+
+#[derive(Parser, Debug)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
+#[derive(Subcommand, Debug)]
+enum Commands {
+    Add { description: String },
+    List,
+    Done { id: u32 },
+}
+
+fn main() { // -> Result&lt;(), AppError&gt;
+    let cli = Cli::parse();
+    match cli.command {
+        Commands::Add { description } => { /* call add_task logic */ },
+        Commands::List => { /* call list_tasks logic */ },
+        Commands::Done { id } => { /* call complete_task logic */ },
+    }
+}
+</code></pre>
+    <p><strong>How to Run the CLI App:</strong></p>
+<pre><code><span class="comment"># Add a task</span>
+cargo run -- add "Master Rust"
+
+<span class="comment"># List tasks</span>
+cargo run -- list
+
+<span class="comment"># Mark task 1 as complete</span>
+cargo run -- done 1
+</code></pre>
+
+</div>
+
+</body>
+</html>
