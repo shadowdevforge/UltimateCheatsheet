@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Bash Cheatsheet</title>
+    <style>
+        /* General Body & Font Styling */
+        body {
+            background-color: #1a101f;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px 40px 40px 40px;
+            border: 1px solid #2c2138;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Headings */
+        h1, h2, h3, h4 {
+            font-weight: 400;
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 300;
+            border-bottom: 2px solid #4d405c;
+            padding-bottom: 0.5em;
+            margin-top: 0.2em;
+            margin-bottom: 0.2em;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            font-weight: 500;
+            text-align: center;
+            color: #dcd0ff;
+            background-color: #22182c;
+            padding: 0.5em;
+            border-radius: 8px;
+            margin-top: 3em;
+            margin-bottom: 1.5em;
+        }
+
+        h3 {
+            font-size: 1.9em;
+            border-bottom: 1px solid #2c2138;
+            padding-bottom: 0.4em;
+        }
+        
+        h4 {
+            font-size: 1.5em;
+            color: #dcd0ff;
+            margin-top: 2em;
+        }
+
+        /* Version Info */
+        .version-info {
+            text-align: center;
+            color: #887999;
+            margin: 0.5em 0 2.5em 0;
+            font-size: 0.9em;
+        }
+
+        /* Links */
+        a {
+            color: #b39ddb;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #2c2138;
+            margin: 4em 0;
+        }
+
+        /* Paragraphs and Lists */
+        p, ul, ol {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        /* Inline and Block Code Styling */
+        code {
+            font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            background-color: #2c2138;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #2c2138;
+            border: 1px solid #4d405c;
+            border-radius: 8px;
+            padding: 1.2em;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.95em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 1em; /* Inherit font size from pre */
+        }
+        
+        .comment {
+            color: #887999;
+            font-style: italic;
+        }
+        
+        /* Table of Contents Specific Styling */
+        .toc {
+            background-color: #22182c;
+            border: 1px solid #2c2138;
+            padding: 1.5em 2em;
+            border-radius: 8px;
+        }
+        .toc ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin-bottom: 0.6em;
+        }
+        
+        /* Table Styling */
+        .cheatsheet-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5em;
+        }
+
+        .cheatsheet-table th,
+        .cheatsheet-table td {
+            padding: 12px 15px;
+            border: 1px solid #4d405c;
+            text-align: left;
+        }
+
+        .cheatsheet-table thead {
+            background-color: #22182c;
+        }
+        
+        .cheatsheet-table th {
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ultimate Bash Cheatsheet</h1>
+    <p class="version-info">version 1.0.0</p>
+
+    <div class="toc">
+        <h3><strong>Table of Contents</strong></h3>
+        <ol>
+            <li><a href="#foundation"><strong>The Scripting Foundation</strong></a></li>
+            <li><a href="#control-flow"><strong>Control Flow</strong></a></li>
+            <li><a href="#loops"><strong>Loops</strong></a></li>
+            <li><a href="#functions"><strong>Functions</strong></a></li>
+            <li><a href="#data"><strong>Working with Data</strong></a></li>
+            <li><a href="#best-practices"><strong>Scripting Best Practices</strong></a></li>
+        </ol>
+    </div>
+
+    <hr>
+
+    <h3 id="foundation">1. The Scripting Foundation</h3>
+
+    <h4>The Shebang & Permissions</h4>
+    <p>Every Bash script should start with a "shebang" to specify which interpreter to use.</p>
+<pre><code>#!/bin/bash
+<span class="comment"># A shebang pointing to the Bash interpreter.</span>
+<span class="comment"># Use `#!/usr/bin/env bash` for better portability.</span>
+
+<span class="comment"># This is a comment.</span>
+
+echo "Hello, World!"
+</code></pre>
+    <p><strong>Making the script executable:</strong> Before you can run the script, you must give it execute permissions.</p>
+<pre><code><span class="comment"># In your terminal</span>
+chmod +x your_script.name.sh
+
+<span class="comment"># To run it</span>
+./your_script_name.sh
+</code></pre>
+
+    <h4>Variables & Quoting</h4>
+    <ul>
+        <li>No spaces around the <code>=</code> for assignment.</li>
+        <li><strong>Always quote your variables</strong> (<code>"$VAR"</code>) to prevent word splitting and globbing issues.</li>
+        <li>Single quotes (<code>'...'</code>) prevent all expansion. Double quotes (<code>"..."</code>) allow variable and command substitution.</li>
+    </ul>
+<pre><code><span class="comment"># Variable assignment</span>
+NAME="Alice"
+AGE=30
+
+<span class="comment"># Using variables (quoting is crucial!)</span>
+echo "User: $NAME"
+echo "Age: $AGE"
+
+<span class="comment"># Single quotes prevent expansion</span>
+echo 'This will print $NAME literally'
+</code></pre>
+
+    <h4>Command Substitution & Arithmetic</h4>
+    <p>Capture the output of a command into a variable.</p>
+<pre><code><span class="comment"># Modern syntax: $(...)</span>
+CURRENT_DATE=$(date +"%Y-%m-%d")
+echo "Today's date is $CURRENT_DATE"
+
+<span class="comment"># Arithmetic expansion: $((...))</span>
+SUM=$(( 5 + 10 ))
+echo "5 + 10 = $SUM"
+
+<span class="comment"># Can use variables in arithmetic</span>
+X=100
+Y=25
+DIFFERENCE=$(( X - Y ))
+echo "Difference is $DIFFERENCE"
+</code></pre>
+
+    <h4>Reading User Input</h4>
+    <p>The <code>read</code> command pauses the script and waits for the user to type something.</p>
+<pre><code>echo "What is your name?"
+read USER_NAME
+
+echo "Hello, $USER_NAME!"
+
+<span class="comment"># The -p flag provides a prompt on the same line</span>
+read -p "Enter your favorite color: " COLOR
+echo "$COLOR is a great color."
+</code></pre>
+
+    <hr>
+
+    <h3 id="control-flow">2. Control Flow</h3>
+
+    <h4><code>if</code>/<code>then</code>/<code>else</code> Conditionals</h4>
+    <ul>
+        <li>The condition goes inside <code>[[ ... ]]</code> (modern, preferred) or <code>[ ... ]</code> (classic, less safe).</li>
+        <li>Pay attention to spaces: <code>[[</code> must be followed by a space, and <code>]]</code> must be preceded by one.</li>
+    </ul>
+<pre><code>read -p "Enter a number: " NUMBER
+
+if [[ "$NUMBER" -gt 100 ]]; then
+    echo "That's a big number!"
+elif [[ "$NUMBER" -eq 42 ]]; then
+    echo "That's the answer to everything."
+else
+    echo "That's a normal number."
+fi <span class="comment"># `if` blocks are closed with `fi` (if backwards)</span>
+</code></pre>
+
+    <h4>File & String Tests (Common Conditions)</h4>
+    <table class="cheatsheet-table">
+        <thead>
+            <tr>
+                <th>Operator</th>
+                <th>Description (inside <code>[[ ... ]]</code>)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>-f file</code></td>
+                <td>True if <code>file</code> exists and is a regular file.</td>
+            </tr>
+            <tr>
+                <td><code>-d dir</code></td>
+                <td>True if <code>dir</code> exists and is a directory.</td>
+            </tr>
+            <tr>
+                <td><code>-e path</code></td>
+                <td>True if <code>path</code> exists (file or directory).</td>
+            </tr>
+            <tr>
+                <td><code>-z str</code></td>
+                <td>True if string <code>str</code> is empty.</td>
+            </tr>
+            <tr>
+                <td><code>-n str</code></td>
+                <td>True if string <code>str</code> is not empty.</td>
+            </tr>
+            <tr>
+                <td><code>str1 == str2</code></td>
+                <td>True if strings are equal.</td>
+            </tr>
+            <tr>
+                <td><code>str1 != str2</code></td>
+                <td>True if strings are not equal.</td>
+            </tr>
+            <tr>
+                <td><code>num1 -eq num2</code></td>
+                <td>Equal (for integers).</td>
+            </tr>
+            <tr>
+                <td><code>num1 -ne num2</code></td>
+                <td>Not equal.</td>
+            </tr>
+            <tr>
+                <td><code>num1 -gt num2</code></td>
+                <td>Greater than.</td>
+            </tr>
+            <tr>
+                <td><code>num1 -lt num2</code></td>
+                <td>Less than.</td>
+            </tr>
+        </tbody>
+    </table>
+<pre><code>FILE_PATH="/etc/hosts"
+if [[ -f "$FILE_PATH" ]]; then
+    echo "$FILE_PATH exists."
+fi
+
+USERNAME="admin"
+if [[ "$USERNAME" == "admin" && "$UID" -eq 0 ]]; then
+    echo "Welcome, root administrator."
+fi
+</code></pre>
+
+    <h4><code>case</code> Statements</h4>
+    <p>Useful for matching a variable against several patterns.</p>
+<pre><code>read -p "Enter 'start', 'stop', or 'status': " ACTION
+
+case "$ACTION" in
+    start)
+        echo "Starting service..."
+        ;;
+    stop)
+        echo "Stopping service..."
+        ;;
+    status)
+        echo "Service is running."
+        ;;
+    *) <span class="comment"># Wildcard for any other value</span>
+        echo "Invalid command. Please use start, stop, or status."
+        ;;
+esac <span class="comment"># `case` is closed with `esac` (case backwards)</span>
+</code></pre>
+
+    <hr>
+
+    <h3 id="loops">3. Loops</h3>
+    <h4><code>for</code> Loops</h4>
+<pre><code><span class="comment"># 1. Iterating over a list of items</span>
+FILES="file1.txt file2.txt file3.txt"
+for FILENAME in $FILES; do <span class="comment"># Note: word splitting is intentional here</span>
+    echo "Processing $FILENAME"
+done
+
+<span class="comment"># 2. Iterating over an array (safer)</span>
+SERVICES=("nginx" "mysql" "redis")
+for SERVICE in "${SERVICES[@]}"; do
+    echo "Checking service: $SERVICE"
+done
+
+<span class="comment"># 3. C-style for loop</span>
+for (( i=1; i&lt;=5; i++ )); do
+    echo "Count: $i"
+done
+</code></pre>
+
+    <h4><code>while</code> Loops</h4>
+    <p>Loops as long as a condition is true.</p>
+<pre><code>COUNTER=1
+while [[ "$COUNTER" -le 5 ]]; do
+    echo "While loop count: $COUNTER"
+    <span class="comment"># Don't forget to change the condition variable!</span>
+    COUNTER=$(( COUNTER + 1 ))
+done
+</code></pre>
+
+    <h4><code>until</code> Loops</h4>
+    <p>Loops as long as a condition is false (i.e., until it becomes true).</p>
+<pre><code>COUNT=1
+until [[ "$COUNT" -gt 5 ]]; do
+    echo "Until loop count: $COUNT"
+    COUNT=$(( COUNT + 1 ))
+done
+</code></pre>
+
+    <hr>
+
+    <h3 id="functions">4. Functions</h3>
+    <p>Functions help organize code into reusable blocks.</p>
+    <ul>
+        <li>Variables inside functions are global by default; use <code>local</code> for local scope.</li>
+        <li>Functions return an "exit status" (0 for success, 1-255 for failure), not values. To get a value, use command substitution.</li>
+    </ul>
+<pre><code><span class="comment"># Function definition</span>
+greet() {
+    local NAME="$1" <span class="comment"># $1 is the first argument passed to the function</span>
+    local AGE="$2"  <span class="comment"># $2 is the second argument</span>
+    echo "Hello, $NAME! You are $AGE years old."
+}
+
+<span class="comment"># Calling the function</span>
+greet "Bob" 42
+
+<span class="comment"># Function that returns a value via echo</span>
+get_current_user() {
+    whoami <span class="comment"># Echo the output</span>
+}
+
+<span class="comment"># Capture the function's output</span>
+CURRENT_USER=$(get_current_user)
+echo "Script is being run by: $CURRENT_USER"
+</code></pre>
+
+    <hr>
+
+    <h3 id="data">5. Working with Data</h3>
+
+    <h4>Arrays</h4>
+<pre><code><span class="comment"># Indexed array</span>
+declare -a FRUITS=("Apple" "Banana" "Cherry")
+
+<span class="comment"># Access an element (0-indexed)</span>
+echo "First fruit is: ${FRUITS[0]}"
+
+<span class="comment"># Access all elements</span>
+echo "All fruits: ${FRUITS[@]}"
+
+<span class="comment"># Add an element</span>
+FRUITS+=("Dragonfruit")
+
+<span class="comment"># Get the number of elements</span>
+echo "There are ${#FRUITS[@]} fruits."
+</code></pre>
+
+    <h4>Pipes (<code>|</code>) & Redirection</h4>
+    <p>This is the core philosophy of the shell: chain simple commands together to do complex things.</p>
+    <ul>
+        <li><strong>Pipe (<code>|</code>)</strong>: Sends the standard output of one command to the standard input of another.</li>
+        <li><strong>Redirect Output (<code>&gt;</code>)</strong>: Sends output to a file (overwrites the file).</li>
+        <li><strong>Append Output (<code>&gt;&gt;</code>)</strong>: Appends output to a file.</li>
+        <li><strong>Redirect Input (<code>&lt;</code>)</strong>: Reads input from a file.</li>
+    </ul>
+<pre><code><span class="comment"># List all files, find lines containing "log", and count them</span>
+ls -l | grep "log" | wc -l
+
+<span class="comment"># Save the list of running processes to a file</span>
+ps aux > process_list.txt
+
+<span class="comment"># Add a new entry to a log file</span>
+echo "$(date): User logged in" >> app.log
+
+<span class="comment"># Read a file line by line with a while loop</span>
+while read -r LINE; do
+    echo "Read line: $LINE"
+done &lt; /etc/hosts
+</code></pre>
+
+    <hr>
+
+    <h3 id="best-practices">6. Scripting Best Practices</h3>
+
+    <h4>Unofficial Strict Mode</h4>
+    <p>Start every script with this line to make it safer and more robust.</p>
+<pre><code>#!/bin/bash
+set -euo pipefail
+
+<span class="comment"># -e: Exit immediately if a command exits with a non-zero status.</span>
+<span class="comment"># -u: Treat unset variables as an error when substituting.</span>
+<span class="comment"># -o pipefail: The return value of a pipeline is the status of the last</span>
+<span class="comment">#              command to exit with a non-zero status, or zero if no</span>
+<span class="comment">#              command exited with a non-zero status.</span>
+</code></pre>
+    <p>This prevents common bugs, like a script continuing after a critical command has failed.</p>
+</div>
+
+</body>
+</html>
