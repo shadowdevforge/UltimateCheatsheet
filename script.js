@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             groupedLanguages[category].forEach(lang => {
                 gridHTML += `
-                    <a href="syntaxforge/cheatsheets/${lang.slug}" class="lang-card" data-name="${lang.name.toLowerCase()}" data-description="${lang.description.toLowerCase()}">
+                    <a href="./cheatsheets/${lang.slug}" class="lang-card" data-name="${lang.name.toLowerCase()}" data-description="${lang.description.toLowerCase()}">
                         <h3 class="card-title">${lang.name}</h3>
                         <p class="card-description">${lang.description}</p>
                     </a>
