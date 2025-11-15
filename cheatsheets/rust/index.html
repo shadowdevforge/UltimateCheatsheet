@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Cheatsheet - SyntaxForge</title>
+    <meta name="description" content="A comprehensive cheatsheet for the Rust programming language, covering syntax, standard library, and project examples.">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦀</text></svg>">
+    
+    <!-- CORRECTED highlight.js Catppuccin theme URLs -->
+    <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
+    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-mocha.css" disabled>
+
+    <script>
+        // Immediately-invoked function to set theme before page render, fixing the highlight.js race condition.
+        (function() {
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                document.getElementById('hljs-light-theme').disabled = theme === 'dark';
+                document.getElementById('hljs-dark-theme').disabled = theme === 'light';
+            }
+            const preferredTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(preferredTheme || (systemPrefersDark ? 'dark' : 'light'));
+        })();
+    </script>
+</head>
+<body>
+    <canvas id="cmatrix"></canvas>
+
+    <header class="header">
+        <a href="/" class="home-link">SyntaxForge</a>
+        <div class="theme-switcher-container">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
+                <span class="theme-toggle-slider"></span>
+            </label>
+        </div>
+        <div class="hero">
+            <h1 class="hero-title">Rust</h1>
+            <p class="hero-tagline">A language empowering everyone to build reliable and efficient software.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="view-switcher">
+            <button id="show-cheatsheet" class="view-btn active">Cheatsheet</button>
+            <button id="show-projects" class="view-btn">Projects</button>
+        </div>
+
+        <!-- Cheatsheet View with CORRECTED & ESCAPED code blocks -->
+        <div id="cheatsheet-content">
+            <nav class="toc-container">
+                <h2>Table of Contents</h2>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <section id="variables-mutability" class="card">
+                <h2 class="card-title">1. Variables & Mutability</h2>
+                <p>Variables are immutable by default. Use <code>mut</code> to make them mutable. Constants are always immutable.</p>
+                <pre><code class="language-rust">
+fn main() {
+    // Immutable variable
+    let x = 5; 
+    // x = 6; // This would be a compile-time error!
+
+    // Mutable variable
+    let mut y = 10;
+    y = 11; // This is allowed
+
+    // Constants must have an explicit type
+    const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+
+    // Shadowing: declare a new variable with the same name
+    let z = "spaces";
+    let z = z.len(); // z is now a number
+}
+                </code></pre>
+            </section>
+            
+            <section id="data-types" class="card">
+                <h2 class="card-title">2. Data Types</h2>
+                <p>Rust is statically typed. It has scalar (single value) and compound (multiple value) types.</p>
+                <pre><code class="language-rust">
+fn main() {
+    // Scalar Types
+    let integer: i32 = -42;        // Signed 32-bit integer
+    let unsigned: u64 = 1_000_000; // Unsigned 64-bit integer
+    let float: f64 = 3.14;         // 64-bit float
+    let is_active: bool = true;    // Boolean
+    let character: char = '🦀';    // Character (4 bytes, Unicode)
+
+    // Compound Types
+    // Tuple: fixed-size collection of values of different types
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+    let (x, y, z) = tup; // Destructuring
+    let five_hundred = tup.0;
+
+    // Array: fixed-size collection of values of the same type
+    let a: [i32; 5] = [1, 2, 3, 4, 5];
+    let first = a[0];
+}
+                </code></pre>
+            </section>
+
+            <section id="functions" class="card">
+                <h2 class="card-title">3. Functions</h2>
+                <p>Functions are declared with <code>fn</code>. The return value is the last expression in the function body (no semicolon).</p>
+                <pre><code class="language-rust">
+fn main() {
+    another_function(5);
+    let result = add_one(10);
+    println!("Result is {}", result); // Result is 11
+}
+
+fn another_function(x: i32) {
+    println!("The value of x is: {}", x);
+}
+
+// Function with a return value -&gt; type
+fn add_one(x: i32) -&gt; i32 {
+    x + 1 // No semicolon means this is an expression, and its value is returned
+}
+                </code></pre>
+            </section>
+            
+            <section id="control-flow" class="card">
+                <h2 class="card-title">4. Control Flow</h2>
+                <p><code>if</code> expressions, and several loop constructs: <code>loop</code>, <code>while</code>, and <code>for</code>.</p>
+                <pre><code class="language-rust">
+fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else {
+        println!("number is not divisible by 4 or 3");
+    }
+
+    // A loop can return a value
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2; // break can return a value
+        }
+    };
+    println!("The loop result is {}", result); // 20
+
+    // For loop over a collection
+    let a = [10, 20, 30, 40, 50];
+    for element in a.iter() {
+        println!("the value is: {}", element);
+    }
+
+    // For loop with a range
+    for number in (1..4).rev() { // 3, 2, 1
+        println!("{}!", number);
+    }
+}
+                </code></pre>
+            </section>
+
+            <section id="ownership" class="card">
+                <h2 class="card-title">5. Ownership</h2>
+                <p>Rust's core feature. The compiler enforces rules at compile time to ensure memory safety.</p>
+                <ul>
+                    <li>Each value has a variable that’s its owner.</li>
+                    <li>There can only be one owner at a time.</li>
+                    <li>When the owner goes out of scope, the value will be dropped.</li>
+                </ul>
+                <pre><code class="language-rust">
+fn main() {
+    let s1 = String::from("hello");
+    // let s2 = s1; // s1 is "moved" to s2. s1 is no longer valid.
+    // println!("{}, world!", s1); // This would cause a compile error!
+    
+    let s2 = s1.clone(); // Deep copy. Both s1 and s2 are valid.
+    println!("s1 = {}, s2 = {}", s1, s2);
+
+    takes_ownership(s2); // s2's value moves into the function...
+    // ... and is no longer valid here.
+
+    let x = 5;
+    makes_copy(x); // x is an i32, which has the Copy trait.
+    // x is still valid here.
+}
+
+fn takes_ownership(some_string: String) {
+    println!("{}", some_string);
+} // Here, some_string goes out of scope and `drop` is called.
+
+fn makes_copy(some_integer: i32) {
+    println!("{}", some_integer);
+}
+                </code></pre>
+            </section>
+            
+            <section id="structs" class="card">
+                <h2 class="card-title">6. Structs</h2>
+                <p>Structs are custom data types that group related values.</p>
+                <pre><code class="language-rust">
+struct User {
+    active: bool,
+    username: String,
+    email: String,
+    sign_in_count: u64,
+}
+
+// Structs can have methods
+impl User {
+    // `&amp;self` is a reference to the instance of the struct
+    fn is_active(&amp;self) -&gt; bool {
+        self.active
+    }
+    
+    // Associated function (like a static method)
+    fn new(username: String, email: String) -&gt; User {
+        User {
+            active: true,
+            username, // Field init shorthand
+            email,
+            sign_in_count: 1,
+        }
+    }
+}
+
+fn main() {
+    let mut user1 = User::new(
+        String::from("someusername123"),
+        String::from("someone@example.com"),
+    );
+
+    user1.email = String::from("anotheremail@example.com");
+    println!("User is active: {}", user1.is_active());
+}
+                </code></pre>
+            </section>
+
+            <section id="enums-pattern-matching" class="card">
+                <h2 class="card-title">7. Enums & Pattern Matching</h2>
+                <p>Enums allow you to define a type by enumerating its possible variants. <code>match</code> is a powerful control flow construct that handles these variants.</p>
+                <pre><code class="language-rust">
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor(i32, i32, i32),
+}
+
+fn process_message(msg: Message) {
+    match msg {
+        Message::Quit =&gt; println!("Quit"),
+        Message::Move { x, y } =&gt; {
+            println!("Move to x: {}, y: {}", x, y);
+        }
+        Message::Write(text) =&gt; println!("Text: {}", text),
+        Message::ChangeColor(r, g, b) =&gt; {
+            println!("Color: R={}, G={}, B={}", r, g, b);
+        }
+    }
+}
+
+fn main() {
+    process_message(Message::Write(String::from("hello")));
+
+    // The `Option&lt;T&gt;` enum is very common for optional values
+    let some_number = Some(5);
+    let no_number: Option&lt;i32&gt; = None;
+
+    // `if let` is a concise alternative to a match that only cares about one variant
+    if let Some(i) = some_number {
+        println!("Got a number: {}", i);
+    }
+}
+                </code></pre>
+            </section>
+
+            <section id="error-handling" class="card">
+                <h2 class="card-title">8. Error Handling</h2>
+                <p>Rust uses the <code>Result&lt;T, E&gt;</code> enum for recoverable errors and the <code>panic!</code> macro for unrecoverable errors.</p>
+                <pre><code class="language-rust">
+use std::fs::File;
+use std::io::{self, Read};
+
+// A function that returns a Result
+fn read_username_from_file() -&gt; Result&lt;String, io::Error&gt; {
+    let mut f = File::open("hello.txt")?; // The `?` operator propagates errors
+    let mut s = String::new();
+    f.read_to_string(&amp;mut s)?;
+    Ok(s)
+}
+
+fn main() {
+    match read_username_from_file() {
+        Ok(username) =&gt; println!("Username: {}", username),
+        Err(error) =&gt; match error.kind() {
+            io::ErrorKind::NotFound =&gt; {
+                println!("File not found. Creating...");
+                // Create file logic here
+            }
+            other_error =&gt; {
+                panic!("Problem opening the file: {:?}", other_error);
+            }
+        },
+    }
+}
+                </code></pre>
+            </section>
+
+            <section id="collections" class="card">
+                <h2 class="card-title">9. Common Collections</h2>
+                <p>The standard library provides several useful collections stored on the heap.</p>
+                <pre><code class="language-rust">
+use std::collections::HashMap;
+
+fn main() {
+    // Vector: a growable list
+    let mut v: Vec&lt;i32&gt; = Vec::new();
+    v.push(5);
+    v.push(6);
+
+    // Using the `vec!` macro
+    let v2 = vec![1, 2, 3];
+
+    // Accessing elements
+    let third: &amp;i32 = &amp;v2[2];
+    match v2.get(2) {
+        Some(third) =&gt; println!("The third element is {}", third),
+        None =&gt; println!("There is no third element."),
+    }
+
+    // String: a growable, UTF-8 encoded text type
+    let mut s = String::from("foo");
+    s.push_str("bar");
+    
+    // HashMap: stores key-value pairs
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
+
+    let team_name = String::from("Blue");
+    let score = scores.get(&amp;team_name); // Returns Option&lt;&amp;i32&gt;
+}
+                </code></pre>
+            </section>
+
+            <section id="concurrency" class="card">
+                <h2 class="card-title">10. Concurrency</h2>
+                <p>Rust provides powerful, safe concurrency through threads and message-passing channels.</p>
+                <pre><code class="language-rust">
+use std::thread;
+use std::time::Duration;
+use std::sync::mpsc; // multiple producer, single consumer
+
+fn main() {
+    // --- Threads ---
+    let handle = thread::spawn(|| {
+        for i in 1..10 {
+            println!("hi number {} from the spawned thread!", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+    });
+
+    for i in 1..5 {
+        println!("hi number {} from the main thread!", i);
+        thread::sleep(Duration::from_millis(1));
+    }
+
+    handle.join().unwrap(); // Wait for the spawned thread to finish
+
+    // --- Channels ---
+    let (tx, rx) = mpsc::channel();
+    let tx1 = tx.clone();
+
+    thread::spawn(move || {
+        let vals = vec![
+            String::from("hi"),
+            String::from("from"),
+            String::from("the"),
+            String::from("thread"),
+        ];
+        for val in vals {
+            tx1.send(val).unwrap();
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
+
+    for received in rx {
+        println!("Got: {}", received);
+    }
+}
+                </code></pre>
+            </section>
+
+        </div>
+
+        <!-- Projects View with CORRECTED & ESCAPED code blocks -->
+        <div id="projects-content" class="hidden">
+            <div class="project-card card">
+                <h2 class="card-title">1. CLI To-Do App</h2>
+                <p>A simple command-line application to add and list tasks. This example demonstrates command-line argument parsing, structs, and vectors.</p>
+                <pre><code class="language-rust">
+use std::env;
+
+struct TodoItem {
+    name: String,
+    completed: char,
+}
+
+impl TodoItem {
+    fn new(name: String) -&gt; TodoItem {
+        TodoItem {
+            name,
+            completed: ' ',
+        }
+    }
+}
+
+fn main() {
+    let args: Vec&lt;String&gt; = env::args().collect();
+    let mut todo_list: Vec&lt;TodoItem&gt; = Vec::new();
+
+    if args.len() &gt; 1 {
+        let command = &amp;args[1];
+        match command.as_str() {
+            "add" =&gt; {
+                if args.len() &gt; 2 {
+                    let task_name = args[2..].join(" ");
+                    todo_list.push(TodoItem::new(task_name));
+                    println!("Added task!");
+                } else {
+                    println!("'add' command requires a task name.");
+                }
+            }
+            "list" =&gt; {
+                println!("--- To-Do List ---");
+                for (index, item) in todo_list.iter().enumerate() {
+                    println!("{}. [{}] {}", index + 1, item.completed, item.name);
+                }
+            }
+            _ =&gt; {
+                println!("Unknown command: {}", command);
+            }
+        }
+    } else {
+        println!("Usage: todo &lt;command&gt; [arguments]");
+    }
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>std::env::args()</code></strong>: This function returns an iterator of the command-line arguments. <code>.collect()</code> gathers them into a <code>Vec&lt;String&gt;</code>.</li>
+                        <li><strong><code>struct TodoItem</code></strong>: A simple structure to hold the state of a single to-do item.</li>
+                        <li><strong><code>match command.as_str()</code></strong>: We check the second command-line argument (the command) to decide what action to perform.</li>
+                        <li>The 'add' arm concatenates the remaining arguments to form the task name. This version does not persist data.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">2. Number Guessing Game</h2>
+                <p>The classic beginner project. This covers external crates, I/O, and pattern matching.</p>
+                <pre><code class="language-rust">
+// Add `rand = "0.8.5"` to your Cargo.toml
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
+
+fn main() {
+    println!("Guess the number!");
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+
+    loop {
+        println!("Please input your guess.");
+        let mut guess = String::new();
+
+        io::stdin()
+            .read_line(&amp;mut guess)
+            .expect("Failed to read line");
+
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) =&gt; num,
+            Err(_) =&gt; {
+                println!("Please type a number!");
+                continue;
+            },
+        };
+
+        println!("You guessed: {}", guess);
+
+        match guess.cmp(&amp;secret_number) {
+            Ordering::Less =&gt; println!("Too small!"),
+            Ordering::Greater =&gt; println!("Too big!"),
+            Ordering::Equal =&gt; {
+                println!("You win!");
+                break;
+            }
+        }
+    }
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>rand::Rng</code></strong>: The <code>rand</code> crate provides random number generation.</li>
+                        <li><strong><code>io::stdin().read_line()</code></strong>: Reads a line from standard input.</li>
+                        <li><strong><code>guess.trim().parse()</code></strong>: We parse the string into a number, which returns a <code>Result</code> that we handle with a <code>match</code>.</li>
+                        <li><strong><code>guess.cmp(&amp;secret_number)</code></strong>: This compares two values and returns an <code>Ordering</code> enum, perfect for a <code>match</code> statement.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">3. Multithreaded Prime Calculator</h2>
+                <p>Finds prime numbers within a range using multiple threads. This demonstrates concurrency and message passing.</p>
+                <pre><code class="language-rust">
+use std::thread;
+use std::sync::mpsc;
+
+fn is_prime(n: u32) -&gt; bool {
+    if n &lt;= 1 { return false; }
+    for i in 2..=(n as f64).sqrt() as u32 {
+        if n % i == 0 { return false; }
+    }
+    true
+}
+
+fn main() {
+    const MAX: u32 = 100_000;
+    const NUM_THREADS: u32 = 4;
+    let (tx, rx) = mpsc::channel();
+
+    for i in 0..NUM_THREADS {
+        let tx_clone = tx.clone();
+        let start = (i * MAX / NUM_THREADS) + 1;
+        let end = (i + 1) * MAX / NUM_THREADS;
+        
+        thread::spawn(move || {
+            let mut primes = Vec::new();
+            for num in start..=end {
+                if is_prime(num) {
+                    primes.push(num);
+                }
+            }
+            tx_clone.send(primes).unwrap();
+        });
+    }
+
+    drop(tx); 
+
+    let mut all_primes = Vec::new();
+    for received_primes in rx {
+        all_primes.extend(received_primes);
+    }
+
+    println!("Found {} primes up to {}.", all_primes.len(), MAX);
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>mpsc::channel()</code></strong>: Creates a channel for sending messages between threads.</li>
+                        <li><strong>Work Distribution</strong>: The range of numbers is divided evenly among the threads.</li>
+                        <li><strong><code>thread::spawn(move || { ... })</code></strong>: Spawns a new thread. The <code>move</code> keyword transfers ownership of variables to the new thread.</li>
+                         <li><strong><code>drop(tx)</code></strong>: The `rx` iterator will only end when all transmitters have been dropped.</li>
+                        <li><strong><code>for received_primes in rx</code></strong>: The main thread blocks, collecting results from all threads.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">4. Basic TCP Echo Server</h2>
+                <p>This server listens for TCP connections and echoes any data it receives back to the client.</p>
+                <pre><code class="language-rust">
+use std::net::{TcpListener, TcpStream};
+use std::io::{Read, Write};
+use std::thread;
+
+fn handle_client(mut stream: TcpStream) {
+    let mut buffer = [0; 1024];
+    println!("New connection: {}", stream.peer_addr().unwrap());
+    loop {
+        match stream.read(&amp;mut buffer) {
+            Ok(size) =&gt; {
+                if size == 0 { break; } // Connection closed
+                stream.write_all(&amp;buffer[0..size]).unwrap();
+            }
+            Err(_) =&gt; {
+                println!("Connection terminated with client {}", stream.peer_addr().unwrap());
+                break;
+            }
+        }
+    }
+}
+
+fn main() -&gt; std::io::Result&lt;()&gt; {
+    let listener = TcpListener::bind("127.0.0.1:7878")?;
+    println!("Server listening on port 7878");
+
+    for stream in listener.incoming() {
+        match stream {
+            Ok(stream) =&gt; {
+                thread::spawn(|| {
+                    handle_client(stream);
+                });
+            }
+            Err(e) =&gt; {
+                eprintln!("Connection failed: {}", e);
+            }
+        }
+    }
+    Ok(())
+}
+                </code></pre>
+                 <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>TcpListener::bind(...)</code></strong>: Binds the server to a network address and port.</li>
+                        <li><strong><code>listener.incoming()</code></strong>: Returns an iterator that blocks until a new TCP connection is established.</li>
+                        <li><strong><code>thread::spawn</code></strong>: For each new connection, a new thread is spawned to handle it concurrently.</li>
+                        <li><strong><code>stream.read(...)</code></strong>: Reads bytes from the client. It returns <code>Ok(0)</code> when the client closes the connection.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">5. File Word Counter</h2>
+                <p>This program reads a text file and counts the frequency of each word.</p>
+                <pre><code class="language-rust">
+use std::collections::HashMap;
+use std::env;
+use std::fs;
+
+fn main() {
+    let args: Vec&lt;String&gt; = env::args().collect();
+    if args.len() &lt; 2 {
+        eprintln!("Usage: {} &lt;filename&gt;", args[0]);
+        return;
+    }
+    let filename = &amp;args[1];
+
+    let contents = fs::read_to_string(filename)
+        .expect("Something went wrong reading the file");
+
+    let mut word_counts = HashMap::new();
+
+    for word in contents.split_whitespace() {
+        let cleaned_word = word.to_lowercase()
+                               .chars()
+                               .filter(|c| c.is_alphabetic())
+                               .collect::&lt;String&gt;();
+        if cleaned_word.is_empty() { continue; }
+        
+        let count = word_counts.entry(cleaned_word).or_insert(0);
+        *count += 1;
+    }
+
+    let mut sorted_counts: Vec&lt;(_, _)&gt; = word_counts.into_iter().collect();
+    sorted_counts.sort_by(|a, b| b.1.cmp(&amp;a.1));
+
+    println!("Top 10 most common words:");
+    for (word, count) in sorted_counts.iter().take(10) {
+        println!("{}: {}", word, count);
+    }
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>fs::read_to_string</code></strong>: Reads the entire contents of a file into a single <code>String</code>.</li>
+                        <li><strong><code>HashMap</code></strong>: A hash map is the perfect data structure to store word frequencies.</li>
+                        <li><strong><code>word_counts.entry(key).or_insert(0)</code></strong>: The idiomatic way to handle hash map entries. It inserts <code>0</code> if the key doesn't exist, then returns a mutable reference to the value.</li>
+                        <li><strong>Sorting</strong>: We convert the hash map into a vector of tuples to sort it by count in descending order.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="/" class="footer-link">Back to Home</a>
+        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
