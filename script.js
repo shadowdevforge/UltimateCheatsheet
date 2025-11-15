@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- cmatrix Background ---
     const canvas = document.getElementById('cmatrix');
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
     if (ctx) {
@@ -53,10 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             columns = Math.floor(width / 20);
-            drops.length = 0; // Clear the array
-            for (let i = 0; i < columns; i++) {
-                drops.push(1);
-            }
+            drops.length = columns; // More efficient resize
+            drops.fill(1);
+            
             if (intervalId) clearInterval(intervalId);
             intervalId = setInterval(drawMatrix, 40);
         });
@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const languageGrid = document.getElementById('language-grid');
 
     if (languageGrid) {
+        const basePath = '/syntaxforge'; // Base path for GitHub Pages repository
+        
         const groupedLanguages = languages.reduce((acc, lang) => {
             (acc[lang.category] = acc[lang.category] || []).push(lang);
             return acc;
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             groupedLanguages[category].forEach(lang => {
                 gridHTML += `
-                    <a href="./cheatsheets/${lang.slug}" class="lang-card" data-name="${lang.name.toLowerCase()}" data-description="${lang.description.toLowerCase()}">
+                    <a href="${basePath}/cheatsheets/${lang.slug}" class="lang-card" data-name="${lang.name.toLowerCase()}" data-description="${lang.description.toLowerCase()}">
                         <h3 class="card-title">${lang.name}</h3>
                         <p class="card-description">${lang.description}</p>
                     </a>
