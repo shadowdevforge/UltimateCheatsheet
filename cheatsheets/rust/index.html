@@ -9,29 +9,36 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦀</text></svg>">
     
-    <!-- CORRECTED highlight.js Catppuccin theme URLs -->
     <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
-    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-mocha.css" disabled>
+    
+    <!-- THE FIX IS HERE: Updated Mocha to Macchiato -->
+    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-macchiato.css" disabled>
 
     <script>
-        // Immediately-invoked function to set theme before page render, fixing the highlight.js race condition.
+        // Immediately-invoked function to set theme before page render.
         (function() {
             function applyTheme(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
                 document.getElementById('hljs-light-theme').disabled = theme === 'dark';
                 document.getElementById('hljs-dark-theme').disabled = theme === 'light';
             }
-            const preferredTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            applyTheme(preferredTheme || (systemPrefersDark ? 'dark' : 'light'));
+            const preferredTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(preferredTheme);
         })();
     </script>
+    <!-- Page-specific styling for the Rust theme color -->
+    <style>
+      body {
+        --glow-color: #F74C00; /* Rust Orange for all cards on this page */
+      }
+    </style>
 </head>
 <body>
     <canvas id="cmatrix"></canvas>
 
     <header class="header">
-        <a href="/" class="home-link">SyntaxForge</a>
+        <!-- PATHING FIX: Updated href for GitHub Pages -->
+        <a href="/SyntaxForge/" class="home-link">SyntaxForge</a>
         <div class="theme-switcher-container">
             <label for="theme-toggle" class="theme-toggle-label">
                 <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
@@ -50,9 +57,8 @@
             <button id="show-projects" class="view-btn">Projects</button>
         </div>
 
-        <!-- Cheatsheet View with CORRECTED & ESCAPED code blocks -->
         <div id="cheatsheet-content">
-            <nav class="toc-container">
+            <nav class="toc-container card">
                 <h2>Table of Contents</h2>
                 <ul id="toc-list"></ul>
             </nav>
@@ -396,10 +402,8 @@ fn main() {
 }
                 </code></pre>
             </section>
-
         </div>
 
-        <!-- Projects View with CORRECTED & ESCAPED code blocks -->
         <div id="projects-content" class="hidden">
             <div class="project-card card">
                 <h2 class="card-title">1. CLI To-Do App</h2>
@@ -684,7 +688,7 @@ fn main() {
     </main>
 
     <footer class="footer">
-        <a href="/syntaxforge/" class="footer-link">Back to Home</a>
+        <a href="/SyntaxForge/" class="footer-link">Back to Home</a>
         <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
     </footer>
 

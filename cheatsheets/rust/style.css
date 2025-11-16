@@ -11,79 +11,69 @@
 }
 
 [data-theme="dark"] {
-  /* Catppuccin Mocha */
-  --bg: #1e1e2e;
-  --bg-translucent: rgba(30, 30, 46, 0.75);
-  --text: #cdd6f4;
-  --surface: #313244;
-  --overlay: #585b70;
-  --primary: #89b4fa; /* Blue */
-  --secondary: #fab387; /* Peach */
-  --green: #a6e3a1;
+  /* THEME CHANGE: Updated to Catppuccin Macchiato */
+  --bg: #24273a;
+  --bg-translucent: rgba(36, 39, 58, 0.75);
+  --text: #cad3f5;
+  --surface: #363a4f;
+  --overlay: #5b6078;
+  --primary: #8aadf4;   /* Blue */
+  --secondary: #f5a97f; /* Peach */
+  --green: #a6da95;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
-}
-
-#cmatrix {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  display: block;
-}
-
-/* (All other CSS rules are unchanged and correct) */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.7; transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; }
+#cmatrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: block; }
 .header { text-align: center; padding: 2rem 1rem; position: relative; }
 .home-link { position: absolute; top: 1.25rem; left: 1.5rem; color: var(--secondary); text-decoration: none; font-weight: 600; font-size: 1.1rem; }
-.hero-title { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
+.hero-title { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; color: var(--glow-color, var(--primary)); margin-bottom: 0.5rem; }
 .hero-tagline { font-size: clamp(1rem, 3vw, 1.25rem); opacity: 0.9; max-width: 600px; margin: 0 auto; }
 .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
 .view-switcher { display: flex; justify-content: center; margin-bottom: 2rem; border: 1px solid var(--surface); border-radius: 50px; padding: 0.25rem; width: fit-content; margin-left: auto; margin-right: auto; background: var(--surface); }
 .view-btn { padding: 0.5rem 1.5rem; border: none; background-color: transparent; color: var(--text); font-size: 1rem; font-weight: 500; border-radius: 50px; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
 .view-btn.active { background-color: var(--bg); color: var(--primary); }
-.card { background-color: var(--bg-translucent); border: 1px solid var(--surface); border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 2rem; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.card-title { font-size: 1.75rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--surface); }
+
+/* Updated card styles for static glow */
+.card {
+    background-color: var(--bg-translucent);
+    border: 1px solid var(--glow-color);
+    box-shadow: 0 0 8px -2px var(--glow-color);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.2s ease-out, box-shadow 0.3s ease-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px -3px var(--glow-color);
+}
+
+.card-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--glow-color); /* Use the page's glow color */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--surface);
+}
+
 p, ul, li { margin-bottom: 1rem; }
 ul { padding-left: 20px; }
 code { font-family: "Fira Code", "JetBrains Mono", monospace; background-color: var(--surface); padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
 pre code { padding: 0; background: none; }
-
-/* --- THE FIX IS HERE --- */
-pre {
-    border-radius: 8px;
-    overflow: auto; /* Changed from hidden to auto for scrolling */
-    padding: 1.5em; /* Added padding to the container */
-    font-size: 0.95rem; /* Consolidated font-size here */
-}
-
-.hljs {
-    padding: 0; /* Removed padding from the inner element */
-    background: transparent; /* Ensure no conflicting background */
-}
-/* --- END OF FIX --- */
-
+pre { border-radius: 8px; overflow: auto; padding: 1.5em; font-size: 0.95rem; }
+.hljs { padding: 0; background: transparent; }
 .hidden { display: none; }
-.toc-container { background-color: var(--bg-translucent); border: 1px solid var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; backdrop-filter: blur(10px); }
-.toc-container h2 { margin-bottom: 1rem; color: var(--primary); }
+.toc-container { background-color: var(--bg-translucent); border: 1px solid var(--glow-color); box-shadow: 0 0 8px -2px var(--glow-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; backdrop-filter: blur(10px); }
+.toc-container h2 { margin-bottom: 1rem; color: var(--glow-color); }
 #toc-list { list-style: none; padding: 0; columns: 2; -webkit-columns: 2; -moz-columns: 2; }
 #toc-list li { margin-bottom: 0.5rem; }
 #toc-list a { text-decoration: none; color: var(--text); transition: color 0.2s; }
-#toc-list a:hover { color: var(--primary); }
+#toc-list a:hover { color: var(--glow-color); }
 .project-card .explanation { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--surface); }
 .project-card .explanation h4 { color: var(--secondary); margin-bottom: 0.5rem; }
 .footer { text-align: center; padding: 2rem 1rem; margin-top: 2rem; border-top: 1px solid var(--surface); display: flex; justify-content: center; gap: 1.5rem; }
@@ -99,5 +89,4 @@ pre {
 @media (max-width: 600px) {
     #toc-list { columns: 1; -webkit-columns: 1; -moz-columns: 1; }
     .card { padding: 1rem 1.25rem; }
-
 }

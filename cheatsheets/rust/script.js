@@ -5,19 +5,16 @@ const lightThemeLink = document.getElementById('hljs-light-theme');
 const darkThemeLink = document.getElementById('hljs-dark-theme');
 
 // --- Theme Management ---
-// Sync the toggle switch to the currently active theme.
 themeToggle.checked = docElement.getAttribute('data-theme') === 'dark';
-
 themeToggle.addEventListener('change', () => {
     const newTheme = themeToggle.checked ? 'dark' : 'light';
     docElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
-
     lightThemeLink.disabled = newTheme === 'dark';
     darkThemeLink.disabled = newTheme === 'light';
 });
 
-// --- cmatrix Background ---
+// --- CMatrix Background ---
 const canvas = document.getElementById('cmatrix');
 const ctx = canvas.getContext('2d');
 if (ctx) {
@@ -40,15 +37,20 @@ if (ctx) {
         }
     };
 
-    let intervalId = setInterval(drawMatrix, 40);
+    setInterval(drawMatrix, 40);
+
+    // STATIC CMATRIX: Update dimensions on resize without restarting the animation.
     window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
-        columns = Math.floor(width / 20);
-        drops.length = 0;
-        for (let i = 0; i < columns; i++) drops.push(1);
-        if (intervalId) clearInterval(intervalId);
-        intervalId = setInterval(drawMatrix, 40);
+        const newColumns = Math.floor(width / 20);
+        
+        if (newColumns > columns) {
+            for (let i = columns; i < newColumns; i++) drops.push(1);
+        } else if (newColumns < columns) {
+            drops.length = newColumns;
+        }
+        columns = newColumns;
     });
 }
 
@@ -88,5 +90,4 @@ headings.forEach(heading => {
 });
 
 // --- Initialize Highlight.js ---
-// This now runs after highlight.min.js and rust.min.js have been loaded and executed.
 hljs.highlightAll();
