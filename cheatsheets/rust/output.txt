@@ -1,0 +1,298 @@
+==== ./index.html ====
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Cheatsheet - SyntaxForge</title>
+    <meta name="description" content="A comprehensive cheatsheet for the Rust programming language, covering syntax, standard library, and project examples.">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦀</text></svg>">
+    
+    <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
+    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-mocha.css" disabled>
+
+    <script>
+        // Immediately-invoked function to set theme before page render.
+        (function() {
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                document.getElementById('hljs-light-theme').disabled = theme === 'dark';
+                document.getElementById('hljs-dark-theme').disabled = theme === 'light';
+            }
+            const preferredTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(preferredTheme);
+        })();
+    </script>
+
+    <!-- Page-specific styling for the Rust theme color -->
+    <style>
+      body {
+        --glow-color: #F74C00; /* Rust Orange for all cards on this page */
+      }
+    </style>
+</head>
+<body>
+    <canvas id="cmatrix"></canvas>
+
+    <header class="header">
+        <!-- PATHING FIX: Updated href for GitHub Pages -->
+        <a href="/SyntaxForge/" class="home-link">SyntaxForge</a>
+        <div class="theme-switcher-container">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
+                <span class="theme-toggle-slider"></span>
+            </label>
+        </div>
+        <div class="hero">
+            <h1 class="hero-title">Rust</h1>
+            <p class="hero-tagline">A language empowering everyone to build reliable and efficient software.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="view-switcher">
+            <button id="show-cheatsheet" class="view-btn active">Cheatsheet</button>
+            <button id="show-projects" class="view-btn">Projects</button>
+        </div>
+
+        <!-- Cheatsheet content is unchanged, but will now render with the glow -->
+        <div id="cheatsheet-content">
+            <!-- ... all section and project cards remain the same ... -->
+            <nav class="toc-container">
+                <h2>Table of Contents</h2>
+                <ul id="toc-list"></ul>
+            </nav>
+            <section id="variables-mutability" class="card">
+                <h2 class="card-title">1. Variables & Mutability</h2>
+                <p>Variables are immutable by default. Use <code>mut</code> to make them mutable. Constants are always immutable.</p>
+                <pre><code class="language-rust">
+fn main() {
+    // Immutable variable
+    let x = 5; 
+    // x = 6; // This would be a compile-time error!
+
+    // Mutable variable
+    let mut y = 10;
+    y = 11; // This is allowed
+
+    // Constants must have an explicit type
+    const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+
+    // Shadowing: declare a new variable with the same name
+    let z = "spaces";
+    let z = z.len(); // z is now a number
+}
+                </code></pre>
+            </section>
+            <!-- ... all other sections ... -->
+        </div>
+
+        <div id="projects-content" class="hidden">
+            <div class="project-card card">
+                <h2 class="card-title">1. CLI To-Do App</h2>
+                <pre><code class="language-rust">...</code></pre>
+                <!-- ... other projects ... -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <!-- PATHING FIX: Updated href for GitHub Pages -->
+        <a href="/SyntaxForge/" class="footer-link">Back to Home</a>
+        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+==== ./style.css ====
+:root {
+  /* Catppuccin Latte */
+  --bg: #eff1f5;
+  --bg-translucent: rgba(239, 241, 245, 0.75);
+  --text: #4c4f69;
+  --surface: #ccd0da;
+  --overlay: #9ca0b0;
+  --primary: #1e66f5; /* Blue */
+  --secondary: #fe640b; /* Orange */
+  --green: #40a02b;
+}
+
+[data-theme="dark"] {
+  /* THEME CHANGE: Updated to Catppuccin Macchiato */
+  --bg: #24273a;
+  --bg-translucent: rgba(36, 39, 58, 0.75);
+  --text: #cad3f5;
+  --surface: #363a4f;
+  --overlay: #5b6078;
+  --primary: #8aadf4;   /* Blue */
+  --secondary: #f5a97f; /* Peach */
+  --green: #a6da95;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.7; transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; }
+#cmatrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+.header { text-align: center; padding: 2rem 1rem; position: relative; }
+.home-link { position: absolute; top: 1.25rem; left: 1.5rem; color: var(--secondary); text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+.hero-title { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; color: var(--glow-color, var(--primary)); margin-bottom: 0.5rem; }
+.hero-tagline { font-size: clamp(1rem, 3vw, 1.25rem); opacity: 0.9; max-width: 600px; margin: 0 auto; }
+.container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+.view-switcher { display: flex; justify-content: center; margin-bottom: 2rem; border: 1px solid var(--surface); border-radius: 50px; padding: 0.25rem; width: fit-content; margin-left: auto; margin-right: auto; background: var(--surface); }
+.view-btn { padding: 0.5rem 1.5rem; border: none; background-color: transparent; color: var(--text); font-size: 1rem; font-weight: 500; border-radius: 50px; cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
+.view-btn.active { background-color: var(--bg); color: var(--primary); }
+
+/* Updated card styles for static glow */
+.card {
+    background-color: var(--bg-translucent);
+    border: 1px solid var(--glow-color);
+    box-shadow: 0 0 8px -2px var(--glow-color);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.2s ease-out, box-shadow 0.3s ease-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px -3px var(--glow-color);
+}
+
+.card-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--glow-color); /* Use the page's glow color */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--surface);
+}
+
+p, ul, li { margin-bottom: 1rem; }
+ul { padding-left: 20px; }
+code { font-family: "Fira Code", "JetBrains Mono", monospace; background-color: var(--surface); padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+pre code { padding: 0; background: none; }
+pre { border-radius: 8px; overflow: auto; padding: 1.5em; font-size: 0.95rem; }
+.hljs { padding: 0; background: transparent; }
+.hidden { display: none; }
+.toc-container { background-color: var(--bg-translucent); border: 1px solid var(--glow-color); box-shadow: 0 0 8px -2px var(--glow-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; backdrop-filter: blur(10px); }
+.toc-container h2 { margin-bottom: 1rem; color: var(--glow-color); }
+#toc-list { list-style: none; padding: 0; columns: 2; -webkit-columns: 2; -moz-columns: 2; }
+#toc-list li { margin-bottom: 0.5rem; }
+#toc-list a { text-decoration: none; color: var(--text); transition: color 0.2s; }
+#toc-list a:hover { color: var(--glow-color); }
+.project-card .explanation { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--surface); }
+.project-card .explanation h4 { color: var(--secondary); margin-bottom: 0.5rem; }
+.footer { text-align: center; padding: 2rem 1rem; margin-top: 2rem; border-top: 1px solid var(--surface); display: flex; justify-content: center; gap: 1.5rem; }
+.footer-link { color: var(--text); text-decoration: none; opacity: 0.8; transition: opacity 0.2s ease, color 0.2s ease; }
+.footer-link:hover { opacity: 1; color: var(--primary); }
+.theme-switcher-container { position: absolute; top: 1rem; right: 1rem; }
+.theme-toggle-label { position: relative; display: inline-block; width: 50px; height: 28px; }
+.theme-toggle-input { opacity: 0; width: 0; height: 0; }
+.theme-toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--surface); border-radius: 28px; transition: 0.4s; }
+.theme-toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: var(--bg); border-radius: 50%; transition: 0.4s; }
+.theme-toggle-input:checked + .theme-toggle-slider { background-color: var(--primary); }
+.theme-toggle-input:checked + .theme-toggle-slider:before { transform: translateX(22px); }
+@media (max-width: 600px) {
+    #toc-list { columns: 1; -webkit-columns: 1; -moz-columns: 1; }
+    .card { padding: 1rem 1.25rem; }
+}
+==== ./script.js ====
+// No longer need the DOMContentLoaded wrapper
+const docElement = document.documentElement;
+const themeToggle = document.getElementById('theme-toggle');
+const lightThemeLink = document.getElementById('hljs-light-theme');
+const darkThemeLink = document.getElementById('hljs-dark-theme');
+
+// --- Theme Management ---
+themeToggle.checked = docElement.getAttribute('data-theme') === 'dark';
+themeToggle.addEventListener('change', () => {
+    const newTheme = themeToggle.checked ? 'dark' : 'light';
+    docElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    lightThemeLink.disabled = newTheme === 'dark';
+    darkThemeLink.disabled = newTheme === 'light';
+});
+
+// --- CMatrix Background ---
+const canvas = document.getElementById('cmatrix');
+const ctx = canvas.getContext('2d');
+if (ctx) {
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    let columns = Math.floor(width / 20);
+    const drops = Array(columns).fill(1);
+    const japanese = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
+    
+    const drawMatrix = () => {
+        ctx.fillStyle = getComputedStyle(docElement).getPropertyValue('--bg-translucent').replace('0.75', '0.05');
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = getComputedStyle(docElement).getPropertyValue('--green');
+        ctx.font = '15px monospace';
+        for (let i = 0; i < drops.length; i++) {
+            const text = japanese[Math.floor(Math.random() * japanese.length)];
+            ctx.fillText(text, i * 20, drops[i] * 20);
+            if (drops[i] * 20 > height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    };
+
+    setInterval(drawMatrix, 40);
+
+    // STATIC CMATRIX: Update dimensions on resize without restarting the animation.
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        const newColumns = Math.floor(width / 20);
+        
+        if (newColumns > columns) {
+            for (let i = columns; i < newColumns; i++) drops.push(1);
+        } else if (newColumns < columns) {
+            drops.length = newColumns;
+        }
+        columns = newColumns;
+    });
+}
+
+// --- View Switcher ---
+const showCheatsheetBtn = document.getElementById('show-cheatsheet');
+const showProjectsBtn = document.getElementById('show-projects');
+const cheatsheetContent = document.getElementById('cheatsheet-content');
+const projectsContent = document.getElementById('projects-content');
+
+showCheatsheetBtn.addEventListener('click', () => {
+    cheatsheetContent.classList.remove('hidden');
+    projectsContent.classList.add('hidden');
+    showCheatsheetBtn.classList.add('active');
+    showProjectsBtn.classList.remove('active');
+});
+
+showProjectsBtn.addEventListener('click', () => {
+    cheatsheetContent.classList.add('hidden');
+    projectsContent.classList.remove('hidden');
+    showProjectsBtn.classList.add('active');
+    showCheatsheetBtn.classList.remove('active');
+});
+
+// --- Dynamic Table of Contents ---
+const tocList = document.getElementById('toc-list');
+const headings = cheatsheetContent.querySelectorAll('h2.card-title');
+
+headings.forEach(heading => {
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    const sectionId = heading.parentElement.id;
+    
+    link.textContent = heading.textContent;
+    link.href = `#${sectionId}`;
+    listItem.appendChild(link);
+    tocList.appendChild(listItem);
+});
+
+// --- Initialize Highlight.js ---
+hljs.highlightAll();

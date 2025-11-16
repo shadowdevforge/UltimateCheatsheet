@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Go', slug: 'go', description: 'A statically typed, compiled language for building simple, reliable, and efficient software.', category: 'Systems & Backend', color: '#00ADD8' /* Blue */ },
         { name: 'C', slug: 'c', description: 'A general-purpose, procedural computer programming language supporting structured programming.', category: 'Systems & Backend', color: '#A8B9CC' /* Grey-Blue */ },
         { name: 'Python', slug: 'python', description: 'A high-level, interpreted language known for its readability and large standard library.', category: 'Scripting & Automation', color: '#FFD43B' /* Yellow */ },
-        { name: 'Lua', slug: 'lua', description: 'A lightweight, high-level, multi-paradigm programming language designed for embedded use.', category: 'Scripting & Automation', color: '#000080' /* Dark Blue */ },
+        { name: 'Lua', slug: 'lua', description: 'A lightweight, high-level, multi-paradigm programming language designed for embedded use.', category: 'Scripting & Automation', color: '#c6a0f6' /* Mauve */ },
         { name: 'Bash', slug: 'bash', description: 'A Unix shell and command language, perfect for scripting and system administration tasks.', category: 'Scripting & Automation', color: '#4EAA25' /* Green */ },
         { name: 'HTML', slug: 'html', description: 'The standard markup language for documents designed to be displayed in a web browser.', category: 'Web & Frontend', color: '#E34F26' /* Orange-Red */ },
         { name: 'CSS', slug: 'css', description: 'A style sheet language used for describing the presentation of a document written in HTML.', category: 'Web & Frontend', color: '#1572B6' /* Blue */ },

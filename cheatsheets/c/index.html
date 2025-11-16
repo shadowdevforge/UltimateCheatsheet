@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Cheatsheet - SyntaxForge</title>
+    <meta name="description" content="A comprehensive cheatsheet for the C programming language, from basic syntax to pointers and memory management.">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>">
+    
+    <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
+    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-macchiato.css" disabled>
+
+    <script>
+        // Immediately-invoked function to set theme before page render.
+        (function() {
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                document.getElementById('hljs-light-theme').disabled = theme === 'dark';
+                document.getElementById('hljs-dark-theme').disabled = theme === 'light';
+            }
+            const preferredTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(preferredTheme);
+        })();
+    </script>
+
+    <!-- Page-specific styling for the C theme color -->
+    <style>
+      body {
+        --glow-color: #A8B9CC; /* C Grey-Blue */
+      }
+    </style>
+</head>
+<body>
+    <canvas id="cmatrix"></canvas>
+
+    <header class="header">
+        <a href="/SyntaxForge/" class="home-link">SyntaxForge</a>
+        <div class="theme-switcher-container">
+            <label for="theme-toggle" class="theme-toggle-label">
+                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
+                <span class="theme-toggle-slider"></span>
+            </label>
+        </div>
+        <div class="hero">
+            <h1 class="hero-title">C</h1>
+            <p class="hero-tagline">The foundational, high-performance language that influenced modern programming.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="view-switcher">
+            <button id="show-cheatsheet" class="view-btn active">Cheatsheet</button>
+            <button id="show-projects" class="view-btn">Projects</button>
+        </div>
+
+        <div id="cheatsheet-content">
+            <nav class="toc-container card">
+                <h2>Table of Contents</h2>
+                <ul id="toc-list"></ul>
+            </nav>
+
+            <section id="variables-types" class="card">
+                <h2 class="card-title">1. Variables & Data Types</h2>
+                <p>C requires explicit type declarations for all variables. Common types include integers, floating-point numbers, and characters.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    // Integer types
+    int age = 30;          // Standard integer
+    short int small_num = 10; // Smaller integer
+    long int large_num = 100000;
+    
+    // Floating-point types
+    float price = 19.99f;  // Single-precision float
+    double pi = 3.1415926535; // Double-precision float
+    
+    // Character type
+    char grade = 'A';
+    
+    // Constants
+    const int YEAR = 2024;
+    
+    printf("Age: %d, Grade: %c, Price: %.2f\n", age, grade, price);
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+            
+            <section id="control-flow" class="card">
+                <h2 class="card-title">2. Control Flow</h2>
+                <p>Standard control flow structures like `if-else`, `switch`, `for`, `while`, and `do-while` are available.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int i;
+    // For loop
+    for (i = 0; i < 3; i++) {
+        printf("for loop iteration: %d\n", i);
+    }
+    
+    // While loop
+    int j = 0;
+    while (j < 2) {
+        printf("while loop iteration: %d\n", j);
+        j++;
+    }
+    
+    // If-else statement
+    int score = 85;
+    if (score >= 90) {
+        printf("Excellent!\n");
+    } else if (score >= 70) {
+        printf("Good job!\n");
+    } else {
+        printf("Keep trying!\n");
+    }
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+
+            <section id="functions" class="card">
+                <h2 class="card-title">3. Functions</h2>
+                <p>Functions must be declared before they are used. They consist of a return type, name, parameters, and a body.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+
+// Function declaration (prototype)
+int add(int a, int b);
+
+int main() {
+    int result = add(10, 20); // Function call
+    printf("The sum is: %d\n", result);
+    return 0;
+}
+
+// Function definition
+int add(int a, int b) {
+    return a + b;
+}
+                </code></pre>
+            </section>
+            
+            <section id="pointers" class="card">
+                <h2 class="card-title">4. Pointers</h2>
+                <p>Pointers are variables that store the memory address of another variable. They are a core feature of C.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int var = 20;
+    int *p; // Pointer declaration
+
+    p = &amp;var; // Store the address of 'var' in p
+
+    printf("Value of var: %d\n", var);
+    printf("Address of var: %p\n", &amp;var);
+    printf("Value stored in pointer p: %p\n", p);
+    
+    // Dereferencing: Accessing the value at the address
+    printf("Value at address stored in p: %d\n", *p);
+    
+    *p = 30; // Change the value of 'var' through the pointer
+    printf("New value of var: %d\n", var);
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+
+            <section id="arrays-strings" class="card">
+                <h2 class="card-title">5. Arrays & Strings</h2>
+                <p>Arrays are fixed-size collections of elements of the same type. Strings in C are arrays of characters ending with a null terminator `\0`.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    // Integer array
+    int numbers[5] = {10, 20, 30, 40, 50};
+    printf("Third element: %d\n", numbers[2]);
+    
+    // String (character array)
+    char greeting[] = "Hello"; // Null terminator is added automatically
+    char name[10] = {'F', 'o', 'r', 'g', 'e', '\0'};
+
+    printf("%s, %s!\n", greeting, name);
+    printf("Length of greeting: %zu\n", strlen(greeting));
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+            
+            <section id="structs" class="card">
+                <h2 class="card-title">6. Structs</h2>
+                <p>Structs allow you to group variables of different types under a single name.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Person {
+    char name[50];
+    int age;
+};
+
+int main() {
+    struct Person p1;
+    
+    strcpy(p1.name, "Alice");
+    p1.age = 30;
+    
+    printf("Name: %s, Age: %d\n", p1.name, p1.age);
+    
+    // Pointers to structs
+    struct Person *p2 = &amp;p1;
+    p2-&gt;age = 31; // Arrow operator to access members via pointer
+    
+    printf("Updated age: %d\n", p1.age);
+    
+    return 0;
+}
+                </code></pre>
+            </section>
+
+            <section id="memory-management" class="card">
+                <h2 class="card-title">7. Memory Management</h2>
+                <p>C requires manual memory management on the heap using functions from `stdlib.h`.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    int *arr;
+    int n = 5;
+
+    // Allocate memory for 5 integers on the heap
+    arr = (int*) malloc(n * sizeof(int));
+
+    if (arr == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+
+    // Use the allocated memory
+    for (int i = 0; i < n; i++) {
+        arr[i] = i + 1;
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // Free the allocated memory to prevent memory leaks
+    free(arr);
+
+    return 0;
+}
+                </code></pre>
+            </section>
+
+            <section id="file-io" class="card">
+                <h2 class="card-title">8. File I/O</h2>
+                <p>File operations are handled using `FILE` pointers and functions from `stdio.h`.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    FILE *fptr;
+    
+    // Open a file in write mode ("w")
+    fptr = fopen("example.txt", "w");
+    if (fptr == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    
+    // Write to the file
+    fprintf(fptr, "Hello, SyntaxForge!\n");
+    
+    // Close the file
+    fclose(fptr);
+
+    return 0;
+}
+                </code></pre>
+            </section>
+            
+            <section id="preprocessor" class="card">
+                <h2 class="card-title">9. Preprocessor Directives</h2>
+                <p>The C preprocessor modifies the source code before compilation. Directives start with `#`.</p>
+                <pre><code class="language-c">
+// 1. Include header files for standard library functions
+#include &lt;stdio.h&gt; 
+#include &lt;stdlib.h&gt;
+
+// 2. Define a macro (constant)
+#define PI 3.14159
+
+// 3. Define a function-like macro
+#define SQUARE(x) ((x) * (x))
+
+int main() {
+    printf("Value of PI: %f\n", PI);
+    printf("Square of 5: %d\n", SQUARE(5));
+    return 0;
+}
+                </code></pre>
+            </section>
+        </div>
+
+        <div id="projects-content" class="hidden">
+            <div class="project-card card">
+                <h2 class="card-title">1. Simple Calculator</h2>
+                <p>A basic calculator that takes an operator and two operands from the user.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+
+int main() {
+    char operator;
+    double n1, n2;
+
+    printf("Enter an operator (+, -, *, /): ");
+    scanf(" %c", &amp;operator);
+    printf("Enter two operands: ");
+    scanf("%lf %lf", &amp;n1, &amp;n2);
+
+    switch (operator) {
+        case '+':
+            printf("%.1lf + %.1lf = %.1lf\n", n1, n2, n1 + n2);
+            break;
+        case '-':
+            printf("%.1lf - %.1lf = %.1lf\n", n1, n2, n1 - n2);
+            break;
+        case '*':
+            printf("%.1lf * %.1lf = %.1lf\n", n1, n2, n1 * n2);
+            break;
+        case '/':
+            if (n2 != 0)
+                printf("%.1lf / %.1lf = %.1lf\n", n1, n2, n1 / n2);
+            else
+                printf("Error! Division by zero.\n");
+            break;
+        default:
+            printf("Error! Operator is not correct\n");
+    }
+    return 0;
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>scanf</code></strong>: Reads formatted input from the standard input (keyboard). The space before `%c` is important to consume any leftover whitespace.</li>
+                        <li><strong><code>switch</code></strong>: A control flow statement that allows a variable to be tested for equality against a list of values (cases).</li>
+                        <li><strong>Error Handling</strong>: Includes a basic check to prevent division by zero, a common runtime error.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">2. File Copier</h2>
+                <p>A command-line program that copies the content of one file to another.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        printf("Usage: %s &lt;source_file&gt; &lt;destination_file&gt;\n", argv[0]);
+        return 1;
+    }
+
+    FILE *source = fopen(argv[1], "rb");
+    if (source == NULL) {
+        perror("Error opening source file");
+        return 1;
+    }
+
+    FILE *dest = fopen(argv[2], "wb");
+    if (dest == NULL) {
+        perror("Error opening destination file");
+        fclose(source);
+        return 1;
+    }
+
+    char buffer[1024];
+    size_t bytes_read;
+    while ((bytes_read = fread(buffer, 1, sizeof(buffer), source)) > 0) {
+        fwrite(buffer, 1, bytes_read, dest);
+    }
+
+    printf("File copied successfully.\n");
+    fclose(source);
+    fclose(dest);
+    return 0;
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>argc</code> & <code>argv</code></strong>: Parameters to `main` that hold the count of command-line arguments and an array of the argument strings, respectively.</li>
+                        <li><strong><code>fopen</code></strong>: Opens a file. `"rb"` and `"wb"` are used for reading and writing in binary mode, which is safe for all file types.</li>
+                        <li><strong><code>fread</code> & <code>fwrite</code></strong>: Read and write blocks of binary data from/to a file stream. The loop continues as long as `fread` successfully reads bytes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">3. String Reversal Function</h2>
+                <p>A function that reverses a string in-place using pointers.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void reverse_string(char *str) {
+    char *end = str + strlen(str) - 1;
+    char temp;
+
+    while (str < end) {
+        // Swap characters
+        temp = *str;
+        *str = *end;
+        *end = temp;
+
+        // Move pointers towards the middle
+        str++;
+        end--;
+    }
+}
+
+int main() {
+    char my_string[] = "SyntaxForge";
+    printf("Original: %s\n", my_string);
+    reverse_string(my_string);
+    printf("Reversed: %s\n", my_string);
+    return 0;
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong>Pointer Arithmetic</strong>: `char *end = str + strlen(str) - 1;` calculates the memory address of the last character of the string.</li>
+                        <li><strong>In-place Swap</strong>: Two pointers, `str` (start) and `end`, move towards each other. At each step, the characters they point to are swapped using a temporary variable.</li>
+                        <li><strong>Dereferencing</strong>: The `*` operator is used to get or set the character value at the memory address the pointer is holding.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">4. Simple Linked List</h2>
+                <p>An implementation of a basic linked list with functions to add a node and print the list.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+void push(Node **head_ref, int new_data) {
+    Node *new_node = (Node*) malloc(sizeof(Node));
+    new_node-&gt;data = new_data;
+    new_node-&gt;next = *head_ref;
+    *head_ref = new_node;
+}
+
+void print_list(Node *node) {
+    while (node != NULL) {
+        printf("%d -&gt; ", node-&gt;data);
+        node = node-&gt;next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    Node *head = NULL;
+    push(&amp;head, 3);
+    push(&amp;head, 2);
+    push(&amp;head, 1);
+    print_list(head);
+    return 0;
+}
+                </code></pre>
+                 <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>typedef</code></strong>: Creates a convenient alias (`Node`) for `struct Node`.</li>
+                        <li><strong>Self-referential Struct</strong>: The `Node` struct contains a pointer to another `Node`, which is the core of a linked list.</li>
+                        <li><strong><code>malloc</code></strong>: Allocates memory for a new node on the heap.</li>
+                        <li><strong>Pointer to Pointer (<code>**head_ref</code>)</strong>: The `push` function needs to modify the `head` pointer in `main`. To do this, we must pass the *address* of the `head` pointer itself.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-card card">
+                <h2 class="card-title">5. Caesar Cipher</h2>
+                <p>A simple encryption program that shifts letters in a message by a fixed amount.</p>
+                <pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+
+void caesar_cipher(char *text, int shift) {
+    for (int i = 0; text[i] != '\0'; ++i) {
+        char ch = text[i];
+        if (isalpha(ch)) {
+            char base = islower(ch) ? 'a' : 'A';
+            ch = (ch - base + shift) % 26 + base;
+        }
+        text[i] = ch;
+    }
+}
+
+int main() {
+    char message[] = "Hello World";
+    int shift = 3;
+    printf("Original message: %s\n", message);
+    caesar_cipher(message, shift);
+    printf("Encrypted message: %s\n", message);
+    return 0;
+}
+                </code></pre>
+                <div class="explanation">
+                    <h4>Code Explanation</h4>
+                    <ul>
+                        <li><strong><code>ctype.h</code></strong>: A standard library with useful character-handling functions like `isalpha` (checks if a character is alphabetic) and `islower`.</li>
+                        <li><strong>Character Arithmetic</strong>: We convert the character to a 0-25 index by subtracting its base (`'a'` or `'A'`).</li>
+                        <li><strong>Modulo Operator (<code>%</code>)</strong>: The modulo operator is key to making the shift "wrap around" from 'z' back to 'a'.</li>
+                        <li><strong>In-place Modification</strong>: The function modifies the input string directly without needing to return a new one.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <a href="/SyntaxForge/" class="footer-link">Back to Home</a>
+        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
