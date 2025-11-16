@@ -12,7 +12,7 @@
 
 <div align="center">
 
-**[View the live, interactive website](https://shadowdevforge.github.io/syntaxforge/)**
+**[View the live, interactive website](https://shadowdevforge.github.io/SyntaxForge/)**
 
 </div>
 
