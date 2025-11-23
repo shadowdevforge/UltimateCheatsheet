@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>404 | ShadowDevForge</title>
+    <style>
+        /* Catppuccin Macchiato Theme Palette */
+        :root {
+            --base: #24273a;
+            --mantle: #1e2030;
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --surface0: #363a4f;
+            --overlay0: #6e738d;
+            --blue: #8aadf4;
+            --mauve: #c6a0f6;
+            --red: #ed8796;
+            --green: #a6da95;
+            --yellow: #eed49f;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-mono);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            user-select: none;
+            /* Critical for mobile game feel */
+            touch-action: none; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Canvas Background */
+        canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* UI Overlay */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            background: rgba(36, 39, 58, 0.85);
+            padding: 2rem 3rem;
+            border: 2px solid var(--surface0);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .container.game-active {
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 700;
+            color: var(--red);
+            margin-bottom: 0.5rem;
+            text-shadow: 4px 4px 0px var(--surface0);
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Glitch Effect */
+        h1::after {
+            content: "404";
+            position: absolute;
+            top: 0; left: 3px;
+            color: var(--blue);
+            opacity: 0.7;
+            z-index: -1;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0% { left: 3px; clip-path: inset(0 0 0 0); }
+            20% { left: -3px; clip-path: inset(20% 0 80% 0); }
+            40% { left: 3px; clip-path: inset(80% 0 10% 0); }
+            60% { left: -3px; clip-path: inset(40% 0 40% 0); }
+            100% { left: 3px; clip-path: inset(0 0 0 0); }
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 4vw, 1.2rem);
+            color: var(--mauve);
+            margin-bottom: 1.5rem;
+        }
+
+        .desc {
+            color: var(--subtext0);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            background: var(--mauve);
+            color: var(--base);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: var(--font-mono);
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+            display: inline-block;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .btn:hover {
+            background: var(--blue);
+            transform: translateY(-2px);
+        }
+
+        .game-ui {
+            position: absolute;
+            top: 20px; right: 20px;
+            z-index: 20;
+            text-align: right;
+            pointer-events: none;
+        }
+
+        .score-board {
+            font-size: 1.2rem;
+            color: var(--green);
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .high-score {
+            font-size: 0.8rem;
+            color: var(--yellow);
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .sys-msg {
+            position: absolute;
+            top: 80px; left: 50%;
+            transform: translateX(-50%);
+            color: var(--red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--red);
+            display: none;
+            z-index: 30;
+            white-space: nowrap;
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes pop { 0% { transform: translateX(-50%) scale(0.5); opacity:0; } 100% { transform: translateX(-50%) scale(1); opacity:1; } }
+
+        .controls-hint {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: var(--overlay0);
+            z-index: 15;
+            font-size: 0.8rem;
+            pointer-events: none;
+        }
+
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 2px;
+            z-index: 2;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="crt">
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="game-ui">
+        <div class="score-board">DATA: <span id="scoreEl">0</span> B</div>
+        <div class="high-score">BEST: <span id="highScoreEl">0</span> B</div>
+    </div>
+
+    <div class="sys-msg" id="sysMsg">SYSTEM PURGED</div>
+
+    <div class="container" id="mainContent">
+        <h1>404</h1>
+        <p class="subtitle">ERROR // SHADOW_NOT_FOUND</p>
+        <p class="desc">
+            The repository entered the void.<br>
+            Guide <strong>shadow</strong> to collect data packets.<br>
+            Avoid the error logs.
+        </p>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <button class="btn" id="startBtn">Start Game</button>
+        </div>
+
+        <a href="https://github.com/shadowdevforge" class="btn" style="background: var(--surface0); color: var(--text);">
+            Return to Profile
+        </a>
+    </div>
+
+    <div class="controls-hint" id="controlsHint">
+        Tip: Use 'sudo' to purge errors
+    </div>
+
+    <script>
+        const COLORS = {
+            player: '#c6a0f6', // Mauve
+            enemy: '#ed8796',  // Red
+            point: '#a6da95',  // Green
+            trail: '#8aadf4',  // Blue
+            text: '#cad3f5',
+            base: '#24273a',
+            vim: '#ed8796'     // Red (Vim/God Mode)
+        };
+
+        const ERROR_REASONS = [
+            "TYPO", "NULL", "VOID", "DELETED", 
+            "MOVED", "PRIVATE", "404", "NaN", 
+            "OFFLINE", "GHOST", "UNDEFINED"
+        ];
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreEl');
+        const highScoreEl = document.getElementById('highScoreEl');
+        const mainContent = document.getElementById('mainContent');
+        const startBtn = document.getElementById('startBtn');
+        const controlsHint = document.getElementById('controlsHint');
+        const sysMsg = document.getElementById('sysMsg');
+
+        let state = {
+            isPlaying: false,
+            score: 0,
+            highScore: parseInt(localStorage.getItem('shadow_404_high') || '0'),
+            width: window.innerWidth,
+            height: window.innerHeight,
+            mouseX: window.innerWidth / 2,
+            mouseY: window.innerHeight / 2,
+            frames: 0,
+            vimMode: false,
+        };
+
+        const keys = {};
+        let keyBuffer = [];
+        const CHEAT = "sudo";
+
+        const player = {
+            x: state.width / 2,
+            y: state.height / 2,
+            radius: 12,
+            speed: 8,
+            history: [] 
+        };
+
+        let enemies = [];
+        let points = [];
+        let particles = [];
+
+        highScoreEl.innerText = state.highScore;
+
+        function resize() {
+            state.width = window.innerWidth;
+            state.height = window.innerHeight;
+            canvas.width = state.width;
+            canvas.height = state.height;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- INPUT HANDLING (FIXED FOR MOBILE) ---
+        
+        // Desktop
+        window.addEventListener('mousemove', (e) => {
+            state.mouseX = e.clientX;
+            state.mouseY = e.clientY;
+        });
+
+        // Mobile: Updates position on touch start AND move
+        const updateTouch = (e) => {
+            if (!state.isPlaying) return;
+            e.preventDefault(); // Stop scrolling ONLY when playing/moving
+            state.mouseX = e.touches[0].clientX;
+            state.mouseY = e.touches[0].clientY;
+        };
+
+        // passive: false is crucial for preventing scroll
+        window.addEventListener('touchmove', updateTouch, { passive: false });
+        window.addEventListener('touchstart', (e) => {
+            // Don't prevent default here so buttons still work
+            if (state.isPlaying) {
+                state.mouseX = e.touches[0].clientX;
+                state.mouseY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        // Keyboard
+        window.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.code === 'Space' && !state.isPlaying) startGame();
+            
+            keyBuffer.push(e.key.toLowerCase());
+            if (keyBuffer.length > 4) keyBuffer.shift();
+            
+            if (keyBuffer.join('') === CHEAT && state.isPlaying) {
+                triggerSudo();
+                keyBuffer = [];
+            }
+        });
+        window.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
+
+        // --- GAME LOGIC ---
+
+        function triggerSudo() {
+            enemies.forEach(e => createParticles(e.x + e.w/2, e.y + e.h/2, COLORS.enemy, 15));
+            state.score += enemies.length * 100;
+            scoreEl.innerText = state.score;
+            enemies = [];
+            sysMsg.style.display = 'block';
+            sysMsg.innerText = "SUDO PURGE";
+            setTimeout(() => sysMsg.style.display = 'none', 1500);
+            createParticles(state.width/2, state.height/2, COLORS.vim, 100);
+        }
+
+        function spawnEnemy() {
+            const text = ERROR_REASONS[Math.floor(Math.random() * ERROR_REASONS.length)];
+            const size = Math.max(40, text.length * 10); 
+            enemies.push({
+                x: Math.random() * (state.width - size),
+                y: -60, w: size, h: 25,
+                speed: Math.random() * 3 + 2 + (state.score * 0.0005),
+                text: text
+            });
+        }
+
+        function spawnPoint() {
+            points.push({
+                x: Math.random() * state.width,
+                y: -50, radius: 6,
+                speed: Math.random() * 2 + 1
+            });
+        }
+
+        function createParticles(x, y, color, count = 5) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x, y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    life: 1.0,
+                    color
+                });
+            }
+        }
+
+        function update() {
+            if (!state.isPlaying) return;
+            state.frames++;
+
+            // Vim Mode Check
+            let moveX = 0, moveY = 0;
+            if (keys['h']) moveX -= 1;
+            if (keys['l']) moveX += 1;
+            if (keys['k']) moveY -= 1;
+            if (keys['j']) moveY += 1;
+
+            if (moveX !== 0 || moveY !== 0) {
+                state.vimMode = true;
+                player.x += moveX * player.speed;
+                player.y += moveY * player.speed;
+            } else {
+                if (!keys['h'] && !keys['j'] && !keys['k'] && !keys['l']) {
+                    state.vimMode = false;
+                    player.x += (state.mouseX - player.x) * 0.1;
+                    player.y += (state.mouseY - player.y) * 0.1;
+                }
+            }
+
+            // Clamp
+            if(player.x < 0) player.x = 0;
+            if(player.x > state.width) player.x = state.width;
+            if(player.y < 0) player.y = 0;
+            if(player.y > state.height) player.y = state.height;
+
+            // History
+            player.history.push({ x: player.x, y: player.y });
+            if (player.history.length > 15) player.history.shift();
+
+            // Spawns
+            if (state.frames % 45 === 0) spawnEnemy();
+            if (state.frames % 70 === 0) spawnPoint();
+
+            // Enemies
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                e.y += e.speed;
+
+                if (
+                    player.x + player.radius > e.x && 
+                    player.x - player.radius < e.x + e.w &&
+                    player.y + player.radius > e.y && 
+                    player.y - player.radius < e.y + e.h
+                ) {
+                    if (state.vimMode) {
+                        state.score += 50;
+                        scoreEl.innerText = state.score;
+                        createParticles(e.x + e.w/2, e.y + e.h/2, COLORS.enemy, 10);
+                        enemies.splice(i, 1);
+                    } else {
+                        gameOver();
+                    }
+                }
+                if (e.y > state.height) enemies.splice(i, 1);
+            }
+
+            // Points
+            for (let i = points.length - 1; i >= 0; i--) {
+                const p = points[i];
+                p.y += p.speed;
+                const dx = player.x - p.x;
+                const dy = player.y - p.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (dist < player.radius + p.radius + 15) {
+                    state.score += 128; 
+                    scoreEl.innerText = state.score;
+                    createParticles(p.x, p.y, COLORS.point);
+                    points.splice(i, 1);
+                } else if (p.y > state.height) points.splice(i, 1);
+            }
+
+            // Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(36, 39, 58, 0.3)'; 
+            ctx.fillRect(0, 0, state.width, state.height);
+
+            // Trail
+            ctx.beginPath();
+            for (let i = 0; i < player.history.length; i++) {
+                const p = player.history[i];
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.strokeStyle = state.vimMode ? COLORS.enemy : COLORS.trail;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Player
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            ctx.fillStyle = state.vimMode ? COLORS.vim : COLORS.player;
+            ctx.shadowBlur = state.vimMode ? 25 : 15;
+            ctx.shadowColor = state.vimMode ? COLORS.vim : COLORS.player;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Nametag
+            ctx.fillStyle = COLORS.text;
+            ctx.font = "bold 12px 'Courier New'";
+            ctx.textAlign = "center";
+            // Hidden visual cue for Vim mode
+            ctx.fillText(state.vimMode ? "INSERT MODE" : "shadow", player.x, player.y - player.radius - 10);
+
+            // Enemies
+            ctx.font = "bold 11px 'Courier New'";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            for (const e of enemies) {
+                ctx.fillStyle = COLORS.enemy;
+                ctx.fillRect(e.x, e.y, e.w, e.h);
+                ctx.fillStyle = COLORS.base; 
+                ctx.fillText(e.text, e.x + e.w/2, e.y + e.h/2);
+            }
+
+            // Points
+            ctx.fillStyle = COLORS.point;
+            for (const p of points) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Particles
+            for (const p of particles) {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+        }
+
+        function startGame() {
+            if (state.isPlaying) return;
+            state.isPlaying = true;
+            state.score = 0;
+            state.vimMode = false;
+            enemies = [];
+            points = [];
+            particles = [];
+            state.frames = 0;
+            scoreEl.innerText = "0";
+            sysMsg.style.display = 'none';
+
+            mainContent.classList.add('game-active');
+            controlsHint.style.display = 'none';
+            startBtn.innerText = "Running...";
+        }
+
+        function gameOver() {
+            state.isPlaying = false;
+            mainContent.classList.remove('game-active');
+            startBtn.innerText = "Retry Game";
+            createParticles(player.x, player.y, COLORS.enemy, 25);
+
+            if (state.score > state.highScore) {
+                state.highScore = state.score;
+                localStorage.setItem('shadow_404_high', state.score);
+                highScoreEl.innerText = state.highScore;
+            }
+        }
+
+        requestAnimationFrame(gameLoop);
+        startBtn.addEventListener('click', startGame);
+    </script>
+</body>
+    </html>
