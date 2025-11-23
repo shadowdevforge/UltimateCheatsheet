@@ -1,9 +1,3 @@
-Here is the professional **README.md** for **SyntaxForge**.
-
-I have refined the "Inspiration" text you provided to match the actual technical architecture we built (JSON-driven content, mouse-tracking glow effects, and the specific file structure).
-
-***
-
 <div align="center">
 
 # SyntaxForge
