@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "Bash",
+        "description": "The universal glue of the computing world. Automate, process, and govern the shell.",
+        "color": "#ed8796",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Shell)",
+            "topics": [
+                {
+                    "title": "Hello World & Shebang",
+                    "desc": "The first line defines the interpreter. Execution requires chmod +x.",
+                    "code": "#!/bin/bash\n\necho \"Hello, Forge!\"\n# Run with: ./script.sh"
+                },
+                {
+                    "title": "Variables",
+                    "desc": "No spaces around `=`. Access with `$`. Quotes matter.",
+                    "code": "NAME=\"Shadow\"\necho \"Hello $NAME\"  # Interpolation\necho 'Hello $NAME'  # Literal string"
+                },
+                {
+                    "title": "Special Variables",
+                    "desc": "Built-in variables for arguments and status.",
+                    "code": "echo $1  # First argument\necho $#  # Number of arguments\necho $?  # Last exit code (0 = Success)\necho $$  # Process ID"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Flow)",
+            "topics": [
+                {
+                    "title": "Redirection & Pipes",
+                    "desc": "Controlling Input/Output streams.",
+                    "code": "ls > list.txt      # Overwrite stdout to file\necho \"Data\" >> list.txt # Append\ncat file.txt | grep \"error\" # Pipe output to input"
+                },
+                {
+                    "title": "Conditionals (If)",
+                    "desc": "Using `[` (test) or `[[` (extended test). Spaces are critical.",
+                    "code": "if [[ -f \"config.json\" ]]; then\n    echo \"File exists\"\nelif [[ $USER == \"root\" ]]; then\n    echo \"Danger\"\nelse\n    echo \"Safe\"\nfi"
+                },
+                {
+                    "title": "Loops",
+                    "desc": "Iterating over lists, files, or ranges.",
+                    "code": "# C-style\nfor ((i=0; i<5; i++)); do echo $i; done\n\n# Range\nfor i in {1..5}; do echo \"Num: $i\"; done\n\n# While\nwhile [[ $count -gt 0 ]]; do ((count--)); done"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Logic)",
+            "topics": [
+                {
+                    "title": "Functions",
+                    "desc": "Grouping logic. Arguments are handled via $1, $2, etc.",
+                    "code": "greet() {\n    local name=$1\n    echo \"Welcome, $name\"\n}\n\ngreet \"Forge\""
+                },
+                {
+                    "title": "Command Substitution",
+                    "desc": "Saving the output of a command into a variable.",
+                    "code": "DATE=$(date +%F)\nFILES=$(find . -name \"*.rs\")\n\necho \"Today is $DATE\""
+                },
+                {
+                    "title": "Case Statement",
+                    "desc": "Cleaner alternative to complex if-else chains.",
+                    "code": "case \"$1\" in\n    start) echo \"Starting...\" ;;\n    stop)  echo \"Stopping...\" ;;\n    *)     echo \"Usage: $0 {start|stop}\" ;;\nesac"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Text Processing)",
+            "topics": [
+                {
+                    "title": "Grep (Search)",
+                    "desc": "Global Regular Expression Print.",
+                    "code": "grep -r \"TODO\" src/  # Recursive search\ngrep -v \"node_modules\" # Invert match (exclude)\ngrep -E \"^Error|[0-9]\" log.txt # Regex"
+                },
+                {
+                    "title": "Sed (Stream Editor)",
+                    "desc": "Find and replace text in streams.",
+                    "code": "# Replace 'foo' with 'bar' (first occurrence)\nsed 's/foo/bar/' file.txt\n\n# Replace ALL occurrences globally (-i for inplace)\nsed -i 's/ERROR/WARNING/g' log.txt"
+                },
+                {
+                    "title": "Awk (Pattern Scanning)",
+                    "desc": "Powerful text processing language within Bash.",
+                    "code": "# Print 2nd column of CSV\nawk -F',' '{print $2}' data.csv\n\n# Sum numbers in a column\nls -l | awk '{sum += $5} END {print sum}'"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Systems)",
+            "topics": [
+                {
+                    "title": "Strict Mode",
+                    "desc": "The unofficial \"Safety Header\" for robust scripts.",
+                    "code": "set -euo pipefail\n# -e: Exit on error\n# -u: Exit on unset variable\n# -o pipefail: Fail if any command in pipe fails"
+                },
+                {
+                    "title": "Parameter Expansion",
+                    "desc": "Advanced string manipulation.",
+                    "code": "file=\"image.png\"\necho ${file%.*}   # image (Remove extension)\necho ${file##*.}  # png (Get extension)\necho ${name:-Default} # Default value if unset"
+                },
+                {
+                    "title": "Traps & Signals",
+                    "desc": "Handling script interruption or cleanup.",
+                    "code": "cleanup() {\n    rm -rf /tmp/temp_files\n    echo \"Cleaned up.\"\n}\n\n# Run cleanup on EXIT, SIGINT (Ctrl+C), or Error\ntrap cleanup EXIT INT TERM"
+                }
+            ]
+        }
+    ]
+}

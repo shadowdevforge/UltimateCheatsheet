@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "C Programming",
+        "description": "The mother of modern languages. Manual memory management, pointers, and raw speed.",
+        "color": "#8aadf4",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Foundation)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "Standard I/O requires the stdio header.",
+                    "code": "#include <stdio.h>\n\nint main() {\n    printf(\"Hello, Forge!\\n\");\n    return 0;\n}"
+                },
+                {
+                    "title": "Primitive Types",
+                    "desc": "Basic storage units. Sizes vary by architecture.",
+                    "code": "int id = 42;        // Integer\nfloat pi = 3.14;    // Floating point\ndouble prec = 3.14; // Double precision\nchar grade = 'A';   // Single character"
+                },
+                {
+                    "title": "Input & Output",
+                    "desc": "Using format specifiers (%d, %f, %s).",
+                    "code": "int age;\nprintf(\"Enter age: \");\nscanf(\"%d\", &age); // & gets the address\nprintf(\"You are %d years old.\", age);"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Control & Arrays)",
+            "topics": [
+                {
+                    "title": "Control Flow",
+                    "desc": "Standard if-else and switch statements.",
+                    "code": "if (score > 90) {\n    printf(\"Excellent\");\n} else {\n    printf(\"Good\");\n}\n\n// Ternary\nint max = (a > b) ? a : b;"
+                },
+                {
+                    "title": "Loops",
+                    "desc": "For, While, and Do-While loops.",
+                    "code": "for (int i = 0; i < 5; i++) {\n    printf(\"%d \", i);\n}\n\nwhile (running) {\n    // logic code\n}"
+                },
+                {
+                    "title": "Arrays & Strings",
+                    "desc": "Strings in C are just null-terminated character arrays.",
+                    "code": "int numbers[5] = {1, 2, 3, 4, 5};\n\n// String (Null Terminated)\nchar name[] = \"Shadow\";\n// name[6] is implicitly '\\0'"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Pointers)",
+            "topics": [
+                {
+                    "title": "Pointer Basics",
+                    "desc": "Variables that store memory addresses.",
+                    "code": "int val = 10;\nint *ptr = &val; // ptr holds address of val\n\nprintf(\"%p\", ptr); // Prints address\nprintf(\"%d\", *ptr); // Dereference (get value)"
+                },
+                {
+                    "title": "Pointer Arithmetic",
+                    "desc": "Moving through memory manually.",
+                    "code": "int arr[] = {10, 20, 30};\nint *p = arr;\n\n// Accessing array via pointer\nprintf(\"%d\", *(p + 1)); // Prints 20"
+                },
+                {
+                    "title": "Structs",
+                    "desc": "Composite data types.",
+                    "code": "typedef struct {\n    char name[50];\n    int age;\n} Person;\n\nPerson p1;\np1.age = 25;\n// Pointer to struct uses arrow operator\nPerson *ptr = &p1;\nptr->age = 26;"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Memory)",
+            "topics": [
+                {
+                    "title": "Dynamic Memory (Malloc)",
+                    "desc": "Allocating memory on the Heap.",
+                    "code": "#include <stdlib.h>\n\n// Allocate array of 10 ints\nint *arr = (int*)malloc(10 * sizeof(int));\n\nif (arr == NULL) return 1; // Check failure"
+                },
+                {
+                    "title": "Memory Management (Free)",
+                    "desc": "You must manually release memory to prevent leaks.",
+                    "code": "free(arr); // Release memory\narr = NULL; // Good practice to prevent dangling pointer"
+                },
+                {
+                    "title": "Preprocessor Macros",
+                    "desc": "Code replacement before compilation.",
+                    "code": "#define PI 3.14159\n#define MAX(a,b) ((a) > (b) ? (a) : (b))\n\n#ifdef DEBUG\n    printf(\"Debug mode on\");\n#endif"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Systems)",
+            "topics": [
+                {
+                    "title": "Function Pointers",
+                    "desc": "Storing functions in variables. Used for callbacks.",
+                    "code": "void say_hello() { printf(\"Hello\"); }\n\nint main() {\n    void (*func_ptr)() = &say_hello;\n    func_ptr(); // Calls say_hello\n}"
+                },
+                {
+                    "title": "Bit Manipulation",
+                    "desc": "Low level control of bits.",
+                    "code": "int x = 5;      // 0101\nint y = x << 1; // 1010 (10) - Left Shift\nint z = x & 1;  // 0001 (1)  - Bitwise AND\n\n// Set 3rd bit\nx |= (1 << 3);"
+                },
+                {
+                    "title": "Unions",
+                    "desc": "Shared memory space for different types.",
+                    "code": "union Data {\n    int i;\n    float f;\n    char str[20];\n};\n\nunion Data data;\ndata.i = 10;\n// data.f is now corrupted/shared memory of data.i"
+                }
+            ]
+        }
+    ]
+}

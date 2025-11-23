@@ -3,650 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go Cheatsheet - SyntaxForge</title>
-    <meta name="description" content="A comprehensive cheatsheet for the Go programming language, covering syntax, concurrency, and practical examples.">
+    <title>Go Forge | Syntax Guide</title>
     
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐹</text></svg>">
-    
-    <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
-    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-macchiato.css" disabled>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <script>
-        // Immediately-invoked function to set theme before page render.
-        (function() {
-            function applyTheme(theme) {
-                document.documentElement.setAttribute('data-theme', theme);
-                document.getElementById('hljs-light-theme').disabled = theme === 'dark';
-                document.getElementById('hljs-dark-theme').disabled = theme === 'light';
-            }
-            const preferredTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            applyTheme(preferredTheme);
-        })();
-    </script>
+    <!-- Highlight.js (Go Language Support) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
 
-    <!-- Page-specific styling for the Go theme color -->
     <style>
-      body {
-        --glow-color: #00ADD8; /* Go Blue */
-      }
+        /* THEME: Catppuccin Macchiato */
+        :root {
+            --base: #24273a;
+            --mantle: #1e2030;
+            --crust: #181926;
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --overlay0: #6e738d;
+            --surface0: #363a4f;
+            --accent: #8bd5ca; /* Default Teal for Go */
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 16px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--surface0);
+            margin-bottom: 40px;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--subtext0);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .nav-back:hover { color: var(--text); transform: translateX(-4px); }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lang-icon { width: 64px; height: 64px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.3)); }
+
+        .page-title {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(0,0,0,0.2);
+        }
+
+        .page-desc { color: var(--subtext0); font-size: 1.1rem; margin-top: 8px; }
+
+        /* SECTIONS */
+        .level-section {
+            margin-bottom: 60px;
+            animation: fadeUp 0.6s var(--ease) backwards;
+        }
+
+        .level-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .level-badge {
+            font-size: 0.8rem;
+            background: var(--surface0);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--mantle);
+            border-radius: var(--radius);
+            border: 1px solid var(--surface0);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--accent), transparent 40%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .card:hover { border-color: var(--accent); }
+        .card:hover::before { opacity: 0.08; }
+
+        .card-content { position: relative; z-index: 1; }
+
+        .topic-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .topic-title { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+        .topic-desc { color: var(--subtext0); margin-bottom: 20px; font-size: 0.95rem; }
+
+        /* CODE BLOCKS */
+        pre {
+            background: var(--crust) !important;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--surface0);
+            margin: 0;
+        }
+        
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--mantle); }
+        ::-webkit-scrollbar-thumb { background: var(--surface0); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--overlay0); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Highlight.js Overrides */
+        .hljs { background: transparent !important; color: var(--text); }
+        .hljs-keyword { color: var(--accent); font-weight: bold; }
+        .hljs-string { color: #a6da95; } /* Green */
+        .hljs-title, .hljs-function { color: #8aadf4; } /* Blue */
+        .hljs-number { color: #f5a97f; } /* Peach */
+        .hljs-comment { color: #6e738d; font-style: italic; }
+        .hljs-type { color: #eed49f; }
+        .hljs-built_in { color: #ed8796; }
     </style>
 </head>
 <body>
-    <canvas id="cmatrix"></canvas>
 
-    <header class="header">
-        <a href="/SyntaxForge/" class="home-link">SyntaxForge</a>
-        <div class="theme-switcher-container">
-            <label for="theme-toggle" class="theme-toggle-label">
-                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
-                <span class="theme-toggle-slider"></span>
-            </label>
-        </div>
-        <div class="hero">
-            <h1 class="hero-title">Go</h1>
-            <p class="hero-tagline">An open source programming language that makes it easy to build simple, reliable, and efficient software.</p>
-        </div>
-    </header>
-
-    <main class="container">
-        <div class="view-switcher">
-            <button id="show-cheatsheet" class="view-btn active">Cheatsheet</button>
-            <button id="show-projects" class="view-btn">Projects</button>
-        </div>
-
-        <div id="cheatsheet-content">
-            <nav class="toc-container card">
-                <h2>Table of Contents</h2>
-                <ul id="toc-list"></ul>
-            </nav>
-
-            <section id="variables-constants" class="card">
-                <h2 class="card-title">1. Variables & Constants</h2>
-                <p>Go uses `var` for variable declaration and `const` for constants. The short declaration operator `:=` is common inside functions.</p>
-                <pre><code class="language-go">
-package main
-
-import "fmt"
-
-func main() {
-    // Long form declaration with explicit type
-    var name string = "SyntaxForge"
-    
-    // Type is inferred
-    var version = 1.0
-    
-    // Short declaration (most common)
-    // Can only be used inside functions
-    isAwesome := true
-    
-    fmt.Println(name, version, isAwesome)
-
-    // Constants
-    const Pi = 3.14159
-    // Pi = 3.14 // This would be a compile-time error
-}
-                </code></pre>
-            </section>
-            
-            <section id="data-types" class="card">
-                <h2 class="card-title">2. Basic Data Types</h2>
-                <p>Go is statically typed with basic types for numbers, booleans, and strings.</p>
-                <pre><code class="language-go">
-package main
-
-import "fmt"
-
-func main() {
-    // Integers
-    var myInt int = -42
-    var myUint uint = 100
-    
-    // Floats
-    var myFloat float64 = 123.45
-    
-    // Booleans
-    var isGoFun bool = true
-    
-    // Strings (immutable)
-    var greeting string = "Hello, Go!"
-    
-    // Rune (a character, alias for int32)
-    var firstChar rune = 'G'
-    
-    fmt.Println(myInt, myFloat, isGoFun, greeting, firstChar)
-}
-                </code></pre>
-            </section>
-
-            <section id="composite-types" class="card">
-                <h2 class="card-title">3. Composite Types</h2>
-                <p>Arrays, slices, and maps are the core composite types for handling collections of data.</p>
-                <pre><code class="language-go">
-package main
-
-import "fmt"
-
-func main() {
-    // Array (fixed size)
-    var arr [3]string
-    arr[0] = "Go"
-    arr[1] = "is"
-    arr[2] = "fast"
-    
-    // Slice (dynamic size, built on top of arrays)
-    // Slices are much more common than arrays.
-    primes := []int{2, 3, 5, 7, 11, 13}
-    primes = append(primes, 17) // Add an element
-    
-    // Map (key-value store, like a dictionary or hash map)
-    // make(map[keyType]valueType)
-    ages := make(map[string]int)
-    ages["Alice"] = 30
-    ages["Bob"] = 25
-    
-    fmt.Println("Array:", arr)
-    fmt.Println("Slice:", primes)
-    fmt.Println("Map:", ages)
-    fmt.Println("Bob's age is", ages["Bob"])
-}
-                </code></pre>
-            </section>
-            
-            <section id="control-flow" class="card">
-                <h2 class="card-title">4. Control Flow</h2>
-                <p>Go's control flow includes `if-else`, `for` (the only looping construct), and `switch`.</p>
-                <pre><code class="language-go">
-package main
-
-import "fmt"
-
-func main() {
-    // If-else
-    x := 10
-    if x > 5 {
-        fmt.Println("x is greater than 5")
-    } else {
-        fmt.Println("x is not greater than 5")
-    }
-    
-    // For loop (C-style)
-    for i := 0; i < 3; i++ {
-        fmt.Println(i)
-    }
-    
-    // For loop as a "while" loop
-    sum := 1
-    for sum < 10 {
-        sum += sum
-    }
-    
-    // For loop with range (iterating over slices/maps)
-    nums := []string{"one", "two", "three"}
-    for index, value := range nums {
-        fmt.Printf("index: %d, value: %s\n", index, value)
-    }
-    
-    // Switch statement
-    lang := "Go"
-    switch lang {
-    case "Python":
-        fmt.Println("Hello, Pythonista!")
-    case "Go":
-        fmt.Println("Hello, Gopher!")
-    default:
-        fmt.Println("Hello, Programmer!")
-    }
-}
-                </code></pre>
-            </section>
-
-            <section id="functions" class="card">
-                <h2 class="card-title">5. Functions</h2>
-                <p>Functions are declared with `func`. Go supports multiple return values, which is key to its error handling.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "errors"
-)
-
-// A simple function
-func add(a int, b int) int {
-    return a + b
-}
-
-// A function with multiple return values
-func divide(a, b float64) (float64, error) {
-    if b == 0 {
-        return 0, errors.New("cannot divide by zero")
-    }
-    return a / b, nil // 'nil' is the zero value for errors
-}
-
-func main() {
-    result := add(5, 3)
-    fmt.Println("5 + 3 =", result)
-    
-    quotient, err := divide(10.0, 2.0)
-    if err != nil {
-        fmt.Println("Error:", err)
-    } else {
-        fmt.Println("10.0 / 2.0 =", quotient)
-    }
-    
-    // Blank identifier `_` to ignore a return value
-    _, err = divide(10.0, 0)
-    if err != nil {
-        fmt.Println("Error caught:", err)
-    }
-}
-                </code></pre>
-            </section>
-            
-            <section id="structs-methods" class="card">
-                <h2 class="card-title">6. Structs & Methods</h2>
-                <p>Structs are collections of fields, used for grouping data. Methods are functions with a receiver.</p>
-                <pre><code class="language-go">
-package main
-
-import "fmt"
-
-// A struct type
-type Circle struct {
-    x, y float64
-    radius float64
-}
-
-// A method with a value receiver `(c Circle)`
-// It operates on a copy of the Circle.
-func (c Circle) area() float64 {
-    return 3.14 * c.radius * c.radius
-}
-
-// A method with a pointer receiver `(c *Circle)`
-// It operates on the original Circle. Use this to modify the struct.
-func (c *Circle) scale(factor float64) {
-    c.radius *= factor
-}
-
-func main() {
-    c := Circle{x: 0, y: 0, radius: 5}
-    fmt.Println("Initial area:", c.area())
-    
-    c.scale(2)
-    fmt.Println("Area after scaling:", c.area())
-}
-                </code></pre>
-            </section>
-
-            <section id="interfaces" class="card">
-                <h2 class="card-title">7. Interfaces</h2>
-                <p>Interfaces are collections of method signatures. A type implements an interface by implementing its methods.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "math"
-)
-
-// An interface for geometric shapes
-type Shape interface {
-    area() float64
-}
-
-type Rectangle struct {
-    width, height float64
-}
-
-type Circle struct {
-    radius float64
-}
-
-func (r Rectangle) area() float64 {
-    return r.width * r.height
-}
-
-func (c Circle) area() float64 {
-    return math.Pi * c.radius * c.radius
-}
-
-// This function can accept any type that implements the Shape interface
-func printArea(s Shape) {
-    fmt.Printf("Area of shape: %0.2f\n", s.area())
-}
-
-func main() {
-    rect := Rectangle{width: 10, height: 5}
-    circ := Circle{radius: 5}
-    
-    printArea(rect)
-    printArea(circ)
-}
-                </code></pre>
-            </section>
-
-            <section id="goroutines" class="card">
-                <h2 class="card-title">8. Goroutines</h2>
-                <p>Goroutines are lightweight threads managed by the Go runtime. Start one with the `go` keyword.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "time"
-)
-
-func say(s string) {
-    for i := 0; i < 3; i++ {
-        time.Sleep(100 * time.Millisecond)
-        fmt.Println(s)
-    }
-}
-
-func main() {
-    // Start a new goroutine
-    go say("world")
-    
-    // The main function runs in its own goroutine
-    say("hello")
-    
-    // Note: A real program would use a WaitGroup to ensure
-    // the program doesn't exit before the goroutine finishes.
-}
-                </code></pre>
-            </section>
-
-            <section id="channels" class="card">
-                <h2 class="card-title">9. Channels</h2>
-                <p>Channels are typed conduits for communicating between goroutines using the `<-` operator.</p>
-                <pre><code class="language-go">
-package main
-
-import "fmt"
-
-// This function sums a slice and sends the result to a channel
-func sum(s []int, c chan int) {
-    sum := 0
-    for _, v := range s {
-        sum += v
-    }
-    c &lt;- sum // Send sum to channel c
-}
-
-func main() {
-    s := []int{7, 2, 8, -9, 4, 0}
-    c := make(chan int) // Create a new channel
-
-    go sum(s[:len(s)/2], c) // Sum the first half
-    go sum(s[len(s)/2:], c) // Sum the second half
-
-    // Receive from channel c
-    x, y := &lt;-c, &lt;-c
-
-    fmt.Println(x, y, x+y)
-}
-                </code></pre>
-            </section>
-        </div>
-
-        <div id="projects-content" class="hidden">
-            <div class="project-card card">
-                <h2 class="card-title">1. Simple Web Server</h2>
-                <p>A minimal web server using Go's standard library that responds to requests.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "log"
-    "net/http"
-)
-
-// handler is a function that receives HTTP requests and writes responses.
-func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
-}
-
-func main() {
-    // Register the handler function for the root route "/"
-    http.HandleFunc("/", handler)
-
-    fmt.Println("Server starting on port 8080...")
-    // ListenAndServe starts the server and blocks until it's closed.
-    log.Fatal(http.ListenAndServe(":8080", nil))
-}
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>net/http</code></strong>: Go's powerful standard library for all things HTTP.</li>
-                        <li><strong><code>http.HandleFunc</code></strong>: This function registers another function to handle all requests for a specific route.</li>
-                        <li><strong><code>handler</code> function</strong>: It takes an `http.ResponseWriter` (to write your response to) and an `http.Request` (containing details about the incoming request).</li>
-                        <li><strong><code>log.Fatal</code></strong>: Wraps the server start call. If `ListenAndServe` returns an error (e.g., port is already in use), it will be logged and the program will exit.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="project-card card">
-                <h2 class="card-title">2. Command-Line URL Fetcher</h2>
-                <p>A CLI tool that fetches the content of a URL provided as an argument.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "io"
-    "net/http"
-    "os"
-)
-
-func main() {
-    if len(os.Args) != 2 {
-        fmt.Println("Usage: go run main.go &lt;URL&gt;")
-        os.Exit(1)
-    }
-    
-    url := os.Args[1]
-    resp, err := http.Get(url)
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "fetch: %v\n", err)
-        os.Exit(1)
-    }
-
-    // Read the body of the response
-    body, err := io.ReadAll(resp.Body)
-    resp.Body.Close() // Important to close the body
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "fetch: reading %s: %v\n", url, err)
-        os.Exit(1)
-    }
-
-    fmt.Printf("%s", body)
-}
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>os.Args</code></strong>: A slice of strings containing the command-line arguments. `os.Args[0]` is the program name itself.</li>
-                        <li><strong><code>http.Get</code></strong>: A convenient function for making a GET request to a URL.</li>
-                        <li><strong><code>io.ReadAll</code></strong>: Reads from an `io.Reader` (like `resp.Body`) until an error or EOF and returns the data as a byte slice.</li>
-                        <li><strong><code>resp.Body.Close()</code></strong>: You must close the response body to prevent resource leaks. A `defer resp.Body.Close()` right after the error check is also common.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="project-card card">
-                <h2 class="card-title">3. Concurrent Word Counter</h2>
-                <p>This program counts word frequencies from a list of strings concurrently using goroutines and channels.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "strings"
-    "sync"
-)
-
-func countWords(text string, counts map[string]int, wg *sync.WaitGroup, mu *sync.Mutex) {
-    defer wg.Done()
-    
-    words := strings.Fields(strings.ToLower(text))
-    
-    mu.Lock()
-    for _, word := range words {
-        counts[word]++
-    }
-    mu.Unlock()
-}
-
-func main() {
-    texts := []string{
-        "Go is an open source programming language",
-        "It makes it easy to build simple and reliable software",
-        "Go is efficient and expressive",
-    }
-    
-    var wg sync.WaitGroup
-    var mu sync.Mutex
-    wordCounts := make(map[string]int)
-
-    for _, text := range texts {
-        wg.Add(1)
-        go countWords(text, wordCounts, &amp;wg, &amp;mu)
-    }
-
-    wg.Wait() // Block until all goroutines are done
-    fmt.Println(wordCounts)
-}
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>sync.WaitGroup</code></strong>: A powerful tool to wait for a collection of goroutines to finish. `Add(1)` increments the counter, and `Done()` decrements it. `Wait()` blocks until the counter is zero.</li>
-                        <li><strong><code>sync.Mutex</code></strong>: A mutual exclusion lock. Since multiple goroutines are trying to write to the `wordCounts` map at the same time, we need a mutex to prevent a race condition. `Lock()` acquires the lock, and `Unlock()` releases it.</li>
-                        <li><strong>Pointer passing</strong>: We pass pointers to the `WaitGroup` and `Mutex` so that all goroutines share the same instance.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="project-card card">
-                <h2 class="card-title">4. Simple Key-Value Store API</h2>
-                <p>A web server that exposes a thread-safe in-memory key-value store via a simple API.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "encoding/json"
-    "net/http"
-    "sync"
-)
-
-type Store struct {
-    mu   sync.RWMutex
-    data map[string]string
-}
-
-func (s *Store) handleSet(w http.ResponseWriter, r *http.Request) {
-    key := r.URL.Query().Get("key")
-    value := r.URL.Query().Get("value")
-    if key == "" || value == "" {
-        http.Error(w, "Missing key or value", http.StatusBadRequest)
-        return
-    }
-    s.mu.Lock()
-    s.data[key] = value
-    s.mu.Unlock()
-    w.WriteHeader(http.StatusOK)
-}
-
-func (s *Store) handleGet(w http.ResponseWriter, r *http.Request) {
-    key := r.URL.Query().Get("key")
-    s.mu.RLock()
-    value, ok := s.data[key]
-    s.mu.RUnlock()
-    if !ok {
-        http.Error(w, "Key not found", http.StatusNotFound)
-        return
-    }
-    json.NewEncoder(w).Encode(map[string]string{"key": key, "value": value})
-}
-
-func main() {
-    store := &amp;Store{data: make(map[string]string)}
-    http.HandleFunc("/set", store.handleSet)
-    http.HandleFunc("/get", store.handleGet)
-    http.ListenAndServe(":8080", nil)
-}
-                </code></pre>
-                 <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>sync.RWMutex</code></strong>: A reader/writer mutex. It allows any number of readers OR one single writer. This is more performant than a regular `Mutex` if you have many reads and few writes. `RLock()` locks for reading, `Lock()` locks for writing.</li>
-                        <li><strong><code>Store struct</code></strong>: We group the data and its lock together. The handler functions are now methods on this struct.</li>
-                        <li><strong>Query Parameters</strong>: We use `r.URL.Query().Get("key")` to extract data from the URL, e.g., `/set?key=hello&value=world`.</li>
-                        <li><strong><code>json.NewEncoder</code></strong>: A convenient way to stream JSON data directly to the `http.ResponseWriter`.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="project-card card">
-                <h2 class="card-title">5. Directory File Lister</h2>
-                <p>A program that lists all files in the current directory, ignoring subdirectories.</p>
-                <pre><code class="language-go">
-package main
-
-import (
-    "fmt"
-    "log"
-    "os"
-)
-
-func main() {
-    // Open the current directory "."
-    dir, err := os.Open(".")
-    if err != nil {
-        log.Fatalf("failed opening directory: %s", err)
-    }
-    defer dir.Close()
-
-    // Read all the entries in the directory
-    list, err := dir.Readdir(-1) // -1 means read all entries
-    if err != nil {
-        log.Fatalf("failed reading directory: %s", err)
-    }
-
-    fmt.Println("Files in current directory:")
-    for _, file := range list {
-        // IsDir() checks if the entry is a directory
-        if !file.IsDir() {
-            fmt.Println("-", file.Name())
+    <div class="container">
+        <!-- Header -->
+        <header id="pageHeader" class="header">
+            <a href="/SyntaxForge" class="nav-back">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Forge
+            </a>
+        </header>
+
+        <!-- Main Content -->
+        <main id="mainContent">
+            <!-- Sections Injected Here -->
+        </main>
+    </div>
+
+    <script>
+        const header = document.getElementById('pageHeader');
+        const main = document.getElementById('mainContent');
+        const root = document.documentElement;
+
+        async function loadContent() {
+            try {
+                const response = await fetch('content.json');
+                const data = await response.json();
+                renderPage(data);
+            } catch (error) {
+                console.error("Error loading forge data:", error);
+                main.innerHTML = `<div style="text-align:center; color:var(--red)">Failed to load content module.</div>`;
+            }
         }
-    }
-}
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>os.Open(".")</code></strong>: Opens a directory for reading. `.` represents the current directory.</li>
-                        <li><strong><code>defer dir.Close()</code></strong>: `defer` schedules a function call to be run just before the function it's in returns. It's the idiomatic way to ensure resources like files are closed.</li>
-                        <li><strong><code>dir.Readdir(-1)</code></strong>: Reads the contents of the directory and returns a slice of `os.FileInfo` objects.</li>
-                        <li><strong><code>file.IsDir()</code></strong>: The `os.FileInfo` interface provides methods to check properties of a file system object, such as whether it's a directory.</li>
-                    </ul>
+
+        function renderPage(data) {
+            // 1. Apply Meta Theme
+            root.style.setProperty('--accent', data.meta.color);
+            document.title = `${data.meta.language} | SyntaxForge`;
+
+            // 2. Render Header Info
+            const titleBlock = document.createElement('div');
+            titleBlock.className = 'title-row';
+            titleBlock.innerHTML = `
+                <img src="${data.meta.icon}" class="lang-icon" alt="${data.meta.language}">
+                <div>
+                    <div class="page-title">${data.meta.language}</div>
+                    <div class="page-desc">${data.meta.description}</div>
                 </div>
-            </div>
-        </div>
-    </main>
+            `;
+            header.appendChild(titleBlock);
 
-    <footer class="footer">
-        <a href="/SyntaxForge/" class="footer-link">Back to Home</a>
-        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
-    </footer>
+            // 3. Render Sections
+            data.sections.forEach((section, index) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'level-section';
+                sectionEl.style.animationDelay = `${index * 0.1}s`;
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
-    <script src="script.js"></script>
+                // Section Title
+                sectionEl.innerHTML = `
+                    <div class="level-title">
+                        ${section.level}
+                        <span class="level-badge">Level ${index + 1}</span>
+                    </div>
+                    <div class="grid" id="grid-${index}"></div>
+                `;
+                
+                const gridEl = sectionEl.querySelector(`#grid-${index}`);
+
+                // Topics
+                section.topics.forEach(topic => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <div class="topic-header">
+                                <div class="topic-title">${topic.title}</div>
+                            </div>
+                            <p class="topic-desc">${topic.desc}</p>
+                            <pre><code class="language-${data.meta.language.toLowerCase()}">${topic.code}</code></pre>
+                        </div>
+                    `;
+                    gridEl.appendChild(card);
+                });
+
+                main.appendChild(sectionEl);
+            });
+
+            // 4. Initialize Highlight.js
+            hljs.highlightAll();
+
+            // 5. Initialize Mouse Tracking
+            initGlowEffect();
+        }
+
+        function initGlowEffect() {
+            const container = document.querySelector('.container');
+            container.onmousemove = e => {
+                for(const card of document.getElementsByClassName("card")) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
+
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
+                }
+            };
+        }
+
+        // Start
+        loadContent();
+
+    </script>
 </body>
 </html>

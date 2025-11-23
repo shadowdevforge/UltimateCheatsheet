@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "Python",
+        "description": "Beautiful is better than ugly. Explicit is better than implicit. The language of Data & AI.",
+        "color": "#eed49f",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Basics)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "Indentation matters. No braces, no semicolons.",
+                    "code": "print(\"Hello, Forge!\")\n\n# Variables are dynamic\nx = 10\nname = \"Shadow\"\nis_active = True"
+                },
+                {
+                    "title": "Lists & Dicts",
+                    "desc": "Powerful built-in data structures.",
+                    "code": "items = [1, 2, 3]\nitems.append(4)\n\nuser = {\"name\": \"Shadow\", \"id\": 1}\nprint(user[\"name\"])"
+                },
+                {
+                    "title": "Control Flow",
+                    "desc": "If-elif-else and For loops.",
+                    "code": "if x > 5:\n    print(\"Big\")\nelif x == 5:\n    print(\"Equal\")\nelse:\n    print(\"Small\")\n\nfor i in range(5):\n    print(i) # 0 to 4"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Pythonic)",
+            "topics": [
+                {
+                    "title": "Functions",
+                    "desc": "Defined with `def`. Supports default and keyword arguments.",
+                    "code": "def greet(name, loud=False):\n    msg = f\"Hello {name}\"\n    if loud:\n        return msg.upper()\n    return msg\n\ngreet(\"Forge\", loud=True)"
+                },
+                {
+                    "title": "List Comprehensions",
+                    "desc": "Concise syntax for creating lists.",
+                    "code": "nums = [1, 2, 3, 4]\n\n# The Pythonic way\nsquares = [n**2 for n in nums if n % 2 == 0]\n# Result: [4, 16]"
+                },
+                {
+                    "title": "File Handling",
+                    "desc": "Using context managers (`with`) to ensure files close safely.",
+                    "code": "with open(\"data.txt\", \"r\") as f:\n    content = f.read()\n    print(content)\n# File closed automatically here"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (OOP)",
+            "topics": [
+                {
+                    "title": "Classes",
+                    "desc": "Object Oriented Programming. `self` is explicit.",
+                    "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n\n    def bark(self):\n        return f\"{self.name} says Woof!\"\n\nd = Dog(\"Rex\")\nprint(d.bark())"
+                },
+                {
+                    "title": "Decorators",
+                    "desc": "Wrappers that modify function behavior. Syntax sugar `@`.",
+                    "code": "def log(func):\n    def wrapper():\n        print(\"Running...\")\n        func()\n        print(\"Done.\")\n    return wrapper\n\n@log\ndef say_hi():\n    print(\"Hi!\")"
+                },
+                {
+                    "title": "Generators",
+                    "desc": "Lazy evaluation using `yield`. Memory efficient.",
+                    "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor num in countdown(5):\n    print(num) # Generates one at a time"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Metaprogramming)",
+            "topics": [
+                {
+                    "title": "Magic Methods",
+                    "desc": "Dunder methods that define object behavior (Operator Overloading).",
+                    "code": "class Vector:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n\n    def __add__(self, other):\n        return Vector(self.x + other.x, self.y + other.y)\n\n    def __repr__(self):\n        return f\"Vector({self.x}, {self.y})\""
+                },
+                {
+                    "title": "Context Managers",
+                    "desc": "Creating custom `with` statement behavior.",
+                    "code": "class Timer:\n    def __enter__(self):\n        print(\"Start time\")\n        return self\n    \n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print(\"End time\")\n\nwith Timer():\n    pass"
+                },
+                {
+                    "title": "Type Hinting",
+                    "desc": "Modern Python supports static analysis types.",
+                    "code": "from typing import List, Optional\n\ndef process(items: List[int]) -> Optional[int]:\n    if not items:\n        return None\n    return sum(items)"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Async & C)",
+            "topics": [
+                {
+                    "title": "AsyncIO",
+                    "desc": "Asynchronous programming with `async` and `await`.",
+                    "code": "import asyncio\n\nasync def main():\n    print(\"Hello\")\n    await asyncio.sleep(1)\n    print(\"World\")\n\nasyncio.run(main())"
+                },
+                {
+                    "title": "Metaclasses",
+                    "desc": "Classes that create classes. Deep magic.",
+                    "code": "class Meta(type):\n    def __new__(cls, name, bases, dct):\n        dct['created_by'] = 'Meta'\n        return super().__new__(cls, name, bases, dct)\n\nclass MyClass(metaclass=Meta):\n    pass\n\nprint(MyClass.created_by) # Meta"
+                },
+                {
+                    "title": "Dataclasses",
+                    "desc": "Boilerplate-free classes for storing data.",
+                    "code": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int\n    z: int = 0\n\np = Point(1, 2)\nprint(p) # Point(x=1, y=2, z=0)"
+                }
+            ]
+        }
+    ]
+}

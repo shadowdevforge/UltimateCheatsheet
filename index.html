@@ -3,38 +3,490 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SyntaxForge - A Cheatsheet Collection</title>
-    <meta name="description" content="A curated collection of cheatsheets for modern programming languages and frameworks.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
+    <title>SyntaxForge</title>
+    <meta name="description" content="Fiercely forged syntax cheatsheets for the modern developer.">
+    
+    <!-- Fonts: Inter (UI) & JetBrains Mono (Code/Headers) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+         * THEME: Catppuccin Macchiato 
+         */
+        :root {
+            --base: #24273a;
+            --mantle: #1e2030;
+            --crust: #181926;
+            
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --overlay0: #6e738d;
+            --surface0: #363a4f;
+            --surface1: #494d64;
+            
+            --blue: #8aadf4;
+            --mauve: #c6a0f6;
+            --red: #ed8796;
+            --peach: #f5a97f;
+            --yellow: #eed49f;
+            --green: #a6da95;
+            --teal: #8bd5ca;
+            --lavender: #b7bdf8;
+
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --radius: 16px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #2f334d 0%, var(--base) 70%);
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        button, input { border: none; outline: none; font-family: inherit; }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 
+         * 1. HERO SECTION 
+         */
+        .hero {
+            text-align: center;
+            padding: 100px 0 60px;
+            animation: fadeDown 0.8s var(--ease);
+        }
+
+        .brand {
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--mauve);
+            margin-bottom: 16px;
+            display: inline-block;
+            text-shadow: 0 4px 30px rgba(198, 160, 246, 0.2);
+        }
+
+        .tagline {
+            color: var(--subtext0);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* 
+         * 2. SEARCH BAR 
+         */
+        .search-container {
+            margin: 0 auto 60px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            animation: fadeUp 0.8s var(--ease) 0.1s backwards;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--mantle);
+            border: 2px solid var(--surface0);
+            padding: 16px 20px 16px 50px;
+            border-radius: 100px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s var(--ease);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-input:focus {
+            border-color: var(--mauve);
+            box-shadow: 0 8px 30px rgba(198, 160, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--overlay0);
+            pointer-events: none;
+            transition: color 0.3s;
+        }
+
+        .search-input:focus + .search-icon { color: var(--mauve); }
+
+        /* 
+         * 3. CONTENT STRUCTURE 
+         */
+        .main-content {
+            padding-bottom: 80px;
+        }
+
+        .category-section {
+            margin-bottom: 60px;
+            animation: fadeUp 0.6s var(--ease) backwards;
+        }
+
+        .category-title {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--subtext0);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .category-title::before, .category-title::after {
+            content: '';
+            height: 1px;
+            width: 40px;
+            background-color: var(--surface1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--mantle);
+            border-radius: var(--radius);
+            padding: 28px;
+            border: 1px solid var(--surface0);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s var(--ease);
+            display: flex;
+            flex-direction: column;
+            isolation: isolate; 
+            height: 100%;
+        }
+
+        /* The Glow Engine */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), var(--glow-color), transparent 40%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s;
+        }
+
+        /* Static bottom glow */
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--glow-color);
+            opacity: 0.5;
+            transition: height 0.3s var(--ease), opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--glow-color);
+            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.3);
+        }
+
+        .card:hover::after {
+            height: 100%;
+            opacity: 0.05; 
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-desc {
+            color: var(--subtext0);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .card-arrow {
+            align-self: flex-end;
+            color: var(--glow-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.8;
+            transition: transform 0.2s;
+        }
+
+        .card:hover .card-arrow {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: var(--overlay0);
+            font-style: italic;
+        }
+
+        /* 
+         * 4. FOOTER 
+         */
+        .footer {
+            border-top: 1px solid var(--surface0);
+            padding: 40px 0;
+            background: var(--crust);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--subtext0);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .footer-link:hover { color: var(--text); }
+        .footer-link svg { stroke-width: 2px; }
+
+        /* Animations */
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
-    <canvas id="cmatrix"></canvas>
 
-    <header class="header">
-        <div class="theme-switcher-container">
-            <label for="theme-toggle" class="theme-toggle-label">
-                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
-                <span class="theme-toggle-slider"></span>
-            </label>
+    <div class="container">
+        <!-- 1. Hero -->
+        <header class="hero">
+            <div class="brand">SyntaxForge</div>
+            <p class="tagline">Forged knowledge for the modern systems engineer.</p>
+        </header>
+
+        <!-- 2. Search -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search cheatsheets (e.g. Rust, Lua)..." autocomplete="off">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </div>
-        <div class="hero">
-            <h1 class="hero-title">SyntaxForge</h1>
-            <p class="hero-tagline">Your definitive guide to programming language syntax.</p>
-            <div class="search-container">
-                <input type="search" id="search-bar" placeholder="Search for a language..." aria-label="Search for a language">
-            </div>
-        </div>
-    </header>
 
-    <main id="language-grid" class="language-grid-container"></main>
+        <!-- 3. Content Area -->
+        <main id="mainContent" class="main-content">
+            <!-- Categories and Cards injected via JS -->
+        </main>
+    </div>
 
+    <!-- 4. Footer -->
     <footer class="footer">
-        <a href="mailto:shadowdevforge+contact@gmail.com" class="footer-link">Available to Hire/Sponsor</a>
-        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
-        <a href="https://github.com/shadowedevforge/SyntaxForge/blob/main/index.html" target="_blank" rel="noopener noreferrer" class="footer-link">Edit this Page</a>
+        <div class="footer-content">
+            <a href="https://github.com/shadowdevforge/SyntaxForge" target="_blank" class="footer-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Star Repository
+            </a>
+            <a href="mailto:shadowdev.forge+contact@gmail.com" class="footer-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Contact / Mail
+            </a>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        /**
+         * SyntaxForge Configuration
+         * Includes 'category' for grouping.
+         */
+        const cheatsheets = [
+            // Systems Engineering
+            {
+                title: "Rust",
+                desc: "Ownership, Borrow Checker, Lifetimes, and Zero-Cost Abstractions.",
+                path: "cheatsheets/rust",
+                color: "var(--peach)",
+                category: "Systems Engineering"
+            },
+            {
+                title: "C Programming",
+                desc: "Pointers, Memory Management, Structs, and Low-level system calls.",
+                path: "cheatsheets/c",
+                color: "var(--blue)",
+                category: "Systems Engineering"
+            },
+            {
+                title: "Nim",
+                desc: "Efficient, expressive, and elegant. Python-like syntax that compiles to C.",
+                path: "guides/nim", // Or "nim/index.html" depending on your folder structure
+                color: "var(--yellow)",
+                category: "Systems Engineering"
+            },
+            {
+                title: "Zig",
+                desc: "A modern system language intended to replace C. No hidden control flow.",
+                path: "guides/zig", // Or "zig/index.html" depending on your folder structure
+                color: "var(--peach)",
+                category: "Systems Engineering"
+            },
+            {
+                title: "Golang",
+                desc: "Goroutines, Channels, Interfaces, and Backend microservices.",
+                path: "cheatsheets/go",
+                color: "var(--teal)",
+                category: "Systems Engineering"
+            },
+            
+            // Scripting & Automation
+            {
+                title: "Lua",
+                desc: "Tables, Metatables, C-API Integration, and Neovim embedding.",
+                path: "cheatsheets/lua",
+                color: "var(--mauve)",
+                category: "Scripting & Automation"
+            },
+            {
+                title: "Python",
+                desc: "Decorators, Generators, AsyncIO, and CPython internals.",
+                path: "cheatsheets/python",
+                color: "var(--yellow)",
+                category: "Scripting & Automation"
+            },
+            {
+                title: "Bash",
+                desc: "Piping, Redirection, Grep/Sed/Awk mastery, and Scripting patterns.",
+                path: "cheatsheets/bash",
+                color: "#94A3B8",
+                category: "Scripting & Automation"
+            }
+        ];
+
+        const contentArea = document.getElementById('mainContent');
+        const searchInput = document.getElementById('searchInput');
+
+        // --- MOUSE TRACKING FOR GLOW EFFECT ---
+        // Attached to container so it works even when grids change
+        document.querySelector('.container').onmousemove = e => {
+            for(const card of document.getElementsByClassName("card")) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            }
+        };
+
+        function rendercheatsheets(data) {
+            contentArea.innerHTML = '';
+
+            if (data.length === 0) {
+                contentArea.innerHTML = `<div class="no-results">No cheatsheets found matching your query.</div>`;
+                return;
+            }
+
+            // Get unique categories present in the (potentially filtered) data
+            const categories = [...new Set(data.map(item => item.category))];
+
+            categories.forEach((category, catIndex) => {
+                // Create Section Wrapper
+                const section = document.createElement('section');
+                section.className = 'category-section';
+                
+                // Create Title
+                const title = document.createElement('h2');
+                title.className = 'category-title';
+                title.textContent = category;
+                section.appendChild(title);
+
+                // Create Grid
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+
+                // Fill Grid with items belonging to this category
+                const categoryItems = data.filter(item => item.category === category);
+                
+                categoryItems.forEach((item, index) => {
+                    const card = document.createElement('a');
+                    card.href = item.path;
+                    card.className = 'card';
+                    card.style.setProperty('--glow-color', item.color);
+                    // Slight stagger based on global index concept
+                    card.style.animation = `fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) ${index * 0.05}s backwards`;
+
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-title" style="color:${item.color}">${item.title}</div>
+                        </div>
+                        <p class="card-desc">${item.desc}</p>
+                        <div class="card-arrow">
+                            Explore
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                contentArea.appendChild(section);
+            });
+        }
+
+        // Search Logic
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = cheatsheets.filter(g => 
+                g.title.toLowerCase().includes(term) || 
+                g.desc.toLowerCase().includes(term) ||
+                g.category.toLowerCase().includes(term)
+            );
+            rendercheatsheets(filtered);
+        });
+
+        // Initial Render
+        rendercheatsheets(cheatsheets);
+
+    </script>
 </body>
 </html>

@@ -1,119 +1,158 @@
-<div align="center">
+Here is the professional **README.md** for **SyntaxForge**.
 
-# The Modern Developer's Syntax Forge
+I have refined the "Inspiration" text you provided to match the actual technical architecture we built (JSON-driven content, mouse-tracking glow effects, and the specific file structure).
 
-**A curated collection of direct, "one-way-go" cheat sheets for essential programming languages and environments.**
-
-</div>
+***
 
 <div align="center">
 
+# SyntaxForge
+
+**The Modern Developer's Syntax Reference**
+
+<a href="https://shadowdevforge.github.io/SyntaxForge/">
+  <img src="https://img.shields.io/badge/Status-Live_Forge-a6da95?style=for-the-badge&logo=github" alt="Live Status">
+</a>
+<a href="#-how-to-extend">
+  <img src="https://img.shields.io/badge/Contributions-Welcome-8aadf4?style=for-the-badge&logo=git" alt="Contributions">
+</a>
+<a href="LICENSE">
+  <img src="https://img.shields.io/badge/License-MIT-ed8796?style=for-the-badge" alt="License">
+</a>
+
+<br />
+
+**[View the Live Forge](https://shadowdevforge.github.io/SyntaxForge/)**
+
 </div>
+
+<br />
 
 <div align="center">
-
-**[View the live, interactive website](https://shadowdevforge.github.io/SyntaxForge/)**
-
+  <img width="100%" alt="SyntaxForge Preview" src="https://github.com/user-attachments/assets/8059a8e9-04f1-4de2-a704-289c6fde09ce" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" />
 </div>
 
-<pre>
-<img width="1629" height="992" alt="image" src="https://github.com/user-attachments/assets/132c4e30-9f3e-4e4b-81a3-a36068c67469" />
-</pre>
+<br />
 
 ## 🔥 About The Project
 
-This repository provides fiercely forged syntax guides for the modern developer. Each cheat sheet is designed to be a fast, practical reference, cutting through the noise to give you the core syntax you need to be productive immediately.
+**SyntaxForge** is a curated collection of direct, "one-way-go" cheat sheets for essential programming languages. It cuts through the noise of documentation to provide the idiomatic syntax you need to be productive immediately.
 
-Our philosophy is built on a few core principles:
-*   **Direct & Practical:** Get straight to the syntax you need without unnecessary theory.
-*   **Aesthetically Pleasing**: A clean, modern UI with beautiful themes that respects developer focus.
-*   **Modern First:** Emphasize idiomatic syntax and current best practices.
-*   **Community-Driven:** Built to be a single, comprehensive reference that grows with the community.
+Our philosophy is built on the **"Novice to Grandmaster"** progression. Instead of a flat list of commands, every guide is structured to take you from `Hello World` to `Advanced System Architecture`.
+
+### Core Principles
+*   **Direct & Practical:** No fluff. Just the code patterns you need.
+*   **Aesthetic First:** Built on the **Catppuccin Macchiato** palette to reduce eye strain and look beautiful.
+*   **Systems Focused:** Prioritizing languages like Rust, C, Go, and Zig.
+*   **Modular Architecture:** Content is separated from logic via JSON, making it trivial to extend.
+
+---
 
 ## ✨ Features
 
-- **Beautiful Theming**: Gorgeous [Catppuccin](https://github.com/catppuccin/catppuccin) themes for both light (Latte) and dark (Mocha) modes.
-- **Dynamic Background**: A subtle, non-distracting "cmatrix" animation adds a touch of hacker-inspired flair.
-- **Modern UI**: Cards feature a sleek blur effect for a modern, layered feel.
-- **Practical Examples**: Cheatsheets include a "Projects" tab with real-world examples and code explanations.
-- **Easy to Extend**: Add a new language by simply adding an object to an array.
-- **Lightweight & Fast**: Built with web standards—no heavy frameworks—for maximum performance.
+*   **🎨 Catppuccin Theming**: Fully styled with the Macchiato palette for a cohesive, high-contrast dark mode experience.
+*   **💡 Ambient Glow**: Custom mouse-tracking CSS engine that creates dynamic lighting effects on cards based on the language's brand color.
+*   **🧱 JSON-Driven Content**: Every cheat sheet is generated dynamically from a simple `content.json` file.
+*   **⚡ Zero-Build**: Built with Vanilla JS and CSS. No Webpack, no React, no `node_modules`. Just raw performance.
+*   **🌈 Syntax Highlighting**: Integrated `Highlight.js` with custom CSS overrides to match the Catppuccin theme perfectly.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Vanilla JavaScript**: For lightweight, fast, and dependency-free interactivity.
-- **Semantic HTML5**: For accessibility and a strong structural foundation.
-- **Modern CSS**: Leveraging Flexbox, Grid, and CSS Variables for responsive and maintainable styling.
-- **[highlight.js](https://highlightjs.org/)**: For robust and themeable syntax highlighting.
+*   **Core**: Semantic HTML5, Modern CSS3 (Grid/Flexbox), Vanilla JavaScript (ES6+).
+*   **Highlighter**: [Highlight.js](https://highlightjs.org/) (Auto-detects language).
+*   **Icons**: SVG (Feather Icons style).
+*   **Font**: Inter (UI) & JetBrains Mono (Code).
+
+---
 
 ## 🚀 Getting Started
 
-To get a local copy up and running, follow these simple steps. The easiest way is to use the **Live Server** extension in VS Code.
+To run the forge locally, you just need a static file server.
 
-Alternatively, you can use Python's built-in server:
+### Using Python (Built-in)
 ```bash
-# From the project's root directory
-python -m http.server
+# Clone the repository
+git clone https://github.com/shadowdevforge/SyntaxForge.git ~/shadowforge
+
+# Navigate to directory
+cd ~/shadowforge/SyntaxForge
+
+# Start server
+python3 -m http.server 8000
 ```
-Then, navigate to `http://localhost:8000` in your browser.
+Open `http://localhost:8000` in your browser.
 
-## 🤝 How to Contribute & Extend the Forge
+### Using VS Code
+Simply install the **Live Server** extension and click "Go Live" on `index.html`.
 
-Contributions are what make SyntaxForge great! Adding a new cheatsheet is designed to be simple.
+---
 
-### 1. Add a Language Card to the Landing Page
+## 🔨 How to Extend the Forge
 
-First, make your new cheatsheet discoverable on the main page.
+SyntaxForge is designed to be extended. Adding a new language (e.g., `TypeScript`) takes 3 steps:
 
-1.  Open `script.js` in the project root.
-2.  Find the `languages` array.
-3.  Add a new object to the array with the following structure:
+### 1. Create the Directory
+Create a folder in the root directory with the language name (e.g., `typescript/`).
 
-    ```javascript
-    const languages = [
-        // ... existing languages
-        { 
-            name: 'Your Language',         // e.g., 'Python'
-            slug: 'your-language',         // e.g., 'python'. This defines the URL path.
-            description: 'A short, compelling description of the language.',
-            category: 'Category Name'      // Must be one of: 'Systems & Backend', 'Web & Frontend', or 'Scripting & Automation'
-        },
-    ];
-    ```
+### 2. Add the Content
+Create `typescript/content.json`. Define the color, icon, and sections (Novice, Apprentice, etc.).
 
-### 2. Create the New Cheatsheet Page
+```json
+{
+    "meta": {
+        "language": "TypeScript",
+        "description": "JavaScript with syntax for types.",
+        "color": "#b7bdf8", 
+        "icon": "URL_TO_ICON"
+    },
+    "sections": [
+        {
+            "level": "I. Novice",
+            "topics": [
+                {
+                    "title": "Basic Types",
+                    "desc": "Defining strings and numbers.",
+                    "code": "let isDone: boolean = false;\nlet decimal: number = 6;"
+                }
+            ]
+        }
+    ]
+}
+```
 
-1.  **Create a Directory**: Inside the `/cheatsheets` folder, create a new directory with the same `slug` (e.g., `/cheatsheets/python`).
+### 3. Add the Engine
+Copy the standard `index.html` template (from `rust/index.html` or `c/index.html`) into your new folder. No code changes are needed in this file; it automatically loads `content.json`.
 
-2.  **Use the Template**: Copy the contents of an existing cheatsheet (e.g., `/cheatsheets/rust/`) into your new directory. This gives you the required `index.html`, `style.css`, and `script.js` files with all functionality built-in.
+### 4. Link it
+Open the main `index.html` in the root directory and add the entry to the `guides` array script:
 
-3.  **Update the Content**:
-    *   **`index.html`**:
-        *   Change the `<title>` and meta description.
-        *   Update the hero title (`<h1 class="hero-title">`).
-        *   Replace the content inside the `<section>` and `.project-card` elements with your new language's syntax and examples.
-        *   **Important**: When writing code blocks, escape HTML characters. Replace `<` with `&lt;` and `>` with `&gt;`.
-    *   **`style.css` & `script.js`**: You shouldn't need to change these files.
+```javascript
+const guides = [
+    // ... existing guides
+    {
+        title: "TypeScript",
+        desc: "JavaScript with syntax for types.",
+        path: "typescript/index.html",
+        color: "var(--lavender)",
+        category: "Web & Frontend"
+    }
+];
+```
 
-### 3. Submitting Your Contribution
-
-1.  **Fork the repository** and create a new branch (`git checkout -b feature/add-python-cheatsheet`).
-2.  **Commit your changes** with a clear message (`git commit -m "feat: Add Python cheatsheet and project examples"`).
-3.  **Push to your branch** and **open a Pull Request**.
+---
 
 ## 📜 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Acknowledgements
-
--   [Catppuccin](https://github.com/catppuccin) for the beautiful color palettes.
--   [highlight.js](https://highlightjs.org/) for the powerful syntax highlighting library.
-
 ---
 
-<div align-center">
-
-⭐ **Star this repository if you find these guides helpful!**
+<div align="center">
+  
+  **Forged by [ShadowDevForge](https://github.com/shadowdevforge)**
+  
+  *Code is the hammer, logic is the anvil.*
 
 </div>

@@ -3,489 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Cheatsheet - SyntaxForge</title>
-    <meta name="description" content="A comprehensive cheatsheet for the Python programming language, from basic syntax to OOP and standard library usage.">
+    <title>Python Forge | Syntax Guide</title>
     
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>">
-    
-    <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
-    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-macchiato.css" disabled>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <script>
-        // Immediately-invoked function to set theme before page render.
-        (function() {
-            function applyTheme(theme) {
-                document.documentElement.setAttribute('data-theme', theme);
-                document.getElementById('hljs-light-theme').disabled = theme === 'dark';
-                document.getElementById('hljs-dark-theme').disabled = theme === 'light';
-            }
-            const preferredTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            applyTheme(preferredTheme);
-        })();
-    </script>
+    <!-- Highlight.js (Python Language Support) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 
-    <!-- Page-specific styling for the Python theme color -->
     <style>
-      body {
-        --glow-color: #FFD43B; /* Python Yellow */
-      }
+        /* THEME: Catppuccin Macchiato */
+        :root {
+            --base: #24273a;
+            --mantle: #1e2030;
+            --crust: #181926;
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --overlay0: #6e738d;
+            --surface0: #363a4f;
+            --accent: #eed49f; /* Default Yellow for Python */
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 16px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--surface0);
+            margin-bottom: 40px;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--subtext0);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .nav-back:hover { color: var(--text); transform: translateX(-4px); }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lang-icon { width: 64px; height: 64px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.3)); }
+
+        .page-title {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(0,0,0,0.2);
+        }
+
+        .page-desc { color: var(--subtext0); font-size: 1.1rem; margin-top: 8px; }
+
+        /* SECTIONS */
+        .level-section {
+            margin-bottom: 60px;
+            animation: fadeUp 0.6s var(--ease) backwards;
+        }
+
+        .level-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .level-badge {
+            font-size: 0.8rem;
+            background: var(--surface0);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--mantle);
+            border-radius: var(--radius);
+            border: 1px solid var(--surface0);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--accent), transparent 40%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .card:hover { border-color: var(--accent); }
+        .card:hover::before { opacity: 0.08; }
+
+        .card-content { position: relative; z-index: 1; }
+
+        .topic-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .topic-title { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+        .topic-desc { color: var(--subtext0); margin-bottom: 20px; font-size: 0.95rem; }
+
+        /* CODE BLOCKS */
+        pre {
+            background: var(--crust) !important;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--surface0);
+            margin: 0;
+        }
+        
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--mantle); }
+        ::-webkit-scrollbar-thumb { background: var(--surface0); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--overlay0); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Highlight.js Overrides */
+        .hljs { background: transparent !important; color: var(--text); }
+        .hljs-keyword { color: var(--accent); font-weight: bold; }
+        .hljs-string { color: #a6da95; } /* Green */
+        .hljs-title, .hljs-function { color: #8aadf4; } /* Blue */
+        .hljs-number { color: #f5a97f; } /* Peach */
+        .hljs-comment { color: #6e738d; font-style: italic; } /* Overlay0 */
+        .hljs-type { color: #eed49f; } /* Yellow */
+        .hljs-built_in { color: #ed8796; } /* Red */
+        .hljs-meta { color: #8bd5ca; } /* Teal (Decorators) */
     </style>
 </head>
 <body>
-    <canvas id="cmatrix"></canvas>
 
-    <header class="header">
-        <a href="/SyntaxForge/" class="home-link">SyntaxForge</a>
-        <div class="theme-switcher-container">
-            <label for="theme-toggle" class="theme-toggle-label">
-                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
-                <span class="theme-toggle-slider"></span>
-            </label>
-        </div>
-        <div class="hero">
-            <h1 class="hero-title">Python</h1>
-            <p class="hero-tagline">A high-level, interpreted language known for its readability and large standard library.</p>
-        </div>
-    </header>
+    <div class="container">
+        <!-- Header -->
+        <header id="pageHeader" class="header">
+            <a href="/SyntaxForge" class="nav-back">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Forge
+            </a>
+        </header>
 
-    <main class="container">
-        <div class="view-switcher">
-            <button id="show-cheatsheet" class="view-btn active">Cheatsheet</button>
-            <button id="show-projects" class="view-btn">Projects</button>
-        </div>
+        <!-- Main Content -->
+        <main id="mainContent">
+            <!-- Sections Injected Here -->
+        </main>
+    </div>
 
-        <div id="cheatsheet-content">
-            <nav class="toc-container card">
-                <h2>Table of Contents</h2>
-                <ul id="toc-list"></ul>
-            </nav>
+    <script>
+        const header = document.getElementById('pageHeader');
+        const main = document.getElementById('mainContent');
+        const root = document.documentElement;
 
-            <section id="variables-types" class="card">
-                <h2 class="card-title">1. Variables & Basic Types</h2>
-                <p>Python is dynamically typed. Variables are created upon assignment. Basic types are numbers, strings, and booleans.</p>
-                <pre><code class="language-python">
-# No type declaration needed
-name = "SyntaxForge"  # String
-version = 3.12        # Float
-year = 2024           # Integer
-is_cool = True        # Boolean
+        async function loadContent() {
+            try {
+                const response = await fetch('content.json');
+                const data = await response.json();
+                renderPage(data);
+            } catch (error) {
+                console.error("Error loading forge data:", error);
+                main.innerHTML = `<div style="text-align:center; color:var(--red)">Failed to load content module.</div>`;
+            }
+        }
 
-# f-strings for formatted output (Python 3.6+)
-print(f"{name} is cool: {is_cool}")
+        function renderPage(data) {
+            root.style.setProperty('--accent', data.meta.color);
+            document.title = `${data.meta.language} | SyntaxForge`;
 
-# Constants (by convention, not enforced)
-PI = 3.14159
-                </code></pre>
-            </section>
-            
-            <section id="data-structures" class="card">
-                <h2 class="card-title">2. Data Structures</h2>
-                <p>Python's core data structures are lists, tuples, dictionaries, and sets.</p>
-                <pre><code class="language-python">
-# List (mutable, ordered collection)
-fruits = ["apple", "banana", "cherry"]
-fruits.append("orange")
-print(f"First fruit: {fruits[0]}")
-
-# Tuple (immutable, ordered collection)
-point = (10, 20)
-print(f"X coordinate: {point[0]}")
-
-# Dictionary (mutable, unordered key-value pairs)
-person = {
-    "name": "Alice",
-    "age": 30
-}
-person["city"] = "New York"
-print(f"{person['name']} is {person['age']} years old.")
-
-# Set (mutable, unordered collection of unique elements)
-unique_numbers = {1, 2, 3, 2, 1}
-unique_numbers.add(4)
-print(f"Unique numbers: {unique_numbers}")
-                </code></pre>
-            </section>
-
-            <section id="control-flow" class="card">
-                <h2 class="card-title">3. Control Flow</h2>
-                <p>Control flow is managed with `if/elif/else`, `for` loops, and `while` loops. Indentation is significant.</p>
-                <pre><code class="language-python">
-# If, Elif, Else
-age = 18
-if age < 13:
-    print("Child")
-elif age < 20:
-    print("Teenager")
-else:
-    print("Adult")
-
-# For loop (iterating over a list)
-for fruit in ["apple", "banana"]:
-    print(fruit)
-    
-# For loop with range
-for i in range(3):
-    print(f"Loop {i}")
-    
-# While loop
-count = 0
-while count < 3:
-    print(f"Count is {count}")
-    count += 1
-                </code></pre>
-            </section>
-            
-            <section id="functions" class="card">
-                <h2 class="card-title">4. Functions</h2>
-                <p>Functions are defined with the `def` keyword. They can accept arguments and return values.</p>
-                <pre><code class="language-python">
-# Simple function
-def greet(name):
-    return f"Hello, {name}!"
-
-print(greet("World"))
-
-# Function with default arguments
-def power(base, exponent=2):
-    return base ** exponent
-
-print(f"3 squared is {power(3)}")
-print(f"2 cubed is {power(2, 3)}")
-
-# Function with arbitrary arguments
-def add(*numbers):
-    total = 0
-    for num in numbers:
-        total += num
-    return total
-    
-print(f"Sum: {add(1, 2, 3, 4)}")
-                </code></pre>
-            </section>
-
-            <section id="oop" class="card">
-                <h2 class="card-title">5. Object-Oriented Programming</h2>
-                <p>Python is an object-oriented language. Classes are defined with the `class` keyword.</p>
-                <pre><code class="language-python">
-class Dog:
-    # Class attribute
-    species = "Canis familiaris"
-    
-    # Initializer / Instance attributes
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-    
-    # Instance method
-    def bark(self):
-        return "Woof!"
-
-# Create an instance of the Dog class
-my_dog = Dog("Buddy", 3)
-
-print(f"{my_dog.name} is a {my_dog.species} and says {my_dog.bark()}")
-                </code></pre>
-            </section>
-            
-            <section id="error-handling" class="card">
-                <h2 class="card-title">6. Error Handling</h2>
-                <p>Exceptions are handled using `try`, `except`, `else`, and `finally` blocks.</p>
-                <pre><code class="language-python">
-try:
-    result = 10 / 0
-except ZeroDivisionError:
-    print("You can't divide by zero!")
-except TypeError:
-    print("Wrong data type!")
-else:
-    # This runs if no exception occurred
-    print(f"Result was {result}")
-finally:
-    # This always runs, regardless of exceptions
-    print("Execution finished.")
-                </code></pre>
-            </section>
-
-            <section id="comprehensions" class="card">
-                <h2 class="card-title">7. Comprehensions</h2>
-                <p>A concise, Pythonic way to create lists, dictionaries, and sets.</p>
-                <pre><code class="language-python">
-# List comprehension
-squares = [x**2 for x in range(5)]
-# Result: [0, 1, 4, 9, 16]
-
-# Dictionary comprehension
-square_map = {x: x**2 for x in range(5)}
-# Result: {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
-
-# Set comprehension
-unique_squares = {x**2 for x in [1, -1, 2, -2]}
-# Result: {1, 4}
-
-# Generator expression (memory efficient)
-squares_gen = (x**2 for x in range(1000))
-                </code></pre>
-            </section>
-
-            <section id="file-io" class="card">
-                <h2 class="card-title">8. File I/O</h2>
-                <p>The `with` statement is the recommended way to work with files as it handles closing them automatically.</p>
-                <pre><code class="language-python">
-# Writing to a file
-with open("example.txt", "w") as f:
-    f.write("Hello from SyntaxForge!\n")
-    f.write("This is a new line.\n")
-
-# Reading from a file
-with open("example.txt", "r") as f:
-    content = f.read()
-    print(content)
-                </code></pre>
-            </section>
-            
-            <section id="common-modules" class="card">
-                <h2 class="card-title">9. Common Standard Modules</h2>
-                <p>Python's "batteries-included" philosophy means it has a rich standard library.</p>
-                <pre><code class="language-python">
-import os
-import datetime
-import json
-import random
-
-# os module: Interact with the operating system
-current_dir = os.getcwd()
-print(f"Current directory: {current_dir}")
-
-# datetime module: Work with dates and times
-now = datetime.datetime.now()
-print(f"Current time: {now.strftime('%Y-%m-%d %H:%M:%S')}")
-
-# json module: Encode and decode JSON
-data = {"name": "Forge", "version": 1}
-json_string = json.dumps(data)
-print(f"JSON string: {json_string}")
-
-# random module: Generate random numbers
-random_num = random.randint(1, 10)
-print(f"Random number: {random_num}")
-                </code></pre>
-            </section>
-        </div>
-
-        <div id="projects-content" class="hidden">
-            <div class="project-card card">
-                <h2 class="card-title">1. Simple Web Scraper</h2>
-                <p>A script to fetch and parse the title of a webpage using `requests` and `BeautifulSoup`.</p>
-                <pre><code class="language-python">
-# Install libraries: pip install requests beautifulsoup4
-import requests
-from bs4 import BeautifulSoup
-
-def get_page_title(url):
-    try:
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()  # Raise an exception for bad status codes
-        
-        soup = BeautifulSoup(response.text, 'html.parser')
-        title = soup.find('title').text
-        return title
-    except requests.exceptions.RequestException as e:
-        return f"Error fetching URL: {e}"
-
-if __name__ == "__main__":
-    title = get_page_title("https://www.python.org/")
-    print(f"The title of the page is: '{title}'")
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>requests</code></strong>: A popular library for making HTTP requests. `requests.get()` fetches the webpage.</li>
-                        <li><strong><code>BeautifulSoup</code></strong>: A library for parsing HTML and XML documents. It creates a parse tree for easy data extraction.</li>
-                        <li><strong><code>soup.find('title').text</code></strong>: This finds the first `<title>` tag in the HTML and returns its text content.</li>
-                    </ul>
+            const titleBlock = document.createElement('div');
+            titleBlock.className = 'title-row';
+            titleBlock.innerHTML = `
+                <img src="${data.meta.icon}" class="lang-icon" alt="${data.meta.language}">
+                <div>
+                    <div class="page-title">${data.meta.language}</div>
+                    <div class="page-desc">${data.meta.description}</div>
                 </div>
-            </div>
+            `;
+            header.appendChild(titleBlock);
 
-            <div class="project-card card">
-                <h2 class="card-title">2. JSON API Client</h2>
-                <p>A program that fetches data from a public JSON API and prints it.</p>
-                <pre><code class="language-python">
-# Install library: pip install requests
-import requests
+            data.sections.forEach((section, index) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'level-section';
+                sectionEl.style.animationDelay = `${index * 0.1}s`;
 
-def fetch_user_data(user_id):
-    api_url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
-    try:
-        response = requests.get(api_url)
-        response.raise_for_status()
-        
-        # .json() parses the JSON response into a Python dictionary
-        user_data = response.json()
-        return user_data
-    except requests.exceptions.RequestException as e:
-        print(f"API Error: {e}")
-        return None
+                sectionEl.innerHTML = `
+                    <div class="level-title">
+                        ${section.level}
+                        <span class="level-badge">Level ${index + 1}</span>
+                    </div>
+                    <div class="grid" id="grid-${index}"></div>
+                `;
+                
+                const gridEl = sectionEl.querySelector(`#grid-${index}`);
 
-if __name__ == "__main__":
-    user = fetch_user_data(1)
-    if user:
-        print(f"Name: {user['name']}")
-        print(f"Email: {user['email']}")
-        print(f"City: {user['address']['city']}")
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong>Public API</strong>: We use `jsonplaceholder`, a free fake API for testing and prototyping.</li>
-                        <li><strong><code>response.json()</code></strong>: The `requests` library has a built-in JSON decoder that converts a JSON response directly into a Python dictionary, making it easy to access data.</li>
-                        <li><strong>Dictionary Access</strong>: We access nested data using standard dictionary key lookups (e.g., `user['address']['city']`).</li>
-                    </ul>
-                </div>
-            </div>
+                section.topics.forEach(topic => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <div class="topic-header">
+                                <div class="topic-title">${topic.title}</div>
+                            </div>
+                            <p class="topic-desc">${topic.desc}</p>
+                            <pre><code class="language-${data.meta.language.toLowerCase()}">${topic.code}</code></pre>
+                        </div>
+                    `;
+                    gridEl.appendChild(card);
+                });
 
-            <div class="project-card card">
-                <h2 class="card-title">3. Command-Line To-Do App</h2>
-                <p>A simple CLI to add and list tasks, saved to a file.</p>
-                <pre><code class="language-python">
-import argparse
-import os
+                main.appendChild(sectionEl);
+            });
 
-TODO_FILE = "todo.txt"
+            hljs.highlightAll();
+            initGlowEffect();
+        }
 
-def list_tasks():
-    if not os.path.exists(TODO_FILE):
-        print("No tasks yet!")
-        return
-    with open(TODO_FILE, "r") as f:
-        tasks = f.readlines()
-        if not tasks:
-            print("No tasks yet!")
-        for i, task in enumerate(tasks, 1):
-            print(f"{i}. {task.strip()}")
+        function initGlowEffect() {
+            const container = document.querySelector('.container');
+            container.onmousemove = e => {
+                for(const card of document.getElementsByClassName("card")) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
 
-def add_task(task_text):
-    with open(TODO_FILE, "a") as f:
-        f.write(task_text + "\n")
-    print(f"Added task: '{task_text}'")
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
+                }
+            };
+        }
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="A simple command-line to-do app.")
-    parser.add_argument("action", choices=["list", "add"], help="The action to perform")
-    parser.add_argument("text", nargs="?", help="The text of the task to add")
-    
-    args = parser.parse_args()
-    
-    if args.action == "list":
-        list_tasks()
-    elif args.action == "add":
-        if args.text:
-            add_task(args.text)
-        else:
-            print("Error: 'add' action requires text.")
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>argparse</code></strong>: The standard library for creating user-friendly command-line interfaces. It handles argument parsing and automatically generates help messages.</li>
-                        <li><strong>File Persistence</strong>: The to-do list is stored in a simple text file (`todo.txt`), with one task per line.</li>
-                        <li><strong><code>"a"</code> mode</strong>: Opening a file in append mode (`"a"`) adds new content to the end without overwriting existing data.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="project-card card">
-                <h2 class="card-title">4. File Organizer Script</h2>
-                <p>An automation script that organizes files in a directory into subfolders based on their extension.</p>
-                <pre><code class="language-python">
-import os
-import shutil
-
-# Directory to organize (e.g., your Downloads folder)
-# In a real script, you might get this from user input.
-TARGET_DIR = "./downloads_folder" 
-
-def organize_directory(path):
-    if not os.path.isdir(path):
-        print(f"Error: Directory not found at {path}")
-        return
-
-    for filename in os.listdir(path):
-        file_path = os.path.join(path, filename)
-        if os.path.isfile(file_path):
-            extension = filename.split('.')[-1].lower() if '.' in filename else 'no_extension'
-            
-            # Create a folder for the extension if it doesn't exist
-            dest_dir = os.path.join(path, extension)
-            os.makedirs(dest_dir, exist_ok=True)
-            
-            # Move the file
-            shutil.move(file_path, dest_dir)
-            print(f"Moved {filename} -> {extension}/")
-
-if __name__ == "__main__":
-    # Create a dummy directory and files for demonstration
-    os.makedirs(TARGET_DIR, exist_ok=True)
-    for f in ["doc.pdf", "image.jpg", "song.mp3", "archive.zip", "script.py"]:
-        open(os.path.join(TARGET_DIR, f), 'a').close()
-    
-    organize_directory(TARGET_DIR)
-                </code></pre>
-                 <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>os</code> module</strong>: Provides functions for interacting with the operating system, like listing directory contents (`os.listdir`) and creating directories (`os.makedirs`).</li>
-                        <li><strong><code>shutil</code> module</strong>: Offers high-level file operations. `shutil.move` can move a file or directory to another location.</li>
-                        <li><strong><code>os.path.join</code></strong>: The correct way to join path components. It automatically uses the correct path separator for the OS.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="project-card card">
-                <h2 class="card-title">5. Basic Flask Web App</h2>
-                <p>A "Hello World" web application using the popular Flask microframework.</p>
-                <pre><code class="language-python">
-# Install library: pip install Flask
-from flask import Flask
-
-# Create a Flask web server application
-app = Flask(__name__)
-
-# Define a route for the root URL ("/")
-@app.route('/')
-def hello_world():
-    return 'Hello, SyntaxForge!'
-
-# Define another route
-@app.route('/greet/&lt;name&gt;')
-def greet(name):
-    return f'Hello, {name.capitalize()}!'
-
-# To run: save as app.py and run `flask --app app run` in your terminal.
-# Then visit http://127.0.0.1:5000 in your browser.
-if __name__ == '__main__':
-    app.run(debug=True)
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>Flask</code></strong>: A lightweight and flexible web framework for Python.</li>
-                        <li><strong><code>@app.route('/')</code></strong>: A decorator that tells Flask which URL should trigger our function.</li>
-                        <li><strong>Dynamic Routes</strong>: Using `<name>` in the route creates a variable that is passed as an argument to the view function.</li>
-                        <li><strong>Development Server</strong>: `app.run(debug=True)` starts a simple server for local development that automatically reloads when you save changes.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <a href="/SyntaxForge/" class="footer-link">Back to Home</a>
-        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-    <script src="script.js"></script>
+        loadContent();
+    </script>
 </body>
 </html>

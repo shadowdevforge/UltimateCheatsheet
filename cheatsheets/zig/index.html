@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C Forge | Syntax Guide</title>
+    <title>Zig Forge | Syntax Guide</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Highlight.js (C Language Support) -->
+    <!-- Highlight.js (Zig Language Support) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/zig.min.js"></script>
 
     <style>
         /* THEME: Catppuccin Macchiato */
@@ -24,7 +24,7 @@
             --subtext0: #a5adcb;
             --overlay0: #6e738d;
             --surface0: #363a4f;
-            --accent: #8aadf4; /* Default Blue for C */
+            --accent: #f5a97f; /* Peach for Zig */
             
             --font-sans: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
@@ -173,15 +173,15 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Highlight.js Overrides for Catppuccin Vibe */
+        /* Highlight.js Overrides */
         .hljs { background: transparent !important; color: var(--text); }
         .hljs-keyword { color: var(--accent); font-weight: bold; }
         .hljs-string { color: #a6da95; } /* Green */
         .hljs-title, .hljs-function { color: #8aadf4; } /* Blue */
         .hljs-number { color: #f5a97f; } /* Peach */
-        .hljs-comment { color: #6e738d; font-style: italic; } /* Overlay0 */
-        .hljs-type { color: #eed49f; } /* Yellow */
-        .hljs-meta { color: #ed8796; } /* Red (Macros) */
+        .hljs-comment { color: #6e738d; font-style: italic; }
+        .hljs-type { color: #eed49f; }
+        .hljs-built_in { color: #ed8796; }
     </style>
 </head>
 <body>
@@ -189,7 +189,6 @@
     <div class="container">
         <!-- Header -->
         <header id="pageHeader" class="header">
-            <!-- Updated Header Link as requested -->
             <a href="/SyntaxForge" class="nav-back">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                 Back to Forge

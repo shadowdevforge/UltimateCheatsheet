@@ -1,0 +1,115 @@
+{
+    "meta": {
+        "language": "Nim",
+        "description": "Efficient, expressive, and elegant. Python-like syntax that compiles to C.",
+        "color": "#eed49f",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/5/54/Nim-logo-2014.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Basics)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "No boilerplate required. Just echo.",
+                    "code": "echo \"Hello, Forge!\""
+                },
+                {
+                    "title": "Variables",
+                    "desc": "Three keywords: `var` (mutable), `let` (immutable), `const` (compile-time).",
+                    "code": "var x = 10\nx = 20 // OK\n\nlet y = 5\n// y = 6 // Error\n\nconst PI = 3.14 // Computed at compile time"
+                },
+                {
+                    "title": "Control Flow",
+                    "desc": "Indentation-based blocks. No curly braces.",
+                    "code": "let age = 18\n\nif age >= 18:\n  echo \"Adult\"\nelif age > 12:\n  echo \"Teen\"\nelse:\n  echo \"Child\""
+                },
+                {
+                    "title": "Loops",
+                    "desc": "Iterators and ranges.",
+                    "code": "for i in 1..5:\n  echo i // 1, 2, 3, 4, 5\n\nvar i = 0\nwhile i < 5:\n  inc i // i += 1"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Procedures & Data)",
+            "topics": [
+                {
+                    "title": "Procedures (Functions)",
+                    "desc": "Defined using `proc`. The last expression is returned implicitly.",
+                    "code": "proc add(a: int, b: int): int =\n  a + b\n\necho add(5, 10) // 15\n\n// UFCS (Uniform Function Call Syntax)\n5.add(10) // Same as add(5, 10)"
+                },
+                {
+                    "title": "Sequences (Arrays)",
+                    "desc": "Dynamic arrays are called sequences.",
+                    "code": "var list = @[1, 2, 3]\nlist.add(4)\n\necho list[0] // 1"
+                },
+                {
+                    "title": "Objects (Structs)",
+                    "desc": "Typed data structures.",
+                    "code": "type Person = object\n  name: string\n  age: int\n\nlet user = Person(name: \"Shadow\", age: 25)\necho user.name"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Features)",
+            "topics": [
+                {
+                    "title": "Refs & Pointers",
+                    "desc": "Nim distinguishes between traced references (GC) and untraced pointers.",
+                    "code": "type Node = ref object\n  next: Node\n  data: int\n\nvar n = Node(data: 10)\n// Memory managed by ARC/ORC automatically"
+                },
+                {
+                    "title": "Generics",
+                    "desc": "Type-agnostic code.",
+                    "code": "proc printMe[T](x: T) =\n  echo x\n\nprintMe(10)\nprintMe(\"Hello\")"
+                },
+                {
+                    "title": "Case Statement",
+                    "desc": "Powerful switching mechanism.",
+                    "code": "let name = \"Nim\"\n\ncase name\nof \"Nim\": echo \"Fast\"\nof \"Python\": echo \"Slow\"\nelse: echo \"Unknown\""
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Metaprogramming)",
+            "topics": [
+                {
+                    "title": "Templates",
+                    "desc": "Code substitution at compile time. Look like functions, act like macros.",
+                    "code": "template log(msg: string) =\n  echo \"[LOG]: \", msg\n\nlog(\"System Start\") \n// Replaced by echo statement at compile time"
+                },
+                {
+                    "title": "Macros",
+                    "desc": "Manipulate the Abstract Syntax Tree (AST) directly.",
+                    "code": "import macros\n\nmacro double(n: untyped): untyped =\n  result = newNimNode(nnkStmtList)\n  result.add quote do:\n    `n` * 2\n\necho double(10) // 20"
+                },
+                {
+                    "title": "FFI (C Integration)",
+                    "desc": "Calling C code directly. Nim's superpower.",
+                    "code": "proc printf(format: cstring) {.header: \"<stdio.h>\", varargs.}\n\nprintf(\"Hello from %s!\\n\", \"C\")"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Systems)",
+            "topics": [
+                {
+                    "title": "Concurrency",
+                    "desc": "Using `spawn` for threading.",
+                    "code": "import threadpool\n\nproc worker(x: int) = echo x\n\nspawn worker(1)\nspawn worker(2)\nsync() // Wait for threads"
+                },
+                {
+                    "title": "Async / Await",
+                    "desc": "Non-blocking I/O operations.",
+                    "code": "import asyncdispatch\n\nproc doWork() {.async.} =\n  await sleepAsync(1000)\n  echo \"Done\"\n\nwaitFor doWork()"
+                },
+                {
+                    "title": "Effects Tracking",
+                    "desc": "Ensure code safety (e.g., functions that can't raise exceptions).",
+                    "code": "proc safe() {.noSideEffect, raises: [].} =\n  # echo \"Test\" // Error: Side effect\n  discard"
+                }
+            ]
+        }
+    ]
+}

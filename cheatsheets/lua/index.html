@@ -3,459 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lua Cheatsheet - SyntaxForge</title>
-    <meta name="description" content="A comprehensive cheatsheet for the Lua programming language, covering tables, metatables, coroutines, and more.">
+    <title>Lua Forge | Syntax Guide</title>
     
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
-    
-    <link id="hljs-light-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-latte.css" disabled>
-    <link id="hljs-dark-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@catppuccin/highlightjs@0.1.4/css/catppuccin-macchiato.css" disabled>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <script>
-        // Immediately-invoked function to set theme before page render.
-        (function() {
-            function applyTheme(theme) {
-                document.documentElement.setAttribute('data-theme', theme);
-                document.getElementById('hljs-light-theme').disabled = theme === 'dark';
-                document.getElementById('hljs-dark-theme').disabled = theme === 'light';
-            }
-            const preferredTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            applyTheme(preferredTheme);
-        })();
-    </script>
+    <!-- Highlight.js (Lua Language Support) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js"></script>
 
-    <!-- Page-specific styling for the Lua theme color -->
     <style>
-      body {
-        --glow-color: #c6a0f6; /* Lua Mauve */
-      }
+        /* THEME: Catppuccin Macchiato */
+        :root {
+            --base: #24273a;
+            --mantle: #1e2030;
+            --crust: #181926;
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --overlay0: #6e738d;
+            --surface0: #363a4f;
+            --accent: #c6a0f6; /* Mauve for Lua */
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 16px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--surface0);
+            margin-bottom: 40px;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--subtext0);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .nav-back:hover { color: var(--text); transform: translateX(-4px); }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lang-icon { width: 64px; height: 64px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.3)); }
+
+        .page-title {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(0,0,0,0.2);
+        }
+
+        .page-desc { color: var(--subtext0); font-size: 1.1rem; margin-top: 8px; }
+
+        /* SECTIONS */
+        .level-section {
+            margin-bottom: 60px;
+            animation: fadeUp 0.6s var(--ease) backwards;
+        }
+
+        .level-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .level-badge {
+            font-size: 0.8rem;
+            background: var(--surface0);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--mantle);
+            border-radius: var(--radius);
+            border: 1px solid var(--surface0);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--accent), transparent 40%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .card:hover { border-color: var(--accent); }
+        .card:hover::before { opacity: 0.08; }
+
+        .card-content { position: relative; z-index: 1; }
+
+        .topic-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .topic-title { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+        .topic-desc { color: var(--subtext0); margin-bottom: 20px; font-size: 0.95rem; }
+
+        /* CODE BLOCKS */
+        pre {
+            background: var(--crust) !important;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--surface0);
+            margin: 0;
+        }
+        
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--mantle); }
+        ::-webkit-scrollbar-thumb { background: var(--surface0); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--overlay0); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Highlight.js Overrides */
+        .hljs { background: transparent !important; color: var(--text); }
+        .hljs-keyword { color: var(--accent); font-weight: bold; }
+        .hljs-string { color: #a6da95; } /* Green */
+        .hljs-title, .hljs-function { color: #8aadf4; } /* Blue */
+        .hljs-number { color: #f5a97f; } /* Peach */
+        .hljs-comment { color: #6e738d; font-style: italic; }
+        .hljs-type { color: #eed49f; }
+        .hljs-built_in { color: #ed8796; }
     </style>
 </head>
 <body>
-    <canvas id="cmatrix"></canvas>
 
-    <header class="header">
-        <a href="/SyntaxForge/" class="home-link">SyntaxForge</a>
-        <div class="theme-switcher-container">
-            <label for="theme-toggle" class="theme-toggle-label">
-                <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
-                <span class="theme-toggle-slider"></span>
-            </label>
-        </div>
-        <div class="hero">
-            <h1 class="hero-title">Lua</h1>
-            <p class="hero-tagline">A powerful, efficient, lightweight, embeddable scripting language.</p>
-        </div>
-    </header>
+    <div class="container">
+        <!-- Header -->
+        <header id="pageHeader" class="header">
+            <a href="/SyntaxForge" class="nav-back">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Forge
+            </a>
+        </header>
 
-    <main class="container">
-        <div class="view-switcher">
-            <button id="show-cheatsheet" class="view-btn active">Cheatsheet</button>
-            <button id="show-projects" class="view-btn">Projects</button>
-        </div>
+        <!-- Main Content -->
+        <main id="mainContent">
+            <!-- Sections Injected Here -->
+        </main>
+    </div>
 
-        <div id="cheatsheet-content">
-            <nav class="toc-container card">
-                <h2>Table of Contents</h2>
-                <ul id="toc-list"></ul>
-            </nav>
+    <script>
+        const header = document.getElementById('pageHeader');
+        const main = document.getElementById('mainContent');
+        const root = document.documentElement;
 
-            <section id="variables-types" class="card">
-                <h2 class="card-title">1. Variables & Data Types</h2>
-                <p>Variables are dynamically typed and global by default. Use the `local` keyword to limit scope.</p>
-                <pre><code class="language-lua">
--- By default, variables are global
-global_var = "I am global"
+        async function loadContent() {
+            try {
+                const response = await fetch('content.json');
+                const data = await response.json();
+                renderPage(data);
+            } catch (error) {
+                console.error("Error loading forge data:", error);
+                main.innerHTML = `<div style="text-align:center; color:var(--red)">Failed to load content module.</div>`;
+            }
+        }
 
--- Use 'local' for block scope (best practice)
-local name = "SyntaxForge" -- string
-local version = 5.4         -- number (float)
-local is_fast = true        -- boolean
-local no_value = nil        -- nil (represents absence of value)
+        function renderPage(data) {
+            root.style.setProperty('--accent', data.meta.color);
+            document.title = `${data.meta.language} | SyntaxForge`;
 
--- All types in Lua:
--- nil, boolean, number, string, function, userdata, thread, and table.
-
-print(name, version, is_fast, no_value)
-                </code></pre>
-            </section>
-            
-            <section id="tables" class="card">
-                <h2 class="card-title">2. Tables: The All-in-One Data Structure</h2>
-                <p>Tables are the only data structuring mechanism in Lua. They can be used as arrays, dictionaries, or objects.</p>
-                <pre><code class="language-lua">
--- Table used as an array (list)
-local fruits = {"apple", "banana", "cherry"}
-print(fruits[1]) -- NOTE: Lua indices start at 1
-
--- Table used as a dictionary (hash map)
-local person = {
-    name = "Alice",
-    age = 30
-}
-person.city = "New York" -- Add a new key-value pair
-print(person.name, person["age"])
-
--- Mixed table
-local mixed = {10, 20, x = "hello", y = "world"}
-print(mixed[1], mixed.x)
-                </code></pre>
-            </section>
-
-            <section id="control-flow" class="card">
-                <h2 class="card-title">3. Control Flow</h2>
-                <p>Lua has `if/then/elseif/else`, `while`, `repeat until`, and `for` loops.</p>
-                <pre><code class="language-lua">
-local temp = 25
-if temp > 30 then
-    print("It's hot")
-elseif temp > 20 then
-    print("It's warm")
-else
-    print("It's cool")
-end
-
--- While loop
-local i = 1
-while i <= 3 do
-    print("while:", i)
-    i = i + 1
-end
-
--- Repeat until loop (always executes at least once)
-local j = 1
-repeat
-    print("repeat:", j)
-    j = j + 1
-until j > 3
-
--- Numeric for loop (start, end, step)
-for i = 1, 5, 2 do
-    print("for:", i) -- Prints 1, 3, 5
-end
-
--- Generic for loop with pairs (for dictionaries)
-local person = {name = "Bob", age = 42}
-for key, value in pairs(person) do
-    print(key, value)
-end
-                </code></pre>
-            </section>
-            
-            <section id="functions" class="card">
-                <h2 class="card-title">4. Functions</h2>
-                <p>Functions are first-class citizens. They can be stored in variables, passed as arguments, and returned from other functions.</p>
-                <pre><code class="language-lua">
--- Simple function
-function add(a, b)
-    return a + b
-end
-
--- Functions can be assigned to variables
-local my_add = add
-print(my_add(10, 5))
-
--- Functions can return multiple values
-function get_point()
-    return 10, 20
-end
-local x, y = get_point()
-print(x, y)
-
--- Variadic function (accepts variable number of arguments)
-function sum(...)
-    local total = 0
-    for _, num in ipairs({...}) do
-        total = total + num
-    end
-    return total
-end
-print(sum(1, 2, 3, 4, 5))
-                </code></pre>
-            </section>
-
-            <section id="metatables" class="card">
-                <h2 class="card-title">5. Metatables & Metamethods</h2>
-                <p>Metatables allow you to change the behavior of tables (and other types). Metamethods define how operators work.</p>
-                <pre><code class="language-lua">
-local vector1 = {x = 10, y = 20}
-local vector2 = {x = 5, y = 7}
-
-local metatable = {
-    -- The '__add' metamethod is called when '+' is used on tables with this metatable
-    __add = function(v1, v2)
-        return {x = v1.x + v2.x, y = v1.y + v2.y}
-    end
-}
-
--- Apply the metatable to our vectors
-setmetatable(vector1, metatable)
-setmetatable(vector2, metatable)
-
-local result_vector = vector1 + vector2 -- This now works!
-print(result_vector.x, result_vector.y) -- Prints 15 27
-                </code></pre>
-            </section>
-            
-            <section id="modules" class="card">
-                <h2 class="card-title">6. Modules</h2>
-                <p>Modules allow you to organize your code into separate files. They are tables returned by the `require` function.</p>
-                <pre><code class="language-lua">
--- In a file named 'mylib.lua'
-local M = {} -- Create a table for the module
-
-function M.say_hello(name)
-    return "Hello, " .. name
-end
-
-return M -- Return the module table
-
--- In your main script ('main.lua')
-local mylib = require("mylib") -- Load the module
-
-print(mylib.say_hello("Forge"))
-                </code></pre>
-            </section>
-
-            <section id="coroutines" class="card">
-                <h2 class="card-title">7. Coroutines</h2>
-                <p>Coroutines provide collaborative multitasking. They allow a function to suspend its execution (`yield`) and be resumed later.</p>
-                <pre><code class="language-lua">
-local co = coroutine.create(function()
-    print("Coroutine started")
-    coroutine.yield(1) -- Suspend execution, return 1
-    print("Coroutine resumed")
-    coroutine.yield(2) -- Suspend again, return 2
-end)
-
-print(coroutine.status(co)) -- "suspended"
-
-local status, value1 = coroutine.resume(co)
-print(status, value1) -- true, 1
-
-print(coroutine.status(co)) -- "suspended"
-
-local status, value2 = coroutine.resume(co)
-print(status, value2) -- true, 2
-
-print(coroutine.status(co)) -- "dead"
-                </code></pre>
-            </section>
-        </div>
-
-        <div id="projects-content" class="hidden">
-            <div class="project-card card">
-                <h2 class="card-title">1. Simple Config File Parser</h2>
-                <p>A script that reads a simple `key = value` configuration file into a Lua table.</p>
-                <pre><code class="language-lua">
--- config.txt file content:
--- name = SyntaxForge
--- version = 1.0
--- fullscreen = true
-
-function load_config(filename)
-    local config = {}
-    for line in io.lines(filename) do
-        -- string.match finds captures in a string
-        local key, value = string.match(line, "([%w_]+)%s*=%s*(.*)")
-        if key then
-            config[key] = value
-        end
-    end
-    return config
-end
-
--- Assuming 'config.txt' exists in the same directory
-local cfg = load_config("config.txt")
-print("Name:", cfg.name)
-print("Version:", cfg.version)
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>io.lines(filename)</code></strong>: Returns an iterator that reads one line from the file at a time.</li>
-                        <li><strong><code>string.match</code></strong>: A powerful function for pattern matching. `([%w_]+)` captures one or more alphanumeric/underscore characters (the key), and `(.*)` captures the rest of the line (the value).</li>
-                        <li>The script builds a table by dynamically adding keys and values parsed from the file.</li>
-                    </ul>
+            const titleBlock = document.createElement('div');
+            titleBlock.className = 'title-row';
+            titleBlock.innerHTML = `
+                <img src="${data.meta.icon}" class="lang-icon" alt="${data.meta.language}">
+                <div>
+                    <div class="page-title">${data.meta.language}</div>
+                    <div class="page-desc">${data.meta.description}</div>
                 </div>
-            </div>
+            `;
+            header.appendChild(titleBlock);
 
-            <div class="project-card card">
-                <h2 class="card-title">2. Basic State Machine</h2>
-                <p>A simple state machine, common in game development, where an entity's behavior is controlled by its current state.</p>
-                <pre><code class="language-lua">
-local Player = { state = "idle" }
+            data.sections.forEach((section, index) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'level-section';
+                sectionEl.style.animationDelay = `${index * 0.1}s`;
 
-local states = {
-    idle = function(p)
-        print("Player is idling.")
-        p.state = "walking" -- Transition to the next state
-    end,
-    walking = function(p)
-        print("Player is walking.")
-        p.state = "attacking"
-    end,
-    attacking = function(p)
-        print("Player is attacking!")
-        p.state = "idle"
-    end
-}
+                sectionEl.innerHTML = `
+                    <div class="level-title">
+                        ${section.level}
+                        <span class="level-badge">Level ${index + 1}</span>
+                    </div>
+                    <div class="grid" id="grid-${index}"></div>
+                `;
+                
+                const gridEl = sectionEl.querySelector(`#grid-${index}`);
 
-function Player:update()
-    -- Call the function corresponding to the current state
-    states[self.state](self)
-end
+                section.topics.forEach(topic => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <div class="topic-header">
+                                <div class="topic-title">${topic.title}</div>
+                            </div>
+                            <p class="topic-desc">${topic.desc}</p>
+                            <pre><code class="language-${data.meta.language.toLowerCase()}">${topic.code}</code></pre>
+                        </div>
+                    `;
+                    gridEl.appendChild(card);
+                });
 
--- Simulate a few updates
-Player:update()
-Player:update()
-Player:update()
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong>Functions as Values</strong>: We store the behavior for each state as a function inside the `states` table.</li>
-                        <li><strong>Dynamic Dispatch</strong>: `states[self.state]` retrieves the correct function from the table based on the player's current state string.</li>
-                        <li>This pattern allows for clean separation of logic and makes it easy to add or modify states.</li>
-                    </ul>
-                </div>
-            </div>
+                main.appendChild(sectionEl);
+            });
 
-            <div class="project-card card">
-                <h2 class="card-title">3. Fibonacci Generator with Coroutines</h2>
-                <p>A classic example showing how coroutines can be used to create generators that yield values one at a time.</p>
-                <pre><code class="language-lua">
-function fibonacci_generator()
-    local a, b = 0, 1
-    return coroutine.create(function()
-        while true do
-            coroutine.yield(a)
-            a, b = b, a + b
-        end
-    end)
-end
+            hljs.highlightAll();
+            initGlowEffect();
+        }
 
-local fib_gen = fibonacci_generator()
+        function initGlowEffect() {
+            const container = document.querySelector('.container');
+            container.onmousemove = e => {
+                for(const card of document.getElementsByClassName("card")) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
 
--- Get the first 5 Fibonacci numbers
-for i = 1, 5 do
-    local status, value = coroutine.resume(fib_gen)
-    print(value)
-end
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li>The coroutine runs an infinite loop, but it doesn't block the program.</li>
-                        <li><strong><code>coroutine.yield(a)</code></strong>: This line is the key. It suspends the coroutine's execution and passes the current value of `a` back to the caller.</li>
-                        <li><strong><code>coroutine.resume(fib_gen)</code></strong>: Each time this is called, the coroutine runs until it hits the next `yield`, then suspends again, preserving its local variables (`a` and `b`).</li>
-                    </ul>
-                </div>
-            </div>
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
+                }
+            };
+        }
 
-            <div class="project-card card">
-                <h2 class="card-title">4. Vector "Class" with Metatables</h2>
-                <p>Using tables and metatables to create a simple Vector object with operator overloading.</p>
-                <pre><code class="language-lua">
-Vector = {} -- Our "class" table
-Vector.mt = { __index = Vector } -- The metatable
-
-function Vector:new(x, y)
-    local instance = {x = x or 0, y = y or 0}
-    setmetatable(instance, self.mt)
-    return instance
-end
-
-function Vector:magnitude()
-    return math.sqrt(self.x^2 + self.y^2)
-end
-
--- Metamethod for addition
-Vector.mt.__add = function(v1, v2)
-    return Vector:new(v1.x + v2.x, v1.y + v2.y)
-end
-
--- Metamethod for string representation
-Vector.mt.__tostring = function(v)
-    return string.format("Vector(x=%.2f, y=%.2f)", v.x, v.y)
-end
-
-local v1 = Vector:new(3, 4)
-local v2 = Vector:new(1, 2)
-local v3 = v1 + v2
-
-print(v1) -- Calls __tostring
-print(v3) -- Calls __tostring
-print("Magnitude of v1:", v1:magnitude())
-                </code></pre>
-                 <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>__index = Vector</code></strong>: This is the magic for inheritance/methods. If a key is not found in an `instance`, Lua looks for it in the `Vector` table.</li>
-                        <li><strong><code>:new()</code></strong>: The colon is syntactic sugar. `Vector:new(...)` is equivalent to `Vector.new(Vector, ...)`, passing the table itself as the first argument (`self`).</li>
-                        <li><strong><code>__add</code></strong> and <strong><code>__tostring</code></strong> are metamethods that overload the `+` operator and the `print()` function's behavior for our Vector objects.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="project-card card">
-                <h2 class="card-title">5. Simple Plugin System</h2>
-                <p>A host script that can load and run functionality from external Lua plugin files.</p>
-                <pre><code class="language-lua">
--- In a file named 'plugin1.lua'
-print("Plugin 1 loaded.")
-function on_start()
-    print("Plugin 1: Starting up!")
-end
-
--- In the main host script ('host.lua')
-local plugins = {}
-
-function load_plugin(filename)
-    -- dofile executes a file but doesn't cache it like require
-    -- It runs in the current environment, so it can define global functions.
-    local success, err = pcall(dofile, filename)
-    if not success then
-        print("Error loading plugin:", err)
-        return
-    end
-    -- Assume the plugin defined a global on_start function
-    if on_start then
-        table.insert(plugins, on_start)
-        on_start = nil -- Clear it for the next plugin
-    end
-end
-
--- Load plugins
-load_plugin("plugin1.lua")
--- load_plugin("plugin2.lua") -- etc.
-
--- Run the startup function for all loaded plugins
-print("\n--- Running plugins ---")
-for _, startup_func in ipairs(plugins) do
-    startup_func()
-end
-                </code></pre>
-                <div class="explanation">
-                    <h4>Code Explanation</h4>
-                    <ul>
-                        <li><strong><code>dofile(filename)</code></strong>: Executes the specified Lua file in the global environment of the caller. This is useful for simple plugins that need to define functions or modify the host's state.</li>
-                        <li><strong><code>pcall(func, ...)</code></strong>: "Protected Call". It calls a function in protected mode, so if an error occurs within the function, it doesn't crash the host script. It returns the success status and any error message.</li>
-                        <li>This pattern shows how a larger application can be made extensible by loading external Lua scripts at runtime.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <a href="/SyntaxForge/" class="footer-link">Back to Home</a>
-        <a href="https://github.com/shadowedevforge/SyntaxForge" target="_blank" rel="noopener noreferrer" class="footer-link">Star the Repo</a>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js"></script>
-    <script src="script.js"></script>
+        loadContent();
+    </script>
 </body>
 </html>

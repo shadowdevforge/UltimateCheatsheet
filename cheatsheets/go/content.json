@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "Golang",
+        "description": "Simple, reliable, and efficient. Built for concurrency and scalable systems.",
+        "color": "#8bd5ca",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/0/05/Go_Logo_Blue.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Basics)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "Go programs are organized into packages. Execution starts at main.",
+                    "code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello, Forge!\")\n}"
+                },
+                {
+                    "title": "Variables",
+                    "desc": "Statically typed. Short declaration `:=` is common inside functions.",
+                    "code": "var i int = 42\nvar f float64 = 3.14\n\n// Short declaration (Type inferred)\nname := \"Shadow\"\nisActive := true"
+                },
+                {
+                    "title": "Functions",
+                    "desc": "Functions can return multiple values.",
+                    "code": "func add(a int, b int) int {\n    return a + b\n}\n\n// Multiple returns\nfunc swap(x, y string) (string, string) {\n    return y, x\n}"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Collections)",
+            "topics": [
+                {
+                    "title": "Control Flow",
+                    "desc": "Go only has `for` loops. No while or do-while.",
+                    "code": "// Standard loop\nfor i := 0; i < 5; i++ {\n    fmt.Println(i)\n}\n\n// While-style\nsum := 1\nfor sum < 100 {\n    sum += sum\n}"
+                },
+                {
+                    "title": "Slices",
+                    "desc": "Dynamic arrays. Much more common than fixed arrays.",
+                    "code": "primes := []int{2, 3, 5, 7, 11}\n\n// Slicing\npart := primes[1:4] // [3 5 7]\n\n// Appending\nprimes = append(primes, 13)"
+                },
+                {
+                    "title": "Maps",
+                    "desc": "Key-value pairs (Hash tables).",
+                    "code": "m := make(map[string]int)\nm[\"k1\"] = 7\nm[\"k2\"] = 13\n\n// Delete\ndelete(m, \"k2\")\n\nval, exists := m[\"k2\"] // Check existence"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Structure)",
+            "topics": [
+                {
+                    "title": "Pointers",
+                    "desc": "Go has pointers but no pointer arithmetic.",
+                    "code": "i := 42\np := &i         // Point to i\nfmt.Println(*p) // Read i through pointer\n*p = 21         // Set i through pointer"
+                },
+                {
+                    "title": "Structs",
+                    "desc": "Typed collections of fields.",
+                    "code": "type User struct {\n    Name  string\n    Email string\n    Age   int\n}\n\nu := User{Name: \"Shadow\", Age: 25}\nfmt.Println(u.Name)"
+                },
+                {
+                    "title": "Methods",
+                    "desc": "Functions defined on types (Receivers).",
+                    "code": "func (u User) IsAdult() bool {\n    return u.Age >= 18\n}\n\n// Pointer receiver to modify state\nfunc (u *User) Birthday() {\n    u.Age++\n}"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Abstraction)",
+            "topics": [
+                {
+                    "title": "Interfaces",
+                    "desc": "Implicit implementation. If it walks like a duck, it is a duck.",
+                    "code": "type Shape interface {\n    Area() float64\n}\n\n// Rect implicitly implements Shape\nfunc (r Rect) Area() float64 {\n    return r.W * r.H\n}\n\nfunc printArea(s Shape) {\n    fmt.Println(s.Area())\n}"
+                },
+                {
+                    "title": "Error Handling",
+                    "desc": "Errors are values, not exceptions.",
+                    "code": "func doWork() (int, error) {\n    return 0, errors.New(\"failed\")\n}\n\nval, err := doWork()\nif err != nil {\n    log.Fatal(err)\n}"
+                },
+                {
+                    "title": "Defer",
+                    "desc": "Schedule a function call to run after the function completes.",
+                    "code": "f, _ := os.Open(\"file.txt\")\ndefer f.Close() // Runs at end of function\n\n// Panic & Recover\ndefer func() {\n    if r := recover(); r != nil {\n        fmt.Println(\"Recovered:\", r)\n    }\n}()"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Concurrency)",
+            "topics": [
+                {
+                    "title": "Goroutines",
+                    "desc": "Lightweight threads managed by the Go runtime.",
+                    "code": "func say(s string) {\n    for i := 0; i < 3; i++ {\n        fmt.Println(s)\n    }\n}\n\ngo say(\"world\") // Starts new goroutine\nsay(\"hello\")"
+                },
+                {
+                    "title": "Channels",
+                    "desc": "Pipes that connect concurrent goroutines.",
+                    "code": "messages := make(chan string)\n\ngo func() { \n    messages <- \"ping\" \n}()\n\nmsg := <-messages\nfmt.Println(msg)"
+                },
+                {
+                    "title": "Select",
+                    "desc": "Waiting on multiple channel operations.",
+                    "code": "select {\ncase msg1 := <-c1:\n    fmt.Println(\"received\", msg1)\ncase msg2 := <-c2:\n    fmt.Println(\"received\", msg2)\ncase <-time.After(1 * time.Second):\n    fmt.Println(\"timeout\")\n}"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "Lua",
+        "description": "The scripting king. Lightweight, embeddable, and built on top of the powerful Table structure.",
+        "color": "#c6a0f6",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Lua-Logo.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (Scripting)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "No semicolons, no main function required for scripts.",
+                    "code": "print(\"Hello, Forge!\")\n\n-- This is a comment\n--[[ Multi-line\n     comment ]]"
+                },
+                {
+                    "title": "Variables & Types",
+                    "desc": "Dynamically typed. `local` is faster and scoped (preferred). Default value is `nil`.",
+                    "code": "local x = 10        -- Number (Float/Int)\nlocal name = \"Lua\"  -- String\nlocal is_active = true\nlocal empty = nil   -- Garbage collection target"
+                },
+                {
+                    "title": "Control Flow",
+                    "desc": "Standard if-then-else blocks. `0` and `\"\"` are true in Lua!",
+                    "code": "if score > 90 then\n    print(\"Win\")\nelseif score > 50 then\n    print(\"Okay\")\nelse\n    print(\"Retry\")\nend"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Tables)",
+            "topics": [
+                {
+                    "title": "The Table",
+                    "desc": "The ONLY data structure in Lua. It acts as array, hash map, and object.",
+                    "code": "local t = {}\nt[\"key\"] = 10\nt.name = \"Shadow\"\n\nprint(t.key) -- 10"
+                },
+                {
+                    "title": "Arrays (1-based)",
+                    "desc": "Arrays are just tables with integer keys. Note: Indices start at 1.",
+                    "code": "local colors = {\"Red\", \"Green\", \"Blue\"}\n\nprint(colors[1]) -- Red (Not 0!)\nprint(#colors)   -- Length operator: 3"
+                },
+                {
+                    "title": "Loops",
+                    "desc": "Generic `for` loop using iterators (`pairs` vs `ipairs`).",
+                    "code": "-- Iterate Array (ipairs)\nfor i, v in ipairs(colors) do\n    print(i, v)\nend\n\n-- Iterate Map (pairs)\nfor k, v in pairs(t) do\n    print(k, v)\nend"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Functions)",
+            "topics": [
+                {
+                    "title": "Functions",
+                    "desc": "First-class values. Can return multiple results.",
+                    "code": "function add(a, b)\n    return a + b\nend\n\n-- Multiple Returns\nfunction get_pos()\n    return 10, 20\nend\nlocal x, y = get_pos()"
+                },
+                {
+                    "title": "Variadic Arguments",
+                    "desc": "Handling variable number of arguments using `...`.",
+                    "code": "function sum(...)\n    local s = 0\n    for _, v in ipairs({...}) do\n        s = s + v\n    end\n    return s\nend"
+                },
+                {
+                    "title": "Modules",
+                    "desc": "Organizing code. A module just returns a table.",
+                    "code": "-- mymod.lua\nlocal M = {}\nfunction M.say() print(\"Hi\") end\nreturn M\n\n-- main.lua\nlocal mod = require(\"mymod\")\nmod.say()"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Metatables)",
+            "topics": [
+                {
+                    "title": "Metatables",
+                    "desc": "Changing the behavior of tables (Operator Overloading).",
+                    "code": "local v1 = {x=1, y=2}\nlocal v2 = {x=3, y=4}\n\nlocal meta = {\n    __add = function(a, b)\n        return {x = a.x + b.x, y = a.y + b.y}\n    end\n}\n\nsetmetatable(v1, meta)\nlocal v3 = v1 + v2 -- {x=4, y=6}"
+                },
+                {
+                    "title": "__index",
+                    "desc": "The fallback key. Used to implement Classes/Inheritance.",
+                    "code": "local prototype = { species = \"Alien\" }\nlocal instance = {}\n\nsetmetatable(instance, {\n    __index = prototype\n})\n\nprint(instance.species) -- \"Alien\""
+                },
+                {
+                    "title": "Object Oriented Pattern",
+                    "desc": "Using the colon `:` syntax for methods (implied `self`).",
+                    "code": "local Dog = {}\nfunction Dog:new(name)\n    local o = {name = name}\n    setmetatable(o, {__index = self})\n    return o\nend\n\nfunction Dog:bark()\n    print(self.name .. \" barks!\")\nend"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Systems)",
+            "topics": [
+                {
+                    "title": "Coroutines",
+                    "desc": "Collaborative multithreading. Pause and resume functions.",
+                    "code": "local co = coroutine.create(function()\n    for i=1,5 do\n        print(\"co\", i)\n        coroutine.yield()\n    end\nend)\n\ncoroutine.resume(co) -- Runs until yield"
+                },
+                {
+                    "title": "Error Handling (pcall)",
+                    "desc": "Protected Call. Lua's version of try-catch.",
+                    "code": "local success, err = pcall(function()\n    error(\"Something went wrong!\")\nend)\n\nif not success then\n    print(\"Caught error: \" .. err)\nend"
+                },
+                {
+                    "title": "C API (Embedding)",
+                    "desc": "Lua is designed to be embedded in C/C++ applications.",
+                    "code": "// C Code concept\nlua_State *L = luaL_newstate();\nluaL_dostring(L, \"print('Run from C')\");\nlua_close(L);"
+                }
+            ]
+        }
+    ]
+}

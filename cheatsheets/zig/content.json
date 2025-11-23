@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "Zig",
+        "description": "A modern system language intended to replace C. No hidden control flow, no hidden memory allocations.",
+        "color": "#f5a97f",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/5/51/Zig_Logo_2024.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Basics)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "Zig uses the standard library for printing. Main returns void or an error.",
+                    "code": "const std = @import(\"std\");\n\npub fn main() void {\n    std.debug.print(\"Hello, Forge!\\n\", .{});\n}"
+                },
+                {
+                    "title": "Variables",
+                    "desc": "`const` is preferred. `var` is mutable. Types can often be inferred.",
+                    "code": "const x: i32 = 42; // Immutable\nvar y = 100;       // Mutable (inferred i32)\n\n// Undefined (must be explicit)\nvar z: i32 = undefined;"
+                },
+                {
+                    "title": "Primitive Types",
+                    "desc": "Explicit integers (u8, i32, usize) and floats.",
+                    "code": "const byte: u8 = 255;\nconst pi: f64 = 3.14159;\nconst is_active: bool = true;\n\n// Array [Length]Type\nconst matrix = [3]f32{1.0, 0.0, 0.0};"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Control & Logic)",
+            "topics": [
+                {
+                    "title": "Control Flow",
+                    "desc": "If expressions and switches. Switches must be exhaustive.",
+                    "code": "if (score > 90) {\n    print(\"Win\", .{});\n} else {\n    print(\"Retry\", .{});\n}\n\n// Switch as expression\nconst msg = switch (val) {\n    1 => \"One\",\n    2...10 => \"Many\",\n    else => \"Other\",\n};"
+                },
+                {
+                    "title": "Loops",
+                    "desc": "For loops work on ranges, slices, and arrays.",
+                    "code": "const items = [_]i32{1, 2, 3};\n\n// Capture value\nfor (items) |item| {\n    std.debug.print(\"{}\", .{item});\n}\n\n// Capture Index\nfor (items, 0..) |item, i| {\n    // ...\n}"
+                },
+                {
+                    "title": "Functions",
+                    "desc": "CamelCase naming. Parameters are immutable by default.",
+                    "code": "fn add(a: i32, b: i32) i32 {\n    return a + b;\n}\n\n// Ignoring return values needs explicit discard\n_ = add(1, 2);"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Errors & Optionals)",
+            "topics": [
+                {
+                    "title": "Error Handling",
+                    "desc": "Errors are values (Error Unions). No exceptions.",
+                    "code": "const FileError = error{ AccessDenied, NotFound };\n\nfn open() FileError!void {\n    return FileError.NotFound;\n}\n\n// Catching errors\nopen() catch |err| {\n    std.debug.print(\"Failed: {}\", .{err});\n};"
+                },
+                {
+                    "title": "Try Operator",
+                    "desc": "`try` checks an error; if present, it returns it immediately.",
+                    "code": "fn doWork() !void {\n    try open(); // Returns error if open() fails\n    try write();\n}"
+                },
+                {
+                    "title": "Optionals",
+                    "desc": "Pointers cannot be null. Use `?T` for nullable types.",
+                    "code": "var ptr: ?*i32 = null;\n\n// Unwrapping (Captures value if not null)\nif (ptr) |value| {\n    print(\"{}\", .{value.*});\n} else {\n    print(\"Is null\", .{});\n}"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Memory & Metaprogramming)",
+            "topics": [
+                {
+                    "title": "Allocators",
+                    "desc": "No hidden allocations. You must pass an allocator manually.",
+                    "code": "var gpa = std.heap.GeneralPurposeAllocator(.{}){};\nconst allocator = gpa.allocator();\n\n// Allocate memory\nconst bytes = try allocator.alloc(u8, 100);\ndefer allocator.free(bytes); // Clean up"
+                },
+                {
+                    "title": "Defer",
+                    "desc": "Execute code on scope exit. Crucial for resource management.",
+                    "code": "const file = try std.fs.openFile(\"data.bin\", .{});\ndefer file.close();\n\n// Read file safely knowing it will close..."
+                },
+                {
+                    "title": "Comptime",
+                    "desc": "Run code at compile time. Zig's alternative to Macros and Generics.",
+                    "code": "fn max(comptime T: type, a: T, b: T) T {\n    return if (a > b) a else b;\n}\n\nconst x = max(i32, 10, 20);\nconst y = max(f64, 10.5, 2.3);"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Systems)",
+            "topics": [
+                {
+                    "title": "Slices",
+                    "desc": "A pointer + length. The core way to view memory.",
+                    "code": "var array = [_]i32{1, 2, 3, 4, 5};\nconst slice: []i32 = array[1..3]; // View of {2, 3}\n\nslice[0] = 99; // Modifies underlying array"
+                },
+                {
+                    "title": "C Interop",
+                    "desc": "Import C headers directly and link against C libraries.",
+                    "code": "const c = @cImport({\n    @cInclude(\"stdio.h\");\n});\n\npub fn main() void {\n    _ = c.printf(\"Hello from C!\\n\");\n}"
+                },
+                {
+                    "title": "Build System",
+                    "desc": "Zig build system is written in Zig (`build.zig`).",
+                    "code": "// build.zig\npub fn build(b: *std.Build) void {\n    const exe = b.addExecutable(.{\n        .name = \"app\",\n        .root_source_file = .{ .path = \"src/main.zig\" },\n        .target = b.standardTargetOptions({}),\n        .optimize = b.standardOptimizeOption({}),\n    });\n    b.installArtifact(exe);\n}"
+                }
+            ]
+        }
+    ]
+}
