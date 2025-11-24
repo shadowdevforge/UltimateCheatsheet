@@ -22,9 +22,11 @@
 
 <br />
 
-<div align="center">
-  <img width="100%" alt="SyntaxForge Preview" src="https://github.com/user-attachments/assets/8059a8e9-04f1-4de2-a704-289c6fde09ce" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" />
-</div>
+<pre>
+  
+<img width="1813" height="1365" alt="image" src="https://github.com/user-attachments/assets/ea25380a-f05f-4dbe-978f-3e02775f5595" />
+
+</pre>
 
 <br />
 
@@ -68,15 +70,15 @@ To run the forge locally, you just need a static file server.
 ### Using Python (Built-in)
 ```bash
 # Clone the repository
-git clone https://github.com/shadowdevforge/SyntaxForge.git ~/shadowforge
+git clone https://github.com/shadowdevforge/SyntaxForge.git ~/shadowforge/SyntaxForge
 
 # Navigate to directory
-cd ~/shadowforge/SyntaxForge
+cd ~/shadowforge/
 
 # Start server
 python3 -m http.server 8000
 ```
-Open `http://localhost:8000` in your browser.
+Open `http://localhost:8000/SyntaxForge` in your browser.
 
 ### Using VS Code
 Simply install the **Live Server** extension and click "Go Live" on `index.html`.

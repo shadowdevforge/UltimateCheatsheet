@@ -2,7 +2,7 @@
     "meta": {
         "language": "Bash",
         "description": "The universal glue of the computing world. Automate, process, and govern the shell.",
-        "color": "#ed8796",
+        "color": "#94A3B8",
         "icon": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg"
     },
     "sections": [
