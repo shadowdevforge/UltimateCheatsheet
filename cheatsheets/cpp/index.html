@@ -218,11 +218,9 @@
         }
 
         function renderPage(data) {
-            // 1. Apply Meta Theme
             root.style.setProperty('--accent', data.meta.color);
             document.title = `${data.meta.language} | SyntaxForge`;
 
-            // 2. Render Header Info
             const titleBlock = document.createElement('div');
             titleBlock.className = 'title-row';
             titleBlock.innerHTML = `
@@ -234,13 +232,11 @@
             `;
             header.appendChild(titleBlock);
 
-            // 3. Render Sections
             data.sections.forEach((section, index) => {
                 const sectionEl = document.createElement('section');
                 sectionEl.className = 'level-section';
                 sectionEl.style.animationDelay = `${index * 0.1}s`;
 
-                // Section Title
                 sectionEl.innerHTML = `
                     <div class="level-title">
                         ${section.level}
@@ -251,7 +247,12 @@
                 
                 const gridEl = sectionEl.querySelector(`#grid-${index}`);
 
-                // Topics
+                // FIX: Correctly handle C++ language class for highlight.js
+                let langClass = data.meta.language.toLowerCase();
+                if (langClass === 'c++') {
+                    langClass = 'cpp';
+                }
+
                 section.topics.forEach(topic => {
                     const card = document.createElement('article');
                     card.className = 'card';
@@ -261,7 +262,7 @@
                                 <div class="topic-title">${topic.title}</div>
                             </div>
                             <p class="topic-desc">${topic.desc}</p>
-                            <pre><code class="language-${data.meta.language.toLowerCase().replace('++', 'cpp')}">${topic.code.replace(/</g, '&lt;')}</code></pre>
+                            <pre><code class="language-${langClass}">${topic.code.replace(/</g, '&lt;')}</code></pre>
                         </div>
                     `;
                     gridEl.appendChild(card);
@@ -270,10 +271,7 @@
                 main.appendChild(sectionEl);
             });
 
-            // 4. Initialize Highlight.js
             hljs.highlightAll();
-
-            // 5. Initialize Mouse Tracking
             initGlowEffect();
         }
 
@@ -291,9 +289,7 @@
             };
         }
 
-        // Start
         loadContent();
-
     </script>
 </body>
 </html>
