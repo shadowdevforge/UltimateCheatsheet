@@ -1,0 +1,80 @@
+{
+    "meta": {
+        "language": "TypeScript",
+        "description": "JavaScript with syntax for types. Strongly typed and scalable.",
+        "color": "#b7bdf8",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (Basic Types)",
+            "topics": [
+                {
+                    "title": "Annotations",
+                    "desc": "Explicitly defining types for variables.",
+                    "code": "let isDone: boolean = false;\nlet total: number = 42;\nlet name: string = \"Shadow\";\nlet list: number[] = [1, 2, 3];"
+                },
+                {
+                    "title": "Functions",
+                    "desc": "Typing arguments and return values.",
+                    "code": "function add(x: number, y: number): number {\n    return x + y;\n}\n\n// Void means no return\nfunction log(msg: string): void {\n    console.log(msg);\n}"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Structure)",
+            "topics": [
+                {
+                    "title": "Interfaces",
+                    "desc": "Defining the shape of objects.",
+                    "code": "interface User {\n    id: number;\n    name: string;\n    email?: string; // Optional property\n}\n\nconst u: User = { id: 1, name: \"Forge\" };"
+                },
+                {
+                    "title": "Type Aliases",
+                    "desc": "Creating custom names for types.",
+                    "code": "type ID = string | number;\ntype Status = \"active\" | \"inactive\";\n\nlet userId: ID = \"12345\";"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Classes)",
+            "topics": [
+                {
+                    "title": "Modifiers",
+                    "desc": "Control visibility with `public`, `private`, and `protected`.",
+                    "code": "class Animal {\n    private name: string;\n    \n    constructor(name: string) {\n        this.name = name;\n    }\n    \n    public move(distance: number) {\n        console.log(`${this.name} moved ${distance}m`);\n    }\n}"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Generics)",
+            "topics": [
+                {
+                    "title": "Generics",
+                    "desc": "Reusable components that work with any type.",
+                    "code": "function identity<T>(arg: T): T {\n    return arg;\n}\n\nlet output = identity<string>(\"myString\");\nlet num = identity<number>(100);"
+                },
+                {
+                    "title": "Generic Interfaces",
+                    "desc": "Flexible data structures.",
+                    "code": "interface Box<T> {\n    contents: T;\n}\n\nlet b: Box<number> = { contents: 42 };"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Utility Types)",
+            "topics": [
+                {
+                    "title": "Partial & Pick",
+                    "desc": "Built-in utilities for transforming types.",
+                    "code": "interface Task {\n    title: string;\n    desc: string;\n}\n\n// All fields become optional\nlet update: Partial<Task> = { title: \"New\" };\n\n// Select only specific fields\ntype TitleOnly = Pick<Task, \"title\">;"
+                },
+                {
+                    "title": "Record",
+                    "desc": "Typing dictionaries/maps.",
+                    "code": "const scores: Record<string, number> = {\n    \"alice\": 10,\n    \"bob\": 20\n};"
+                }
+            ]
+        }
+    ]
+}

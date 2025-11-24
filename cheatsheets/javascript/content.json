@@ -1,0 +1,90 @@
+{
+    "meta": {
+        "language": "JavaScript",
+        "description": "The language of the web. Dynamic, event-driven, and everywhere.",
+        "color": "#eed49f",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (Basics)",
+            "topics": [
+                {
+                    "title": "Variables",
+                    "desc": "Use `const` by default. Use `let` if it changes. Avoid `var`.",
+                    "code": "const pi = 3.14;\nlet count = 0;\ncount++;\n\n// Primitives\nlet name = \"Shadow\";\nlet isActive = true;"
+                },
+                {
+                    "title": "Console",
+                    "desc": "Essential debugging tools.",
+                    "code": "console.log(\"Hello World\");\nconsole.error(\"Something broke\");\nconsole.table([{a:1}, {b:2}]);"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Modern Logic)",
+            "topics": [
+                {
+                    "title": "Arrow Functions",
+                    "desc": "Concise syntax. Implicit return for one-liners.",
+                    "code": "const add = (a, b) => a + b;\n\n// Block body requires return\nconst greet = (name) => {\n    return `Hello ${name}`;\n};"
+                },
+                {
+                    "title": "Template Literals",
+                    "desc": "String interpolation using backticks.",
+                    "code": "const item = \"Sword\";\nconst dmg = 50;\n\nconst stats = `Item: ${item}\\nDamage: ${dmg}`;"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (The DOM)",
+            "topics": [
+                {
+                    "title": "Selection",
+                    "desc": "Grabbing elements from the page.",
+                    "code": "const btn = document.getElementById(\"submit-btn\");\nconst items = document.querySelectorAll(\".card\");"
+                },
+                {
+                    "title": "Events",
+                    "desc": "Listening for user interactions.",
+                    "code": "btn.addEventListener(\"click\", (e) => {\n    e.preventDefault();\n    console.log(\"Clicked!\");\n    btn.classList.add(\"active\");\n});"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Data Manipulation)",
+            "topics": [
+                {
+                    "title": "Destructuring",
+                    "desc": "Unpacking objects and arrays.",
+                    "code": "const user = { id: 1, name: \"Forge\" };\nconst { name } = user;\n\nconst coords = [10, 20];\nconst [x, y] = coords;"
+                },
+                {
+                    "title": "Spread Operator",
+                    "desc": "Copying and merging data structures.",
+                    "code": "const arr1 = [1, 2];\nconst arr2 = [...arr1, 3, 4]; // [1,2,3,4]\n\nconst defaults = { theme: \"dark\" };\nconst config = { ...defaults, debug: true };"
+                },
+                {
+                    "title": "Array Methods",
+                    "desc": "Map, Filter, and Reduce.",
+                    "code": "const nums = [1, 2, 3, 4];\nconst doubled = nums.map(n => n * 2);\nconst evens = nums.filter(n => n % 2 === 0);"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Async)",
+            "topics": [
+                {
+                    "title": "Fetch API",
+                    "desc": "Making network requests.",
+                    "code": "fetch(\"https://api.example.com/data\")\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));"
+                },
+                {
+                    "title": "Async / Await",
+                    "desc": "Cleaner syntax for Promises. Looks synchronous.",
+                    "code": "async function loadData() {\n    try {\n        const res = await fetch(\"/api\");\n        const data = await res.json();\n        return data;\n    } catch (error) {\n        console.error(\"Failed\", error);\n    }\n}"
+                }
+            ]
+        }
+    ]
+}

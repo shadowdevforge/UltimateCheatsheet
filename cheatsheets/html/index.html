@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Forge | Syntax Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js (XML/HTML) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+
+    <style>
+        :root {
+            --base: #24273a; --mantle: #1e2030; --crust: #181926;
+            --text: #cad3f5; --subtext0: #a5adcb; --overlay0: #6e738d;
+            --surface0: #363a4f; 
+            --accent: #f5a97f; /* Peach */
+            --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --radius: 16px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--base); color: var(--text); font-family: var(--font-sans); padding-bottom: 80px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Header */
+        .header { padding: 60px 0 40px; border-bottom: 1px solid var(--surface0); margin-bottom: 40px; }
+        .nav-back { display: inline-flex; align-items: center; gap: 8px; color: var(--subtext0); text-decoration: none; font-weight: 600; transition: 0.2s; margin-bottom: 20px; }
+        .nav-back:hover { color: var(--text); transform: translateX(-4px); }
+        .title-row { display: flex; align-items: center; gap: 20px; }
+        .lang-icon { width: 64px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.3)); }
+        .page-title { font-family: var(--font-mono); font-size: 3rem; font-weight: 800; color: var(--accent); }
+        .page-desc { color: var(--subtext0); font-size: 1.1rem; margin-top: 8px; }
+
+        /* Content */
+        .level-section { margin-bottom: 60px; animation: fadeUp 0.6s ease backwards; }
+        .level-title { font-family: var(--font-mono); font-size: 1.5rem; color: var(--text); margin-bottom: 24px; }
+        .level-badge { font-size: 0.8rem; background: var(--surface0); color: var(--accent); padding: 4px 12px; border-radius: 100px; margin-left: 12px; text-transform: uppercase; }
+        
+        .grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        .card { background: var(--mantle); border-radius: var(--radius); border: 1px solid var(--surface0); padding: 30px; position: relative; overflow: hidden; transition: border-color 0.3s; }
+        .card:hover { border-color: var(--accent); }
+        .card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--accent), transparent 40%); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .card:hover::before { opacity: 0.08; }
+        
+        .card-content { position: relative; z-index: 1; }
+        .topic-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
+        .topic-desc { color: var(--subtext0); margin-bottom: 20px; }
+        
+        pre { background: var(--crust) !important; padding: 20px; border-radius: 8px; overflow-x: auto; border: 1px solid var(--surface0); margin: 0; }
+        code { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.5; }
+        
+        /* HLJS Overrides */
+        .hljs { background: transparent !important; color: var(--text); }
+        .hljs-tag, .hljs-name { color: var(--accent); }
+        .hljs-attr { color: #8aadf4; } /* Blue */
+        .hljs-string { color: #a6da95; } /* Green */
+        
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header id="pageHeader" class="header">
+            <a href="/SyntaxForge" class="nav-back">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Forge
+            </a>
+        </header>
+        <main id="mainContent"></main>
+    </div>
+
+    <script>
+        const header = document.getElementById('pageHeader');
+        const main = document.getElementById('mainContent');
+        const root = document.documentElement;
+
+        async function loadContent() {
+            try {
+                const response = await fetch('content.json');
+                const data = await response.json();
+                renderPage(data);
+            } catch (e) { main.innerHTML = `<div style="text-align:center;color:#ed8796">Load Error</div>`; }
+        }
+
+        function renderPage(data) {
+            root.style.setProperty('--accent', data.meta.color);
+            document.title = `${data.meta.language} | SyntaxForge`;
+
+            const titleBlock = document.createElement('div');
+            titleBlock.className = 'title-row';
+            titleBlock.innerHTML = `<img src="${data.meta.icon}" class="lang-icon"><div><div class="page-title">${data.meta.language}</div><div class="page-desc">${data.meta.description}</div></div>`;
+            header.appendChild(titleBlock);
+
+            data.sections.forEach((sec, idx) => {
+                const el = document.createElement('section');
+                el.className = 'level-section';
+                el.style.animationDelay = `${idx * 0.1}s`;
+                el.innerHTML = `<div class="level-title">${sec.level}</div><div class="grid"></div>`;
+                const grid = el.querySelector('.grid');
+                
+                sec.topics.forEach(topic => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    card.innerHTML = `<div class="card-content"><div class="topic-title">${topic.title}</div><p class="topic-desc">${topic.desc}</p><pre><code class="language-xml">${topic.code.replace(/</g, '&lt;')}</code></pre></div>`;
+                    grid.appendChild(card);
+                });
+                main.appendChild(el);
+            });
+
+            hljs.highlightAll();
+            document.querySelector('.container').onmousemove = e => {
+                for(const c of document.getElementsByClassName("card")) {
+                    const r = c.getBoundingClientRect();
+                    c.style.setProperty("--mouse-x", `${e.clientX - r.left}px`);
+                    c.style.setProperty("--mouse-y", `${e.clientY - r.top}px`);
+                }
+            };
+        }
+        loadContent();
+    </script>
+</body>
+</html>

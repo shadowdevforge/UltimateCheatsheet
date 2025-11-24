@@ -1,0 +1,85 @@
+{
+    "meta": {
+        "language": "CSS3",
+        "description": "Cascading Style Sheets. The visual language of the web. Flex, Grid, and Animations.",
+        "color": "#8aadf4",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (Selectors)",
+            "topics": [
+                {
+                    "title": "Targeting Elements",
+                    "desc": "Class (.) is reusable. ID (#) is unique.",
+                    "code": "/* Type Selector */\nh1 { color: red; }\n\n/* Class Selector (Preferred) */\n.card { background: #333; }\n\n/* ID Selector */\n#header { height: 60px; }"
+                },
+                {
+                    "title": "Box Model",
+                    "desc": "Margin is outside. Padding is inside. Border is between.",
+                    "code": ".box {\n  width: 100px;\n  padding: 20px;  /* Inside space */\n  border: 1px solid black;\n  margin: 20px;   /* Outside space */\n  box-sizing: border-box; /* Crucial! */\n}"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Flexbox)",
+            "topics": [
+                {
+                    "title": "Flex Container",
+                    "desc": "Best for 1-Dimensional layouts (Row or Column).",
+                    "code": ".container {\n  display: flex;\n  flex-direction: row; /* or column */\n  justify-content: center; /* Main Axis */\n  align-items: center;     /* Cross Axis */\n  gap: 1rem;\n}"
+                },
+                {
+                    "title": "Flex Items",
+                    "desc": "Controlling children sizing.",
+                    "code": ".item {\n  flex-grow: 1;   /* Fill space */\n  flex-shrink: 0; /* Don't shrink */\n}"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Grid)",
+            "topics": [
+                {
+                    "title": "CSS Grid",
+                    "desc": "Best for 2-Dimensional layouts (Rows AND Columns).",
+                    "code": ".grid {\n  display: grid;\n  /* 3 equal columns */\n  grid-template-columns: 1fr 1fr 1fr;\n  grid-template-rows: auto;\n  gap: 20px;\n}"
+                },
+                {
+                    "title": "Grid Areas",
+                    "desc": "Naming sections for layout.",
+                    "code": ".layout {\n  grid-template-areas:\n    \"header header\"\n    \"sidebar content\";\n}\n.header { grid-area: header; }"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Modern CSS)",
+            "topics": [
+                {
+                    "title": "Variables",
+                    "desc": "CSS Custom Properties for theming.",
+                    "code": ":root {\n  --primary: #8aadf4;\n  --spacing: 16px;\n}\n\n.btn {\n  background: var(--primary);\n  padding: var(--spacing);\n}"
+                },
+                {
+                    "title": "Pseudo-Classes",
+                    "desc": "Styling based on state or position.",
+                    "code": "button:hover { opacity: 0.8; }\ninput:focus { outline: 2px solid blue; }\nli:nth-child(even) { background: #eee; }"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Motion & Responsive)",
+            "topics": [
+                {
+                    "title": "Media Queries",
+                    "desc": "Responsive design breakpoints.",
+                    "code": "@media (max-width: 768px) {\n  .grid {\n    grid-template-columns: 1fr; /* Stack on mobile */\n  }\n}"
+                },
+                {
+                    "title": "Animations",
+                    "desc": "Keyframes for complex motion.",
+                    "code": "@keyframes slideIn {\n  from { transform: translateY(20px); opacity: 0; }\n  to { transform: translateY(0); opacity: 1; }\n}\n\n.card {\n  animation: slideIn 0.5s ease forwards;\n}"
+                }
+            ]
+        }
+    ]
+}

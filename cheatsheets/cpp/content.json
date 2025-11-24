@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "C++",
+        "description": "The powerhouse of game engines and high-frequency trading. Zero-cost abstractions.",
+        "color": "#7dc4e4",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Basics)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "Standard I/O uses streams (`cout`, `cin`).",
+                    "code": "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, Forge!\" << std::endl;\n    return 0;\n}"
+                },
+                {
+                    "title": "Namespaces",
+                    "desc": "Avoiding naming collisions.",
+                    "code": "namespace Forge {\n    int id = 1;\n}\n\nint main() {\n    // Access via scope resolution operator\n    std::cout << Forge::id;\n}"
+                },
+                {
+                    "title": "References",
+                    "desc": "Safer alternatives to pointers. Must be initialized.",
+                    "code": "int x = 10;\nint &ref = x; // ref is an alias for x\n\nref = 20; // x is now 20"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (STL Containers)",
+            "topics": [
+                {
+                    "title": "Vectors",
+                    "desc": "Dynamic arrays that handle their own memory.",
+                    "code": "#include <vector>\n\nstd::vector<int> nums = {1, 2, 3};\nnums.push_back(4);\n\n// Range-based for loop\nfor (int n : nums) {\n    std::cout << n << \" \";\n}"
+                },
+                {
+                    "title": "Strings",
+                    "desc": "The `std::string` class. Mutable and safe.",
+                    "code": "#include <string>\n\nstd::string s1 = \"Hello\";\nstd::string s2 = \" World\";\nstd::string s3 = s1 + s2; // Concatenation"
+                },
+                {
+                    "title": "Maps",
+                    "desc": "Key-value pairs (Red-Black Tree implementation).",
+                    "code": "#include <map>\n\nstd::map<std::string, int> inventory;\ninventory[\"sword\"] = 1;\ninventory[\"shield\"] = 5;"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (OOP)",
+            "topics": [
+                {
+                    "title": "Classes",
+                    "desc": "Encapsulation with `public`, `private`, and constructors.",
+                    "code": "class Player {\nprivate:\n    int health;\npublic:\n    Player(int h) : health(h) {} // Constructor list\n    \n    void takeDamage(int dmg) {\n        health -= dmg;\n    }\n};"
+                },
+                {
+                    "title": "Inheritance",
+                    "desc": "Deriving classes. Virtual functions enable polymorphism.",
+                    "code": "class Enemy {\npublic:\n    virtual void attack() { std::cout << \"Hit\"; }\n};\n\nclass Boss : public Enemy {\npublic:\n    void attack() override { std::cout << \"Smash\"; }\n};"
+                },
+                {
+                    "title": "Destructors",
+                    "desc": "Automatic cleanup when objects go out of scope (RAII).",
+                    "code": "class FileHandler {\npublic:\n    ~FileHandler() {\n        // Called automatically on scope exit\n        closeFile(); \n    }\n};"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Modern Features)",
+            "topics": [
+                {
+                    "title": "Smart Pointers",
+                    "desc": "No more `new` and `delete`. Automatic memory management.",
+                    "code": "#include <memory>\n\n// Unique Ptr (Exclusive ownership)\nauto ptr = std::make_unique<Player>(100);\n\n// Shared Ptr (Reference counted)\nauto s_ptr = std::make_shared<Player>(100);"
+                },
+                {
+                    "title": "Lambdas",
+                    "desc": "Anonymous functions. Capture variables via `[]`.",
+                    "code": "int multiplier = 2;\nauto times = [multiplier](int a) {\n    return a * multiplier;\n};\n\nstd::cout << times(5); // 10"
+                },
+                {
+                    "title": "Templates",
+                    "desc": "Generic programming. Write once, work with any type.",
+                    "code": "template <typename T>\nT add(T a, T b) {\n    return a + b;\n}\n\nint x = add<int>(5, 10);\nfloat y = add<float>(5.5, 2.1);"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Systems)",
+            "topics": [
+                {
+                    "title": "Move Semantics",
+                    "desc": "Transferring ownership of resources without copying (&&).",
+                    "code": "std::string a = \"Heavy Data\";\n// 'b' steals the pointer buffer from 'a'\n// 'a' is left in valid but empty state\nstd::string b = std::move(a);"
+                },
+                {
+                    "title": "Concurrency",
+                    "desc": "Standard threading library.",
+                    "code": "#include <thread>\n\nvoid worker() { ... }\n\nstd::thread t(worker);\nt.join(); // Wait for thread to finish"
+                },
+                {
+                    "title": "Constexpr",
+                    "desc": "Computing values at compile-time for performance.",
+                    "code": "constexpr int factorial(int n) {\n    return n <= 1 ? 1 : n * factorial(n - 1);\n}\n\n// Computed during compilation, treated as constant\nint val = factorial(5);"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,85 @@
+{
+    "meta": {
+        "language": "HTML5",
+        "description": "The semantic skeleton of the web. Structure, accessibility, and the DOM.",
+        "color": "#f5a97f",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Skeleton)",
+            "topics": [
+                {
+                    "title": "Boilerplate",
+                    "desc": "The required structure for a valid document.",
+                    "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Forge</title>\n</head>\n<body>\n    <!-- Content -->\n</body>\n</html>"
+                },
+                {
+                    "title": "Text Elements",
+                    "desc": "Hierarchy matters. H1 is for the main title only.",
+                    "code": "<h1>Main Heading</h1>\n<h2>Sub Heading</h2>\n<p>Paragraph text.</p>\n<strong>Bold (Importance)</strong>\n<em>Italic (Emphasis)</em>"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Hypermedia)",
+            "topics": [
+                {
+                    "title": "Anchors (Links)",
+                    "desc": "Navigation between pages or external resources.",
+                    "code": "<a href=\"https://example.com\">External</a>\n<a href=\"/about\">Internal</a>\n<a href=\"#top\">Jump to ID</a>\n<!-- Open in new tab -->\n<a href=\"...\" target=\"_blank\" rel=\"noopener\">New Tab</a>"
+                },
+                {
+                    "title": "Media",
+                    "desc": "Images and Figures. Alt text is mandatory for accessibility.",
+                    "code": "<img src=\"logo.png\" alt=\"Company Logo\" loading=\"lazy\" />\n\n<figure>\n  <img src=\"graph.jpg\" alt=\"Data Graph\" />\n  <figcaption>Fig 1. Data Analysis</figcaption>\n</figure>"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (Data & Lists)",
+            "topics": [
+                {
+                    "title": "Lists",
+                    "desc": "Grouping related items.",
+                    "code": "<ul>\n  <li>Unordered Item</li>\n</ul>\n\n<ol>\n  <li>Ordered Item</li>\n</ol>\n\n<dl>\n  <dt>Term</dt>\n  <dd>Definition</dd>\n</dl>"
+                },
+                {
+                    "title": "Tables",
+                    "desc": "For tabular data only, not layout.",
+                    "code": "<table>\n  <thead>\n    <tr><th>ID</th><th>Name</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>1</td><td>Shadow</td></tr>\n  </tbody>\n</table>"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Forms)",
+            "topics": [
+                {
+                    "title": "Input Types",
+                    "desc": "Semantic input types trigger correct mobile keyboards.",
+                    "code": "<input type=\"text\" placeholder=\"Name\" />\n<input type=\"email\" required />\n<input type=\"password\" />\n<input type=\"number\" min=\"0\" />\n<input type=\"date\" />"
+                },
+                {
+                    "title": "Form Structure",
+                    "desc": "Connecting labels to inputs is crucial.",
+                    "code": "<form action=\"/api/login\" method=\"POST\">\n  <label for=\"user\">Username</label>\n  <input id=\"user\" name=\"username\" />\n  \n  <button type=\"submit\">Login</button>\n</form>"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Semantics & SEO)",
+            "topics": [
+                {
+                    "title": "Semantic Layout",
+                    "desc": "Tags that describe their purpose to screen readers and bots.",
+                    "code": "<header>...</header>\n<nav>...</nav>\n<main>\n  <article>...</article>\n  <aside>...</aside>\n</main>\n<footer>...</footer>"
+                },
+                {
+                    "title": "Meta Tags",
+                    "desc": "Information for the browser and social media previews.",
+                    "code": "<meta name=\"description\" content=\"Site summary...\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<!-- Open Graph -->\n<meta property=\"og:title\" content=\"SyntaxForge\" />\n<meta property=\"og:image\" content=\"/preview.jpg\" />"
+                }
+            ]
+        }
+    ]
+}

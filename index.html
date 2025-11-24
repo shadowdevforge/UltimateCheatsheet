@@ -357,9 +357,16 @@
                 category: "Systems Engineering"
             },
             {
+               title: "C++",
+               desc: "Zero-overhead abstractions. Object-oriented, generic, and functional features for high-performance systems.",
+               path: "cheatsheets/cpp/index.html",
+               color: "var(--blue)",
+               category: "Systems Engineering"
+            },
+            {
                 title: "Nim",
                 desc: "Efficient, expressive, and elegant. Python-like syntax that compiles to C.",
-                path: "cheatsheets/nim", // Or "nim/index.html" depending on your folder structure
+                path: "cheatsheets/nim", 
                 color: "var(--yellow)",
                 category: "Systems Engineering"
             },
@@ -392,10 +399,47 @@
                 path: "cheatsheets/bash",
                 color: "#94A3B8",
                 category: "Scripting & Automation"
-            }
-        ];
+            },
 
-        const contentArea = document.getElementById('mainContent');
+          // --- Web Development ---
+            {
+                title: "HTML5",
+                desc: "The semantic skeleton of the web. Structure, accessibility, and SEO fundamentals.",
+                path: "cheatsheets/html/index.html",
+                color: "var(--peach)", // Orange-ish
+                category: "Web Development"
+            },
+            {
+                title: "CSS3",
+                desc: "Styling the web. Flexbox, Grid, Animations, and Responsive Design.",
+                path: "cheatsheets/css/index.html",
+                color: "var(--blue)", // Standard Blue
+                category: "Web Development"
+            },
+            {
+                title: "JavaScript",
+                desc: "The logic of the web. ES6+, Async/Await, DOM manipulation, and functional patterns.",
+                path: "cheatsheets/javascript/index.html",
+                color: "var(--yellow)", // Standard Yellow
+                category: "Web Development"
+            },
+            {
+                title: "TypeScript",
+                desc: "JavaScript with superpowers. Static typing, interfaces, and generics.",
+                path: "cheatsheets/typescript/index.html",
+                color: "var(--lavender)", // Light Blue/Purple
+                category: "Web Development"
+            },
+            {
+                title: "Svelte",
+                desc: "Cybernetically enhanced web apps. Reactivity without the virtual DOM.",
+                path: "cheatsheets/svelte/index.html",
+                color: "var(--red)", // Svelte Orange/Red
+                category: "Web Development"
+            }
+         ];
+ 
+         const contentArea = document.getElementById('mainContent');
         const searchInput = document.getElementById('searchInput');
 
         // --- MOUSE TRACKING FOR GLOW EFFECT ---
