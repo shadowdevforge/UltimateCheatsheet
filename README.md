@@ -24,7 +24,7 @@
 
 <pre>
   
-<img width="1768" height="1923" alt="image" src="https://github.com/user-attachments/assets/68c87a91-f489-4d4c-afb2-9aa20ff2d370" />
+<img width="1768" height="925" alt="image" src="https://github.com/user-attachments/assets/3c127371-f40f-4a6a-a493-2e609346a59f" />
 
 </pre>
 
