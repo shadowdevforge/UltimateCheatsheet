@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neovim | SyntaxForge</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Catppuccin Macchiato */
+            --base: #24273a;
+            --mantle: #1e2030;
+            --crust: #181926;
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --overlay0: #6e738d;
+            --surface0: #363a4f;
+            --surface1: #494d64;
+            
+            --blue: #8aadf4;
+            --mauve: #c6a0f6;
+            --green: #a6da95;
+            --peach: #f5a97f;
+            --red: #ed8796;
+            --yellow: #eed49f;
+
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', sans-serif;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            padding: 2rem;
+            /* Subtle SyntaxForge Vignette */
+            background-image: radial-gradient(circle at 50% 0%, #2f334d 0%, var(--base) 80%);
+        }
+
+        /* Header */
+        header {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            animation: fadeDown 0.6s ease;
+        }
+
+        .brand {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--green);
+            text-shadow: 0 4px 30px rgba(166, 218, 149, 0.2);
+            letter-spacing: -0.05em;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: var(--mantle);
+            border: 2px solid var(--surface0);
+            padding: 1rem 1.5rem;
+            border-radius: 100px;
+            color: var(--text);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            font-family: var(--font-mono);
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--green);
+            box-shadow: 0 8px 30px rgba(166, 218, 149, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Grid */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            padding-bottom: 80px;
+        }
+
+        .card {
+            background: var(--mantle);
+            border: 1px solid var(--surface0);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--green);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .letter-header {
+            position: absolute;
+            top: -15px;
+            right: -5px;
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--surface0);
+            opacity: 0.5;
+            user-select: none;
+            font-family: var(--font-mono);
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .command-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .command-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            padding-bottom: 8px;
+        }
+        .command-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+        /* Keys */
+        kbd {
+            background: var(--surface0);
+            border-bottom: 2px solid var(--surface1);
+            color: var(--text);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.85rem;
+            min-width: 32px;
+            text-align: center;
+            display: inline-block;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .desc {
+            font-size: 0.9rem;
+            color: var(--subtext0);
+            line-height: 1.3;
+            flex-grow: 1;
+        }
+
+        /* Modes Badges */
+        .mode {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+        }
+        
+        /* Mode Colors */
+        .mode.n { color: var(--blue); background: rgba(138, 173, 244, 0.15); border: 1px solid rgba(138, 173, 244, 0.2); }
+        .mode.i { color: var(--green); background: rgba(166, 218, 149, 0.15); border: 1px solid rgba(166, 218, 149, 0.2); }
+        .mode.v { color: var(--peach); background: rgba(245, 169, 127, 0.15); border: 1px solid rgba(245, 169, 127, 0.2); }
+        .mode.c { color: var(--red); background: rgba(237, 135, 150, 0.15); border: 1px solid rgba(237, 135, 150, 0.2); }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--overlay0);
+            padding: 40px;
+            font-style: italic;
+        }
+
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .brand { font-size: 2.5rem; }
+            main { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">Neovim CheatSheet</div>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search commands (e.g. 'delete', 'split')..." autocomplete="off">
+        </div>
+    </header>
+
+    <main id="grid"></main>
+
+<script>
+/**
+ * Modes: n=Normal, i=Insert, v=Visual, c=Command
+ */
+const cheatData = {
+    A: [
+        { key: 'a', desc: 'Append after cursor', mode: 'n' },
+        { key: 'A', desc: 'Append at end of line', mode: 'n' }
+    ],
+    B: [
+        { key: 'b', desc: 'Jump back one word', mode: 'n' },
+        { key: 'B', desc: 'Jump back one WORD', mode: 'n' },
+        { key: ':bn', desc: 'Buffer next', mode: 'c' },
+        { key: ':bd', desc: 'Buffer delete', mode: 'c' }
+    ],
+    C: [
+        { key: 'cw', desc: 'Change word', mode: 'n' },
+        { key: 'cc', desc: 'Change entire line', mode: 'n' },
+        { key: 'C', desc: 'Change to end of line', mode: 'n' },
+        { key: 'ci"', desc: 'Change inside quotes', mode: 'n' },
+        { key: 'ci(', desc: 'Change inside parens', mode: 'n' }
+    ],
+    D: [
+        { key: 'dd', desc: 'Delete line (Cut)', mode: 'n' },
+        { key: 'dw', desc: 'Delete word', mode: 'n' },
+        { key: 'D', desc: 'Delete to end of line', mode: 'n' },
+        { key: 'dt{c}', desc: 'Delete till char', mode: 'n' }
+    ],
+    E: [
+        { key: 'e', desc: 'Jump to end of word', mode: 'n' },
+        { key: 'ea', desc: 'Append at end of word', mode: 'n' }
+    ],
+    F: [
+        { key: 'f{c}', desc: 'Find char forward', mode: 'n' },
+        { key: 'F{c}', desc: 'Find char backward', mode: 'n' },
+        { key: ';', desc: 'Repeat find', mode: 'n' }
+    ],
+    G: [
+        { key: 'gg', desc: 'Go to first line', mode: 'n' },
+        { key: 'G', desc: 'Go to last line', mode: 'n' },
+        { key: 'gd', desc: 'Go to definition', mode: 'n' },
+        { key: 'gf', desc: 'Go to file under cursor', mode: 'n' }
+    ],
+    H: [
+        { key: 'h', desc: 'Move left', mode: 'n' },
+        { key: 'H', desc: 'Move to Top of Screen', mode: 'n' },
+        { key: ':h', desc: 'Open help', mode: 'c' }
+    ],
+    I: [
+        { key: 'i', desc: 'Insert before cursor', mode: 'n' },
+        { key: 'I', desc: 'Insert at start of line', mode: 'n' }
+    ],
+    J: [
+        { key: 'j', desc: 'Move down', mode: 'n' },
+        { key: 'J', desc: 'Join lines', mode: 'n' }
+    ],
+    K: [
+        { key: 'k', desc: 'Move up', mode: 'n' },
+        { key: 'K', desc: 'Hover documentation', mode: 'n' }
+    ],
+    L: [
+        { key: 'l', desc: 'Move right', mode: 'n' },
+        { key: 'L', desc: 'Move to Bottom of Screen', mode: 'n' }
+    ],
+    M: [
+        { key: 'm{a}', desc: 'Set mark {a}', mode: 'n' },
+        { key: '`{a}', desc: 'Jump to mark {a}', mode: 'n' },
+        { key: 'M', desc: 'Move to Middle of Screen', mode: 'n' }
+    ],
+    N: [
+        { key: 'n', desc: 'Next search result', mode: 'n' },
+        { key: 'N', desc: 'Prev search result', mode: 'n' },
+        { key: ':noh', desc: 'Clear search highlight', mode: 'c' }
+    ],
+    O: [
+        { key: 'o', desc: 'Open line below', mode: 'n' },
+        { key: 'O', desc: 'Open line above', mode: 'n' }
+    ],
+    P: [
+        { key: 'p', desc: 'Paste after cursor', mode: 'n' },
+        { key: 'P', desc: 'Paste before cursor', mode: 'n' }
+    ],
+    Q: [
+        { key: 'q{a}', desc: 'Record macro to {a}', mode: 'n' },
+        { key: '@{a}', desc: 'Replay macro {a}', mode: 'n' },
+        { key: ':q', desc: 'Quit', mode: 'c' }
+    ],
+    R: [
+        { key: 'r', desc: 'Replace single char', mode: 'n' },
+        { key: 'R', desc: 'Enter Replace mode', mode: 'n' },
+        { key: ':%s/a/b/g', desc: 'Replace all a with b', mode: 'c' }
+    ],
+    S: [
+        { key: 's', desc: 'Substitute char', mode: 'n' },
+        { key: 'S', desc: 'Substitute line', mode: 'n' },
+        { key: ':sp', desc: 'Split horizontal', mode: 'c' }
+    ],
+    T: [
+        { key: 't{c}', desc: 'Jump till char', mode: 'n' },
+        { key: ':t.', desc: 'Duplicate line', mode: 'c' }
+    ],
+    U: [
+        { key: 'u', desc: 'Undo', mode: 'n' },
+        { key: 'U', desc: 'Undo line', mode: 'n' },
+        { key: 'Ctrl+r', desc: 'Redo', mode: 'n' }
+    ],
+    V: [
+        { key: 'v', desc: 'Visual Mode (Char)', mode: 'n' },
+        { key: 'V', desc: 'Visual Mode (Line)', mode: 'n' },
+        { key: 'Ctrl+v', desc: 'Visual Block', mode: 'n' },
+        { key: ':vsp', desc: 'Split vertical', mode: 'c' }
+    ],
+    W: [
+        { key: 'w', desc: 'Jump start of next word', mode: 'n' },
+        { key: ':w', desc: 'Write (Save)', mode: 'c' },
+        { key: 'Ctrl+w', desc: 'Window commands', mode: 'n' }
+    ],
+    X: [
+        { key: 'x', desc: 'Delete char under cursor', mode: 'n' },
+        { key: 'X', desc: 'Backspace char', mode: 'n' }
+    ],
+    Y: [
+        { key: 'y', desc: 'Yank (Copy)', mode: 'v' },
+        { key: 'yy', desc: 'Yank line', mode: 'n' },
+        { key: 'y$', desc: 'Yank to end of line', mode: 'n' }
+    ],
+    Z: [
+        { key: 'zz', desc: 'Center screen', mode: 'n' },
+        { key: 'zt', desc: 'Scroll to top', mode: 'n' },
+        { key: 'zb', desc: 'Scroll to bottom', mode: 'n' },
+        { key: 'ZZ', desc: 'Save and Quit', mode: 'n' }
+    ],
+    SYMBOLS: [
+        { key: '.', desc: 'Repeat last command', mode: 'n' },
+        { key: '%', desc: 'Jump to matching bracket', mode: 'n' },
+        { key: '*', desc: 'Search word forward', mode: 'n' },
+        { key: '#', desc: 'Search word backward', mode: 'n' },
+        { key: '$', desc: 'End of line', mode: 'n' },
+        { key: '^', desc: 'Start of line (non-blank)', mode: 'n' },
+        { key: '>>', desc: 'Indent line', mode: 'n' },
+        { key: '<<', desc: 'Unindent line', mode: 'n' }
+    ]
+};
+
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('search');
+
+const createCommandHTML = (cmd) => `
+    <div class="command-item">
+        <kbd>${cmd.key}</kbd>
+        <span class="desc">${cmd.desc}</span>
+        <span class="mode ${cmd.mode}" title="Mode">${cmd.mode.toUpperCase()}</span>
+    </div>
+`;
+
+function render(filter = '') {
+    grid.innerHTML = '';
+    const lowerFilter = filter.toLowerCase();
+    let hasResults = false;
+
+    // Handle symbols separately or include them? 
+    // They are in the object, so Object.entries covers them.
+    
+    Object.entries(cheatData).forEach(([letter, commands]) => {
+        const filteredCommands = commands.filter(cmd => 
+            cmd.key.toLowerCase().includes(lowerFilter) || 
+            cmd.desc.toLowerCase().includes(lowerFilter) ||
+            letter.toLowerCase().includes(lowerFilter)
+        );
+
+        if (filteredCommands.length > 0) {
+            hasResults = true;
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Stagger animation
+            card.style.animation = `fadeUp 0.5s ease backwards`;
+            
+            card.innerHTML = `
+                <div class="letter-header">${letter === 'SYMBOLS' ? '{}' : letter}</div>
+                <div class="command-list">
+                    ${filteredCommands.map(createCommandHTML).join('')}
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+    });
+
+    if (!hasResults) {
+        grid.innerHTML = `<div class="no-results">No commands found matching "${filter}"</div>`;
+    }
+}
+
+render();
+
+let timeout;
+searchInput.addEventListener('input', (e) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        render(e.target.value);
+    }, 100);
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+    }
+});
+</script>
+</body>
+</html>
