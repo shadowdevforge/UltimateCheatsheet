@@ -1,0 +1,110 @@
+{
+    "meta": {
+        "language": "Java",
+        "description": "Strictly typed, object-oriented, and built for scale. The bedrock of enterprise backend.",
+        "color": "#ee99a0",
+        "icon": "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg"
+    },
+    "sections": [
+        {
+            "level": "I. Novice (The Basics)",
+            "topics": [
+                {
+                    "title": "Hello World",
+                    "desc": "Every Java application must have a class and a main method.",
+                    "code": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Forge!\");\n    }\n}"
+                },
+                {
+                    "title": "Variables & Primitives",
+                    "desc": "Statically typed variables. 8 primitive types.",
+                    "code": "int age = 25;\ndouble price = 19.99;\nboolean isActive = true;\nchar grade = 'A';\n\n// String is a Reference Type (Class)\nString name = \"Shadow\";"
+                },
+                {
+                    "title": "Control Flow",
+                    "desc": "Standard if-else logic.",
+                    "code": "if (score > 90) {\n    System.out.println(\"A\");\n} else if (score > 80) {\n    System.out.println(\"B\");\n} else {\n    System.out.println(\"C\");\n}"
+                }
+            ]
+        },
+        {
+            "level": "II. Apprentice (Data Structures)",
+            "topics": [
+                {
+                    "title": "Arrays",
+                    "desc": "Fixed-size containers.",
+                    "code": "int[] numbers = {1, 2, 3, 4, 5};\n\n// Access\nint first = numbers[0];\n\n// Length property (not a method)\nint len = numbers.length;"
+                },
+                {
+                    "title": "ArrayList",
+                    "desc": "Dynamic arrays from the Collections framework.",
+                    "code": "import java.util.ArrayList;\n\nArrayList<String> list = new ArrayList<>();\nlist.add(\"Java\");\nlist.add(\"Rust\");\n\nString item = list.get(0);"
+                },
+                {
+                    "title": "Loops",
+                    "desc": "Traditional For and Enhanced For-Each.",
+                    "code": "// For-Each (Preferred for collections)\nfor (String lang : list) {\n    System.out.println(lang);\n}\n\n// Traditional\nfor (int i = 0; i < 5; i++) {\n    System.out.println(i);\n}"
+                }
+            ]
+        },
+        {
+            "level": "III. Journeyman (OOP)",
+            "topics": [
+                {
+                    "title": "Classes & Objects",
+                    "desc": "The blueprint of Java.",
+                    "code": "public class Dog {\n    String name;\n\n    // Constructor\n    public Dog(String name) {\n        this.name = name;\n    }\n\n    public void bark() {\n        System.out.println(name + \" says Woof!\");\n    }\n}"
+                },
+                {
+                    "title": "Static",
+                    "desc": "Belongs to the class, not the instance.",
+                    "code": "public class MathUtils {\n    public static final double PI = 3.14159;\n    \n    public static int add(int a, int b) {\n        return a + b;\n    }\n}\n\n// Usage\nint sum = MathUtils.add(5, 10);"
+                },
+                {
+                    "title": "Access Modifiers",
+                    "desc": "Encapsulation control.",
+                    "code": "private int id;    // Only this class\npublic String name; // Everywhere\nprotected int age; // Subclasses & Package\nint defaultVal;    // Package-private"
+                }
+            ]
+        },
+        {
+            "level": "IV. Expert (Inheritance & Interfaces)",
+            "topics": [
+                {
+                    "title": "Inheritance",
+                    "desc": "Extending functionality. Java supports single inheritance.",
+                    "code": "class Animal {\n    void eat() { System.out.println(\"Eating\"); }\n}\n\nclass Cat extends Animal {\n    @Override\n    void eat() { System.out.println(\"Eating fish\"); }\n}"
+                },
+                {
+                    "title": "Interfaces",
+                    "desc": "Defining contracts. A class can implement multiple interfaces.",
+                    "code": "interface Flyable {\n    void fly();\n}\n\nclass Bird implements Flyable {\n    public void fly() {\n        System.out.println(\"Flying high\");\n    }\n}"
+                },
+                {
+                    "title": "Abstract Classes",
+                    "desc": "Partial implementation.",
+                    "code": "abstract class Shape {\n    abstract double area();\n    \n    void print() {\n        System.out.println(\"I am a shape\");\n    }\n}"
+                }
+            ]
+        },
+        {
+            "level": "V. Grandmaster (Modern Java)",
+            "topics": [
+                {
+                    "title": "Lambdas",
+                    "desc": "Functional programming syntax (Java 8+).",
+                    "code": "interface MathOp {\n    int operate(int a, int b);\n}\n\nMathOp add = (a, b) -> a + b;\nint result = add.operate(5, 3);"
+                },
+                {
+                    "title": "Streams API",
+                    "desc": "Functional pipelines for collections.",
+                    "code": "List<String> names = Arrays.asList(\"Alice\", \"Bob\", \"Charlie\");\n\nnames.stream()\n    .filter(n -> n.startsWith(\"A\"))\n    .map(String::toUpperCase)\n    .forEach(System.out::println);"
+                },
+                {
+                    "title": "Records",
+                    "desc": "Immutable data carriers (Java 14+).",
+                    "code": "public record Point(int x, int y) {}\n\nPoint p = new Point(10, 20);\nSystem.out.println(p.x());"
+                }
+            ]
+        }
+    ]
+}

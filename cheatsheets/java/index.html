@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Forge | Syntax Guide</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Highlight.js (Java Language Support) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+
+    <style>
+        /* THEME: Catppuccin Macchiato */
+        :root {
+            --base: #24273a;
+            --mantle: #1e2030;
+            --crust: #181926;
+            --text: #cad3f5;
+            --subtext0: #a5adcb;
+            --overlay0: #6e738d;
+            --surface0: #363a4f;
+            --accent: #ee99a0; /* Maroon for Java */
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 16px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--base);
+            color: var(--text);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--surface0);
+            margin-bottom: 40px;
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--subtext0);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .nav-back:hover { color: var(--text); transform: translateX(-4px); }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lang-icon { width: 64px; height: 64px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.3)); }
+
+        .page-title {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(0,0,0,0.2);
+        }
+
+        .page-desc { color: var(--subtext0); font-size: 1.1rem; margin-top: 8px; }
+
+        /* SECTIONS */
+        .level-section {
+            margin-bottom: 60px;
+            animation: fadeUp 0.6s var(--ease) backwards;
+        }
+
+        .level-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .level-badge {
+            font-size: 0.8rem;
+            background: var(--surface0);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* CARDS */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--mantle);
+            border-radius: var(--radius);
+            border: 1px solid var(--surface0);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), var(--accent), transparent 40%);
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .card:hover { border-color: var(--accent); }
+        .card:hover::before { opacity: 0.08; }
+
+        .card-content { position: relative; z-index: 1; }
+
+        .topic-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .topic-title { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+        .topic-desc { color: var(--subtext0); margin-bottom: 20px; font-size: 0.95rem; }
+
+        /* CODE BLOCKS */
+        pre {
+            background: var(--crust) !important;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--surface0);
+            margin: 0;
+        }
+        
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--mantle); }
+        ::-webkit-scrollbar-thumb { background: var(--surface0); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--overlay0); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Highlight.js Overrides for Catppuccin Vibe */
+        .hljs { background: transparent !important; color: var(--text); }
+        .hljs-keyword { color: #c6a0f6; font-weight: bold; } /* Mauve */
+        .hljs-string { color: #a6da95; } /* Green */
+        .hljs-title, .hljs-function { color: #8aadf4; } /* Blue */
+        .hljs-number { color: #f5a97f; } /* Peach */
+        .hljs-comment { color: #6e738d; font-style: italic; } /* Overlay */
+        .hljs-type { color: #eed49f; } /* Yellow */
+        .hljs-class { color: #eed49f; }
+        .hljs-meta { color: #ed8796; } /* Red */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header id="pageHeader" class="header">
+            <a href="/SyntaxForge" class="nav-back">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Forge
+            </a>
+        </header>
+
+        <!-- Main Content -->
+        <main id="mainContent">
+            <!-- Sections Injected Here -->
+        </main>
+    </div>
+
+    <script>
+        const header = document.getElementById('pageHeader');
+        const main = document.getElementById('mainContent');
+        const root = document.documentElement;
+
+        async function loadContent() {
+            try {
+                const response = await fetch('content.json');
+                const data = await response.json();
+                renderPage(data);
+            } catch (error) {
+                console.error("Error loading forge data:", error);
+                main.innerHTML = `<div style="text-align:center; color:var(--red)">Failed to load content module.</div>`;
+            }
+        }
+
+        function renderPage(data) {
+            root.style.setProperty('--accent', data.meta.color);
+            document.title = `${data.meta.language} | SyntaxForge`;
+
+            const titleBlock = document.createElement('div');
+            titleBlock.className = 'title-row';
+            titleBlock.innerHTML = `
+                <img src="${data.meta.icon}" class="lang-icon" alt="${data.meta.language}">
+                <div>
+                    <div class="page-title">${data.meta.language}</div>
+                    <div class="page-desc">${data.meta.description}</div>
+                </div>
+            `;
+            header.appendChild(titleBlock);
+
+            data.sections.forEach((section, index) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'level-section';
+                sectionEl.style.animationDelay = `${index * 0.1}s`;
+
+                sectionEl.innerHTML = `
+                    <div class="level-title">
+                        ${section.level}
+                        <span class="level-badge">Level ${index + 1}</span>
+                    </div>
+                    <div class="grid" id="grid-${index}"></div>
+                `;
+                
+                const gridEl = sectionEl.querySelector(`#grid-${index}`);
+
+                section.topics.forEach(topic => {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    // Escape generics like <String> so they don't break HTML
+                    const escapedCode = topic.code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <div class="topic-header">
+                                <div class="topic-title">${topic.title}</div>
+                            </div>
+                            <p class="topic-desc">${topic.desc}</p>
+                            <pre><code class="language-java">${escapedCode}</code></pre>
+                        </div>
+                    `;
+                    gridEl.appendChild(card);
+                });
+
+                main.appendChild(sectionEl);
+            });
+
+            hljs.highlightAll();
+            initGlowEffect();
+        }
+
+        function initGlowEffect() {
+            const container = document.querySelector('.container');
+            container.onmousemove = e => {
+                for(const card of document.getElementsByClassName("card")) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
+
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
+                }
+            };
+        }
+
+        loadContent();
+    </script>
+</body>
+</html>

@@ -35,7 +35,7 @@
                     "code": "if (score > 90) {\n    printf(\"Excellent\");\n} else {\n    printf(\"Good\");\n}\n\n// Ternary\nint max = (a > b) ? a : b;"
                 },
                 {
-                    "title": "Loops",
+                   "title": "Loops",
                     "desc": "For, While, and Do-While loops.",
                     "code": "for (int i = 0; i < 5; i++) {\n    printf(\"%d \", i);\n}\n\nwhile (running) {\n    // logic code\n}"
                 },
