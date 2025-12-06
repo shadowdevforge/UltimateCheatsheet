@@ -3,427 +3,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neovim | SyntaxForge</title>
+    <title>Catppuccin Neovim Mastery & Playground</title>
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- 1. Tailwind CSS for Layout & Theming -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cat: {
+                            base: '#1e1e2e',
+                            mantle: '#181825',
+                            crust: '#11111b',
+                            text: '#cdd6f4',
+                            subtext0: '#a6adc8',
+                            subtext1: '#bac2de',
+                            surface0: '#313244',
+                            surface1: '#45475a',
+                            surface2: '#585b70',
+                            overlay0: '#6c7086',
+                            blue: '#89b4fa',
+                            lavender: '#b4befe',
+                            sapphire: '#74c7ec',
+                            sky: '#89dceb',
+                            teal: '#94e2d5',
+                            green: '#a6e3a1',
+                            yellow: '#f9e2af',
+                            peach: '#fab387',
+                            maroon: '#eba0ac',
+                            red: '#f38ba8',
+                            mauve: '#cba6f7',
+                            pink: '#f5c2e7',
+                            flamingo: '#f2cdcd',
+                            rosewater: '#f5e0dc',
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 2. CodeMirror (The Vim Engine) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/keymap/vim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+
+    <!-- 3. Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <style>
-        :root {
-            /* Catppuccin Macchiato */
-            --base: #24273a;
-            --mantle: #1e2030;
-            --crust: #181926;
-            --text: #cad3f5;
-            --subtext0: #a5adcb;
-            --overlay0: #6e738d;
-            --surface0: #363a4f;
-            --surface1: #494d64;
-            
-            --blue: #8aadf4;
-            --mauve: #c6a0f6;
-            --green: #a6da95;
-            --peach: #f5a97f;
-            --red: #ed8796;
-            --yellow: #eed49f;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #181825; }
+        ::-webkit-scrollbar-thumb { background: #585b70; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6c7086; }
 
-            --font-mono: 'JetBrains Mono', monospace;
-            --font-sans: 'Inter', sans-serif;
-            --radius: 12px;
+        /* CodeMirror Catppuccin Overrides */
+        .CodeMirror {
+            height: 100%;
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #1e1e2e !important;
+            color: #cdd6f4 !important;
+            font-size: 14px;
+            line-height: 1.6;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--base);
-            color: var(--text);
-            font-family: var(--font-sans);
-            min-height: 100vh;
-            padding: 2rem;
-            /* Subtle SyntaxForge Vignette */
-            background-image: radial-gradient(circle at 50% 0%, #2f334d 0%, var(--base) 80%);
+        .CodeMirror-gutters {
+            background-color: #1e1e2e !important;
+            border-right: 1px solid #313244;
         }
-
-        /* Header */
-        header {
-            max-width: 1200px;
-            margin: 0 auto 3rem;
-            text-align: center;
-            animation: fadeDown 0.6s ease;
-        }
-
-        .brand {
-            font-family: var(--font-mono);
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--green);
-            text-shadow: 0 4px 30px rgba(166, 218, 149, 0.2);
-            letter-spacing: -0.05em;
-        }
-
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            background: var(--mantle);
-            border: 2px solid var(--surface0);
-            padding: 1rem 1.5rem;
-            border-radius: 100px;
-            color: var(--text);
-            font-size: 1.1rem;
-            outline: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            font-family: var(--font-mono);
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--green);
-            box-shadow: 0 8px 30px rgba(166, 218, 149, 0.15);
-            transform: translateY(-2px);
-        }
-
-        /* Grid */
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.5rem;
-            padding-bottom: 80px;
-        }
-
-        .card {
-            background: var(--mantle);
-            border: 1px solid var(--surface0);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--green);
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        .letter-header {
-            position: absolute;
-            top: -15px;
-            right: -5px;
-            font-size: 6rem;
-            font-weight: 900;
-            color: var(--surface0);
-            opacity: 0.5;
-            user-select: none;
-            font-family: var(--font-mono);
-            pointer-events: none;
-            line-height: 1;
-        }
-
-        .command-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .command-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            padding-bottom: 8px;
-        }
-        .command-item:last-child { border-bottom: none; padding-bottom: 0; }
-
-        /* Keys */
-        kbd {
-            background: var(--surface0);
-            border-bottom: 2px solid var(--surface1);
-            color: var(--text);
-            padding: 0.2rem 0.5rem;
-            border-radius: 6px;
-            font-family: var(--font-mono);
-            font-weight: 700;
-            font-size: 0.85rem;
-            min-width: 32px;
-            text-align: center;
-            display: inline-block;
-            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
-        }
-
-        .desc {
-            font-size: 0.9rem;
-            color: var(--subtext0);
-            line-height: 1.3;
-            flex-grow: 1;
-        }
-
-        /* Modes Badges */
-        .mode {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            opacity: 0.9;
-        }
+        .CodeMirror-linenumber { color: #6c7086 !important; }
+        .CodeMirror-cursor { border-left: 2px solid #b4befe !important; }
+        .cm-fat-cursor .CodeMirror-cursor { background: #b4befe !important; opacity: 0.5; }
         
-        /* Mode Colors */
-        .mode.n { color: var(--blue); background: rgba(138, 173, 244, 0.15); border: 1px solid rgba(138, 173, 244, 0.2); }
-        .mode.i { color: var(--green); background: rgba(166, 218, 149, 0.15); border: 1px solid rgba(166, 218, 149, 0.2); }
-        .mode.v { color: var(--peach); background: rgba(245, 169, 127, 0.15); border: 1px solid rgba(245, 169, 127, 0.2); }
-        .mode.c { color: var(--red); background: rgba(237, 135, 150, 0.15); border: 1px solid rgba(237, 135, 150, 0.2); }
-
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--overlay0);
-            padding: 40px;
-            font-style: italic;
-        }
-
-        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            body { padding: 1rem; }
-            .brand { font-size: 2.5rem; }
-            main { grid-template-columns: 1fr; }
+        /* Syntax Highlighting overrides for JS */
+        .cm-keyword { color: #cba6f7 !important; font-weight: bold; } /* Mauve */
+        .cm-operator { color: #89dceb !important; } /* Sky */
+        .cm-variable { color: #cdd6f4 !important; } /* Text */
+        .cm-variable-2 { color: #f38ba8 !important; } /* Red */
+        .cm-def { color: #89b4fa !important; } /* Blue */
+        .cm-string { color: #a6e3a1 !important; } /* Green */
+        .cm-number { color: #fab387 !important; } /* Peach */
+        .cm-comment { color: #6c7086 !important; font-style: italic; } /* Overlay0 */
+        
+        /* Vim Mode Specifics */
+        .cm-vim-panel {
+            background: #11111b !important;
+            color: #cdd6f4 !important;
+            border-top: 1px solid #313244;
+            padding: 4px 8px;
         }
     </style>
 </head>
-<body>
+<body class="bg-cat-crust text-cat-text font-sans h-screen flex flex-col overflow-hidden">
 
-    <header>
-        <div class="brand">Neovim CheatSheet</div>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search commands (e.g. 'delete', 'split')..." autocomplete="off">
+    <!-- Header -->
+    <header class="h-14 bg-cat-mantle border-b border-cat-surface0 flex items-center justify-between px-6 shrink-0">
+        <div class="flex items-center gap-3">
+            <i class="ri-terminal-box-fill text-cat-green text-2xl"></i>
+            <h1 class="font-bold text-lg tracking-wide"><span class="text-cat-mauve">Neovim</span> <span class="text-cat-subtext0">Playground</span></h1>
+        </div>
+        <div class="flex items-center gap-4 text-sm text-cat-subtext0">
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-cat-blue"></span> Normal
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-cat-green"></span> Insert
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-cat-mauve"></span> Visual
+            </div>
         </div>
     </header>
 
-    <main id="grid"></main>
-
-<script>
-/**
- * Modes: n=Normal, i=Insert, v=Visual, c=Command
- */
-const cheatData = {
-    A: [
-        { key: 'a', desc: 'Append after cursor', mode: 'n' },
-        { key: 'A', desc: 'Append at end of line', mode: 'n' }
-    ],
-    B: [
-        { key: 'b', desc: 'Jump back one word', mode: 'n' },
-        { key: 'B', desc: 'Jump back one WORD', mode: 'n' },
-        { key: ':bn', desc: 'Buffer next', mode: 'c' },
-        { key: ':bd', desc: 'Buffer delete', mode: 'c' }
-    ],
-    C: [
-        { key: 'cw', desc: 'Change word', mode: 'n' },
-        { key: 'cc', desc: 'Change entire line', mode: 'n' },
-        { key: 'C', desc: 'Change to end of line', mode: 'n' },
-        { key: 'ci"', desc: 'Change inside quotes', mode: 'n' },
-        { key: 'ci(', desc: 'Change inside parens', mode: 'n' }
-    ],
-    D: [
-        { key: 'dd', desc: 'Delete line (Cut)', mode: 'n' },
-        { key: 'dw', desc: 'Delete word', mode: 'n' },
-        { key: 'D', desc: 'Delete to end of line', mode: 'n' },
-        { key: 'dt{c}', desc: 'Delete till char', mode: 'n' }
-    ],
-    E: [
-        { key: 'e', desc: 'Jump to end of word', mode: 'n' },
-        { key: 'ea', desc: 'Append at end of word', mode: 'n' }
-    ],
-    F: [
-        { key: 'f{c}', desc: 'Find char forward', mode: 'n' },
-        { key: 'F{c}', desc: 'Find char backward', mode: 'n' },
-        { key: ';', desc: 'Repeat find', mode: 'n' }
-    ],
-    G: [
-        { key: 'gg', desc: 'Go to first line', mode: 'n' },
-        { key: 'G', desc: 'Go to last line', mode: 'n' },
-        { key: 'gd', desc: 'Go to definition', mode: 'n' },
-        { key: 'gf', desc: 'Go to file under cursor', mode: 'n' }
-    ],
-    H: [
-        { key: 'h', desc: 'Move left', mode: 'n' },
-        { key: 'H', desc: 'Move to Top of Screen', mode: 'n' },
-        { key: ':h', desc: 'Open help', mode: 'c' }
-    ],
-    I: [
-        { key: 'i', desc: 'Insert before cursor', mode: 'n' },
-        { key: 'I', desc: 'Insert at start of line', mode: 'n' }
-    ],
-    J: [
-        { key: 'j', desc: 'Move down', mode: 'n' },
-        { key: 'J', desc: 'Join lines', mode: 'n' }
-    ],
-    K: [
-        { key: 'k', desc: 'Move up', mode: 'n' },
-        { key: 'K', desc: 'Hover documentation', mode: 'n' }
-    ],
-    L: [
-        { key: 'l', desc: 'Move right', mode: 'n' },
-        { key: 'L', desc: 'Move to Bottom of Screen', mode: 'n' }
-    ],
-    M: [
-        { key: 'm{a}', desc: 'Set mark {a}', mode: 'n' },
-        { key: '`{a}', desc: 'Jump to mark {a}', mode: 'n' },
-        { key: 'M', desc: 'Move to Middle of Screen', mode: 'n' }
-    ],
-    N: [
-        { key: 'n', desc: 'Next search result', mode: 'n' },
-        { key: 'N', desc: 'Prev search result', mode: 'n' },
-        { key: ':noh', desc: 'Clear search highlight', mode: 'c' }
-    ],
-    O: [
-        { key: 'o', desc: 'Open line below', mode: 'n' },
-        { key: 'O', desc: 'Open line above', mode: 'n' }
-    ],
-    P: [
-        { key: 'p', desc: 'Paste after cursor', mode: 'n' },
-        { key: 'P', desc: 'Paste before cursor', mode: 'n' }
-    ],
-    Q: [
-        { key: 'q{a}', desc: 'Record macro to {a}', mode: 'n' },
-        { key: '@{a}', desc: 'Replay macro {a}', mode: 'n' },
-        { key: ':q', desc: 'Quit', mode: 'c' }
-    ],
-    R: [
-        { key: 'r', desc: 'Replace single char', mode: 'n' },
-        { key: 'R', desc: 'Enter Replace mode', mode: 'n' },
-        { key: ':%s/a/b/g', desc: 'Replace all a with b', mode: 'c' }
-    ],
-    S: [
-        { key: 's', desc: 'Substitute char', mode: 'n' },
-        { key: 'S', desc: 'Substitute line', mode: 'n' },
-        { key: ':sp', desc: 'Split horizontal', mode: 'c' }
-    ],
-    T: [
-        { key: 't{c}', desc: 'Jump till char', mode: 'n' },
-        { key: ':t.', desc: 'Duplicate line', mode: 'c' }
-    ],
-    U: [
-        { key: 'u', desc: 'Undo', mode: 'n' },
-        { key: 'U', desc: 'Undo line', mode: 'n' },
-        { key: 'Ctrl+r', desc: 'Redo', mode: 'n' }
-    ],
-    V: [
-        { key: 'v', desc: 'Visual Mode (Char)', mode: 'n' },
-        { key: 'V', desc: 'Visual Mode (Line)', mode: 'n' },
-        { key: 'Ctrl+v', desc: 'Visual Block', mode: 'n' },
-        { key: ':vsp', desc: 'Split vertical', mode: 'c' }
-    ],
-    W: [
-        { key: 'w', desc: 'Jump start of next word', mode: 'n' },
-        { key: ':w', desc: 'Write (Save)', mode: 'c' },
-        { key: 'Ctrl+w', desc: 'Window commands', mode: 'n' }
-    ],
-    X: [
-        { key: 'x', desc: 'Delete char under cursor', mode: 'n' },
-        { key: 'X', desc: 'Backspace char', mode: 'n' }
-    ],
-    Y: [
-        { key: 'y', desc: 'Yank (Copy)', mode: 'v' },
-        { key: 'yy', desc: 'Yank line', mode: 'n' },
-        { key: 'y$', desc: 'Yank to end of line', mode: 'n' }
-    ],
-    Z: [
-        { key: 'zz', desc: 'Center screen', mode: 'n' },
-        { key: 'zt', desc: 'Scroll to top', mode: 'n' },
-        { key: 'zb', desc: 'Scroll to bottom', mode: 'n' },
-        { key: 'ZZ', desc: 'Save and Quit', mode: 'n' }
-    ],
-    SYMBOLS: [
-        { key: '.', desc: 'Repeat last command', mode: 'n' },
-        { key: '%', desc: 'Jump to matching bracket', mode: 'n' },
-        { key: '*', desc: 'Search word forward', mode: 'n' },
-        { key: '#', desc: 'Search word backward', mode: 'n' },
-        { key: '$', desc: 'End of line', mode: 'n' },
-        { key: '^', desc: 'Start of line (non-blank)', mode: 'n' },
-        { key: '>>', desc: 'Indent line', mode: 'n' },
-        { key: '<<', desc: 'Unindent line', mode: 'n' }
-    ]
-};
-
-const grid = document.getElementById('grid');
-const searchInput = document.getElementById('search');
-
-const createCommandHTML = (cmd) => `
-    <div class="command-item">
-        <kbd>${cmd.key}</kbd>
-        <span class="desc">${cmd.desc}</span>
-        <span class="mode ${cmd.mode}" title="Mode">${cmd.mode.toUpperCase()}</span>
-    </div>
-`;
-
-function render(filter = '') {
-    grid.innerHTML = '';
-    const lowerFilter = filter.toLowerCase();
-    let hasResults = false;
-
-    // Handle symbols separately or include them? 
-    // They are in the object, so Object.entries covers them.
-    
-    Object.entries(cheatData).forEach(([letter, commands]) => {
-        const filteredCommands = commands.filter(cmd => 
-            cmd.key.toLowerCase().includes(lowerFilter) || 
-            cmd.desc.toLowerCase().includes(lowerFilter) ||
-            letter.toLowerCase().includes(lowerFilter)
-        );
-
-        if (filteredCommands.length > 0) {
-            hasResults = true;
-            const card = document.createElement('div');
-            card.className = 'card';
-            // Stagger animation
-            card.style.animation = `fadeUp 0.5s ease backwards`;
+    <!-- Main Content -->
+    <main class="flex-1 flex overflow-hidden">
+        
+        <!-- Left: Playground -->
+        <div class="w-1/2 flex flex-col border-r border-cat-surface0 relative group">
+            <!-- File Tab -->
+            <div class="bg-cat-base h-9 flex items-center px-4 text-xs text-cat-overlay0 border-b border-cat-surface0">
+                <i class="ri-javascript-fill text-cat-yellow mr-2"></i> playground.js <span class="ml-auto opacity-50">UTF-8</span>
+            </div>
             
-            card.innerHTML = `
-                <div class="letter-header">${letter === 'SYMBOLS' ? '{}' : letter}</div>
-                <div class="command-list">
-                    ${filteredCommands.map(createCommandHTML).join('')}
-                </div>
-            `;
-            grid.appendChild(card);
-        }
-    });
+            <!-- Editor Container -->
+            <div id="editor" class="flex-1 relative"></div>
 
-    if (!hasResults) {
-        grid.innerHTML = `<div class="no-results">No commands found matching "${filter}"</div>`;
+            <!-- Custom Status Line (Lualine style) -->
+            <div id="status-line" class="h-8 bg-cat-surface0 flex items-center text-xs select-none">
+                <div id="mode-indicator" class="bg-cat-blue text-cat-base font-bold px-3 h-full flex items-center transition-colors duration-200">NORMAL</div>
+                <div class="px-3 text-cat-subtext1 flex gap-2">
+                    <i class="ri-git-branch-line"></i> master
+                </div>
+                <div class="flex-1"></div>
+                <div id="cursor-pos" class="px-4 text-cat-text bg-cat-surface1 h-full flex items-center">Ln 1, Col 1</div>
+            </div>
+
+            <!-- Hint Overlay -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-cat-overlay0 text-center opacity-0 group-hover:opacity-10 pointer-events-none transition-opacity">
+                <i class="ri-keyboard-box-line text-9xl"></i>
+                <p class="text-xl mt-4">Type here to practice</p>
+            </div>
+        </div>
+
+        <!-- Right: Cheatsheet -->
+        <div class="w-1/2 flex flex-col bg-cat-base">
+            <!-- Search Bar -->
+            <div class="p-4 border-b border-cat-surface0">
+                <div class="relative">
+                    <i class="ri-search-line absolute left-3 top-2.5 text-cat-overlay0"></i>
+                    <input type="text" id="search-input" placeholder="Search keymaps (e.g., 'split', 'replace', 'macro')..." 
+                        class="w-full bg-cat-mantle text-cat-text border border-cat-surface1 rounded-md py-2 pl-10 pr-4 focus:outline-none focus:border-cat-mauve placeholder-cat-surface2">
+                </div>
+            </div>
+
+            <!-- Cheatsheet Content -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6" id="cheatsheet-container">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // 1. DATA: The Master Keymap List
+        // ==========================================
+        const keymaps = [
+            {
+                category: "Basic Movement",
+                color: "text-cat-blue",
+                items: [
+                    { keys: "h", desc: "Move left" },
+                    { keys: "j", desc: "Move down" },
+                    { keys: "k", desc: "Move up" },
+                    { keys: "l", desc: "Move right" },
+                    { keys: "w", desc: "Jump by start of word (punctuation included)" },
+                    { keys: "W", desc: "Jump by start of word (spaces only)" },
+                    { keys: "e", desc: "Jump to end of word" },
+                    { keys: "b", desc: "Jump backward by word" },
+                    { keys: "0", desc: "Start of line" },
+                    { keys: "$", desc: "End of line" },
+                    { keys: "^", desc: "First non-blank character of line" },
+                    { keys: "gg", desc: "Go to first line" },
+                    { keys: "G", desc: "Go to last line" },
+                    { keys: ":{n}", desc: "Go to line {n}" },
+                ]
+            },
+            {
+                category: "Editing (Insert Mode)",
+                color: "text-cat-green",
+                items: [
+                    { keys: "i", desc: "Insert before cursor" },
+                    { keys: "I", desc: "Insert at beginning of line" },
+                    { keys: "a", desc: "Append after cursor" },
+                    { keys: "A", desc: "Append at end of line" },
+                    { keys: "o", desc: "Open new line below" },
+                    { keys: "O", desc: "Open new line above" },
+                    { keys: "s", desc: "Delete char and insert" },
+                    { keys: "S", desc: "Clear line and insert" },
+                    { keys: "C", desc: "Change to end of line" },
+                ]
+            },
+            {
+                category: "Editing (Manipulation)",
+                color: "text-cat-red",
+                items: [
+                    { keys: "x", desc: "Delete character" },
+                    { keys: "r", desc: "Replace single character" },
+                    { keys: "R", desc: "Replace mode (overwrite)" },
+                    { keys: "dd", desc: "Delete (cut) line" },
+                    { keys: "dw", desc: "Delete word" },
+                    { keys: "D", desc: "Delete to end of line" },
+                    { keys: "u", desc: "Undo" },
+                    { keys: "Ctrl + r", desc: "Redo" },
+                    { keys: "yy", desc: "Yank (copy) line" },
+                    { keys: "yw", desc: "Yank word" },
+                    { keys: "p", desc: "Paste after cursor" },
+                    { keys: "P", desc: "Paste before cursor" },
+                ]
+            },
+            {
+                category: "Visual Mode",
+                color: "text-cat-mauve",
+                items: [
+                    { keys: "v", desc: "Visual char mode" },
+                    { keys: "V", desc: "Visual line mode" },
+                    { keys: "Ctrl + v", desc: "Visual block mode" },
+                    { keys: "o", desc: "Move to other end of selection" },
+                    { keys: "aw", desc: "Select 'a word' (includes space)" },
+                    { keys: "iw", desc: "Select 'inner word'" },
+                    { keys: ">", desc: "Indent selection" },
+                    { keys: "<", desc: "Un-indent selection" },
+                    { keys: "y", desc: "Yank selection" },
+                    { keys: "d", desc: "Delete selection" },
+                ]
+            },
+            {
+                category: "Navigation & Search",
+                color: "text-cat-peach",
+                items: [
+                    { keys: "/", desc: "Search forward" },
+                    { keys: "?", desc: "Search backward" },
+                    { keys: "n", desc: "Next match" },
+                    { keys: "N", desc: "Previous match" },
+                    { keys: "*", desc: "Search for word under cursor (forward)" },
+                    { keys: "#", desc: "Search for word under cursor (backward)" },
+                    { keys: "f{char}", desc: "Find {char} in line (forward)" },
+                    { keys: "t{char}", desc: "Till {char} in line (forward)" },
+                    { keys: ";", desc: "Repeat find/till forward" },
+                    { keys: ",", desc: "Repeat find/till backward" },
+                    { keys: "%", desc: "Go to matching bracket" },
+                ]
+            },
+            {
+                category: "Advanced / Power User",
+                color: "text-cat-pink",
+                items: [
+                    { keys: ".", desc: "Repeat last command" },
+                    { keys: "ciw", desc: "Change inner word" },
+                    { keys: "ci\"", desc: "Change inside quotes" },
+                    { keys: "dt{char}", desc: "Delete until {char}" },
+                    { keys: "da{char}", desc: "Delete around {char}" },
+                    { keys: "zz", desc: "Center screen on cursor" },
+                    { keys: "zt", desc: "Scroll cursor to top" },
+                    { keys: "zb", desc: "Scroll cursor to bottom" },
+                    { keys: "Ctrl + d", desc: "Scroll down half page" },
+                    { keys: "Ctrl + u", desc: "Scroll up half page" },
+                    { keys: "J", desc: "Join lines" },
+                ]
+            },
+            {
+                category: "Macros & Registers",
+                color: "text-cat-teal",
+                items: [
+                    { keys: "qa", desc: "Record macro into register 'a'" },
+                    { keys: "q", desc: "Stop recording" },
+                    { keys: "@a", desc: "Play macro 'a'" },
+                    { keys: "@@", desc: "Replay last macro" },
+                    { keys: "\"{reg}y", desc: "Yank into register {reg}" },
+                    { keys: "\"{reg}p", desc: "Paste from register {reg}" },
+                    { keys: "\"+y", desc: "Copy to system clipboard" },
+                ]
+            },
+            {
+                category: "Marks & Jumps",
+                color: "text-cat-sapphire",
+                items: [
+                    { keys: "ma", desc: "Set mark 'a' at cursor" },
+                    { keys: "'a", desc: "Jump to line of mark 'a'" },
+                    { keys: "`a", desc: "Jump to exact pos of mark 'a'" },
+                    { keys: "Ctrl + o", desc: "Jump back (jumplist)" },
+                    { keys: "Ctrl + i", desc: "Jump forward" },
+                    { keys: "g;", desc: "Jump to last edit position" },
+                    { keys: "gi", desc: "Jump to last edit and enter Insert" },
+                ]
+            }
+        ];
+
+        // ==========================================
+        // 2. INITIALIZE PLAYGROUND
+        // ==========================================
+        
+        // Initial dummy code
+        const initialCode = `// Welcome to the Catppuccin Vim Playground
+// Practice your motions here!
+
+function helloNeovim() {
+    const greeting = "Hello World";
+    const colors = ["Rosewater", "Flamingo", "Mauve"];
+    
+    // Try 'ci"' inside the string below:
+    console.log("Change this text completely");
+
+    // Try 'dd' to delete this line
+    // Try 'u' to undo it
+
+    for (let i = 0; i < colors.length; i++) {
+        // Try '>>' to indent this line in visual mode
+        console.log(colors[i]);
     }
+
+    // Try '3j' to jump down 3 lines
+    return {
+        status: "Mastering Vim",
+        theme: "Catppuccin Mocha"
+    };
 }
 
-render();
+// Try recording a macro 'qa' to append a semicolon
+// at the end of the line, then play it with '@a'
+const one = 1
+const two = 2
+const three = 3
+`;
 
-let timeout;
-searchInput.addEventListener('input', (e) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-        render(e.target.value);
-    }, 100);
-});
+        const editor = CodeMirror(document.getElementById("editor"), {
+            value: initialCode,
+            mode: "javascript",
+            keyMap: "vim",
+            lineNumbers: true,
+            theme: "default", // We override with CSS
+            showCursorWhenSelecting: true,
+            tabSize: 4,
+        });
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement !== searchInput) {
-        e.preventDefault();
-        searchInput.focus();
-    }
-});
-</script>
+        // Status Line Logic
+        const modeEl = document.getElementById("mode-indicator");
+        const cursorEl = document.getElementById("cursor-pos");
+
+        // Map Vim modes to Colors/Text
+        const modeMap = {
+            "normal": { text: "NORMAL", color: "bg-cat-blue" },
+            "insert": { text: "INSERT", color: "bg-cat-green" },
+            "visual": { text: "VISUAL", color: "bg-cat-mauve" },
+            "visual-block": { text: "V-BLOCK", color: "bg-cat-mauve" },
+            "replace": { text: "REPLACE", color: "bg-cat-red" }
+        };
+
+        function updateStatus(vimEvent) {
+            // Update Cursor Position
+            const pos = editor.getCursor();
+            cursorEl.innerText = `Ln ${pos.line + 1}, Col ${pos.ch + 1}`;
+
+            // Update Mode
+            if (vimEvent && vimEvent.mode) {
+                const currentMode = vimEvent.mode;
+                let display = modeMap["normal"]; // default
+
+                if (currentMode === "insert") display = modeMap["insert"];
+                else if (currentMode === "visual") {
+                    display = vimEvent.subMode === "block" ? modeMap["visual-block"] : modeMap["visual"];
+                }
+                else if (currentMode === "replace") display = modeMap["replace"];
+
+                modeEl.innerText = display.text;
+                // Remove old color classes
+                modeEl.className = `text-cat-base font-bold px-3 h-full flex items-center transition-colors duration-200 ${display.color}`;
+            }
+        }
+
+        // Hook into CodeMirror events
+        editor.on("cursorActivity", () => updateStatus({ mode: editor.state.vim ? editor.state.vim.insertMode ? "insert" : (editor.state.vim.visualMode ? "visual" : "normal") : "normal" }));
+        
+        CodeMirror.on(editor, "vim-mode-change", (e) => {
+            updateStatus(e);
+        });
+
+        // ==========================================
+        // 3. RENDER CHEATSHEET
+        // ==========================================
+        const container = document.getElementById("cheatsheet-container");
+        const searchInput = document.getElementById("search-input");
+
+        function renderCheatsheet(filter = "") {
+            container.innerHTML = "";
+            const lowerFilter = filter.toLowerCase();
+
+            keymaps.forEach(cat => {
+                // Filter logic
+                const filteredItems = cat.items.filter(item => 
+                    item.keys.toLowerCase().includes(lowerFilter) || 
+                    item.desc.toLowerCase().includes(lowerFilter) ||
+                    cat.category.toLowerCase().includes(lowerFilter)
+                );
+
+                if (filteredItems.length === 0) return;
+
+                // Create Category Block
+                const section = document.createElement("div");
+                section.className = "mb-4";
+
+                const title = document.createElement("h3");
+                title.className = `font-bold text-sm mb-3 uppercase tracking-wider ${cat.color}`;
+                title.innerText = cat.category;
+                section.appendChild(title);
+
+                const grid = document.createElement("div");
+                grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3";
+
+                filteredItems.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "bg-cat-surface0 p-3 rounded border border-cat-surface1 hover:border-cat-mauve transition-colors group";
+                    
+                    const kbdWrapper = document.createElement("div");
+                    kbdWrapper.className = "mb-1";
+                    
+                    // Split keys (e.g. "Ctrl + v") to style distinct parts
+                    const keyString = item.keys;
+                    const keySpan = document.createElement("code");
+                    keySpan.className = "bg-cat-mantle text-cat-text px-2 py-0.5 rounded text-sm font-mono border border-cat-surface1 shadow-sm group-hover:text-cat-mauve";
+                    keySpan.innerText = keyString;
+                    
+                    kbdWrapper.appendChild(keySpan);
+
+                    const desc = document.createElement("p");
+                    desc.className = "text-xs text-cat-subtext0 leading-tight";
+                    desc.innerText = item.desc;
+
+                    card.appendChild(kbdWrapper);
+                    card.appendChild(desc);
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                container.appendChild(section);
+            });
+        }
+
+        // Initial Render
+        renderCheatsheet();
+
+        // Search Listener
+        searchInput.addEventListener("input", (e) => {
+            renderCheatsheet(e.target.value);
+        });
+
+    </script>
 </body>
 </html>
